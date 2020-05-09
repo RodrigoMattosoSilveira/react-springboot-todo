@@ -1,13 +1,13 @@
-package com.madronetek.reactspringboot;
+package com.madronetek.admin.todo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ReactSpringBootApplicationTests {
+class TodoApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
