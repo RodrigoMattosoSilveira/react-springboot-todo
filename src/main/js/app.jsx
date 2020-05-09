@@ -242,6 +242,7 @@ class TodoList extends React.Component {
 						<tr>
 							<th>State</th>
 							<th>Text</th>
+                            <th>Priority</th>
 							<th></th>
 						</tr>
 						{todos}
@@ -271,6 +272,7 @@ class Todo extends React.Component {
 			<tr>
 				<td>{this.props.todo.isCompleted ? 'Done' : 'Open'}</td>
 				<td>{this.props.todo.text}</td>
+                <td>{this.props.todo.priority}</td>
 				<td>
 					<button onClick={this.handleDelete}>Delete</button>
 				</td>

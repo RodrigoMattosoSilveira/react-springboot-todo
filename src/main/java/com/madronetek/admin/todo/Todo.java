@@ -15,13 +15,15 @@ public class Todo {
     // 	needed.
     private @Id @GeneratedValue Long id;
     private String text;
+    private Priorities priority;
     private boolean isCompleted;
     private @Version @JsonIgnore Long version;
 
     public Todo() {}
 
-    public Todo(String text) {
+    public Todo(String text, Priorities priority) {
         this.text = text;
+        this.priority = priority;
         this.isCompleted = false;
     }
 
@@ -32,6 +34,7 @@ public class Todo {
         Todo todo = (Todo) o;
         return Objects.equals(id, todo.id) &&
                 Objects.equals(text, todo.text) &&
+                Objects.equals(priority, todo.priority) &&
                 Objects.equals(isCompleted, todo.isCompleted) &&
                 Objects.equals(version, todo.version);
     }
@@ -39,30 +42,45 @@ public class Todo {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, text, isCompleted);
+        return Objects.hash(id, text, priority, isCompleted);
     }
 
     public Long getId() {
+
         return id;
     }
 
     public void setId(Long id) {
+
         this.id = id;
     }
 
     public String getText() {
+
         return text;
     }
 
     public void setText(String text) {
+
         this.text = text;
     }
 
+    public Priorities getPriority() {
+
+        return priority;
+    }
+
+    public void setText(Priorities priority) {
+
+        this.priority = priority;
+    }
+
     public boolean getIsCompleted() {
+
         return isCompleted;
     }
 
-    public void setLastName(boolean isCompleted) {
+    public void setIsCompleted(boolean isCompleted) {
         this.isCompleted = isCompleted;
     }
 
@@ -70,12 +88,12 @@ public class Todo {
 
     public void setVersion(Long version) { this.version = version;  }
 
-
     @Override
     public String toString() {
         return "Todo{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
+                ", priority='" + priority + '\'' +
                 ", isCompleted='" + isCompleted + '\'' +
                 ", version=" + version +
                 '}';

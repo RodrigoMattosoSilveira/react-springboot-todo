@@ -21,14 +21,14 @@ public class DatabaseLoader implements CommandLineRunner {
     @Override
     // The run() method is invoked with command line arguments, loading up your data.
     public void run(String... strings) throws Exception {
-        this.repository.save(new Todo("Learn Springboot"));
-        this.repository.save(new Todo("Learn Akka"));
-        this.repository.save(new Todo("Swim 50 laps in 30 minutes"));
-        this.repository.save(new Todo("Exercise on the TotalGym 3 times a week"));
-        this.repository.save(new Todo("Pedal on the recumbent 3 times a week"));
-        this.repository.save(new Todo("Cook fish twice as week"));
-        this.repository.save(new Todo("Measure blood pressure daily"));
-        this.repository.save(new Todo("Measure peek flow daily"));
-        this.repository.save(new Todo("Measure oxygen level daily"));
+        this.repository.save(new Todo("Learn Springboot", Priorities.LOW));
+        this.repository.save(new Todo("Learn Akka", Priorities.HIGH));
+        this.repository.save(new Todo("Swim 50 laps in 30 minutes", Priorities.LOW));
+        this.repository.save(new Todo("Exercise on the TotalGym 3 times a week", Priorities.LOW));
+        this.repository.save(new Todo("Pedal on the recumbent 3 times a week", Priorities.HIGH));
+        this.repository.save(new Todo("Cook fish twice as week", Priorities.LOW));
+        this.repository.save(new Todo("Measure blood pressure daily", Priorities.LOW));
+        this.repository.save(new Todo("Measure peek flow daily", Priorities.LOW));
+        this.repository.save(new Todo("Measure oxygen level daily", Priorities.LOW));
     }
 }
