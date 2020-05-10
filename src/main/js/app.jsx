@@ -21,8 +21,7 @@ class App extends React.Component {
 
 	// tag::follow-2[]
 	loadFromServer(pageSize) {
-		follow(client, root, [
-			{rel: 'todos', params: {size: pageSize}}]
+		follow(client, root, [{rel: 'todos', params: {size: pageSize}}]
 		).then(todoCollection => {
 			return client({
 				method: 'GET',
@@ -140,11 +139,36 @@ class CreateDialog extends React.Component {
 	}
 
 	render() {
-	    const work = this.props.attributes.filter(attribute => attribute !== 'isCompleted');
-		const inputs = work.map(attribute =>
-			<p key={attribute}>
-				<input type="text" placeholder={attribute} ref={attribute} className="field"/>
-			</p>
+		const inputs = this.props.attributes.map(attribute =>
+            {
+                switch (attribute) {
+                    case "text":
+                        return (
+                            <p key={attribute}>
+                                <input type="text" placeholder={attribute} ref={attribute} className="field"/>
+                            </p>
+                        )
+                    case "priority":
+                        return (
+                            <p key={attribute}>
+                                priority: <select id="priority" placeholder={attribute} ref={attribute} className="field">
+                                    <option value="LOW" selected>LOW</option>
+                                    <option value="MEDIUM">MEDIUM</option>
+                                    <option value="HIGH">HIGH</option>
+                                </select>
+                            </p>
+                        )
+                    case "isCompleted":
+                        return (
+                            <p key={attribute}>
+                                isCompleted: <select id="priority" placeholder={attribute} ref={attribute} className="field" disabled>
+                                <option value="false" selected>false</option>
+                                <option value="true">true</option>
+                            </select>
+                            </p>
+                     )
+                }
+            }
 		);
 
 		return (
