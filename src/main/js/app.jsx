@@ -20,6 +20,8 @@ class App extends React.Component {
         this.onUpdate = this.onUpdate.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onNavigate = this.onNavigate.bind(this);
+        this.refreshCurrentPage = this.refreshCurrentPage.bind(this);
+        this.refreshAndGoToLastPage = this.refreshAndGoToLastPage.bind(this);
     }
 
     // tag::follow-2[]
@@ -141,6 +143,51 @@ class App extends React.Component {
         }
     }
     // end::update-page-size[]
+
+    // tag::websocket-handlers[]
+    refreshAndGoToLastPage(message) {
+        follow(client, root, [{
+            rel: 'todos',
+            params: {size: this.state.pageSize}
+        }]).done(response => {
+            if (response.entity._links.last !== undefined) {
+                this.onNavigate(response.entity._links.last.href);
+            } else {
+                this.onNavigate(response.entity._links.self.href);
+            }
+        })
+    }
+
+    refreshCurrentPage(message) {
+        follow(client, root, [{
+            rel: 'todos',
+            params: {
+                size: this.state.pageSize,
+                page: this.state.page.number
+            }
+        }]).then(todoCollection => {
+            this.links = todoCollection.entity._links;
+            this.page = todoCollection.entity.page;
+
+            return todoCollection.entity._embedded.todos.map(todo => {
+                return client({
+                    method: 'GET',
+                    path: todo._links.self.href
+                })
+            });
+        }).then(todoPromises => {
+            return when.all(todoPromises);
+        }).then(todos => {
+            this.setState({
+                page: this.page,
+                todos: todos,
+                attributes: Object.keys(this.schema.properties),
+                pageSize: this.state.pageSize,
+                links: this.links
+            });
+        });
+    }
+    // end::websocket-handlers[]
 
     // tag::follow-1[]
     componentDidMount() {
