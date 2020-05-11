@@ -145,6 +145,12 @@ class App extends React.Component {
     // tag::follow-1[]
     componentDidMount() {
         this.loadFromServer(this.state.pageSize);
+        stompClient.register([
+            {route: '/topic/newTodo', callback: this.refreshAndGoToLastPage},
+            {route: '/topic/updateTodo', callback: this.refreshCurrentPage},
+            {route: '/topic/deleteTodo', callback: this.refreshCurrentPage}
+        ]);
+
     }
     // end::follow-1[]
 
