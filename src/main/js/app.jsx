@@ -14,7 +14,7 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {todos: [], attributes: [], pageSize: 2, links: {}};
+        this.state = {todos: [], attributes: [], page: 1, pageSize: 2, links: {}};
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
@@ -60,23 +60,14 @@ class App extends React.Component {
 
     // tag::create[]
     onCreate(newTodo) {
-        const self = this;
-        follow(client, root, ['todos']).then(response => {
-            return client({
+        follow(client, root, ['todos']).done(response => {
+            client({
                 method: 'POST',
                 path: response.entity._links.self.href,
                 entity: newTodo,
                 headers: {'Content-Type': 'application/json'}
             })
-        }).then(response => {
-            return follow(client, root, [{rel: 'todos', params: {'size': self.state.pageSize}}]);
-        }).done(response => {
-            if (typeof response.entity._links.last !== "undefined") {
-                this.onNavigate(response.entity._links.last.href);
-            } else {
-                this.onNavigate(response.entity._links.self.href);
-            }
-        });
+        })
     }
     // end::create[]
 

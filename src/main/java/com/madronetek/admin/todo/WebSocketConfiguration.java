@@ -19,7 +19,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) { // <4>
-        registry.addEndpoint("/todo").withSockJS();
+        registry.addEndpoint("/admin").withSockJS();
     }
 
     @Override

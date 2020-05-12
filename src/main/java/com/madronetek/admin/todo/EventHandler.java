@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 // tag::code[]
 @Component
-@RepositoryEventHandler(Todo.class) // <1>
+@RepositoryEventHandler() // <1>
 public class EventHandler {
 
     private final SimpMessagingTemplate websocket; // <2>
@@ -27,21 +27,21 @@ public class EventHandler {
     }
 
     @HandleAfterCreate // <3>
-    public void newTodo(Todo employee) {
+    public void newTodo(Todo todo) {
         this.websocket.convertAndSend(
-                MESSAGE_PREFIX + "/newTodo", getPath(employee));
+                MESSAGE_PREFIX + "/newTodo", getPath(todo));
     }
 
     @HandleAfterDelete // <3>
-    public void deleteTodo(Todo employee) {
+    public void deleteTodo(Todo todo) {
         this.websocket.convertAndSend(
-                MESSAGE_PREFIX + "/deleteTodo", getPath(employee));
+                MESSAGE_PREFIX + "/deleteTodo", getPath(todo));
     }
 
     @HandleAfterSave // <3>
-    public void updateTodo(Todo employee) {
+    public void updateTodo(Todo todo) {
         this.websocket.convertAndSend(
-                MESSAGE_PREFIX + "/updateTodo", getPath(employee));
+                MESSAGE_PREFIX + "/updateTodo", getPath(todo));
     }
 
     /**
