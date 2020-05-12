@@ -6,6 +6,7 @@ const when = require('when');
 const client = require('./client');
 
 const follow = require('./follow'); // function to hop multiple links by "rel"
+const stompClient = require('./websocket-listener');
 
 const root = '/api';
 
@@ -13,12 +14,14 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {todos: [], attributes: [], pageSize: 2, links: {}};
+        this.state = {todos: [], attributes: [], page: 1, pageSize: 2, links: {}};
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onNavigate = this.onNavigate.bind(this);
+        this.refreshCurrentPage = this.refreshCurrentPage.bind(this);
+        this.refreshAndGoToLastPage = this.refreshAndGoToLastPage.bind(this);
     }
 
     // tag::follow-2[]
@@ -57,23 +60,14 @@ class App extends React.Component {
 
     // tag::create[]
     onCreate(newTodo) {
-        const self = this;
-        follow(client, root, ['todos']).then(response => {
-            return client({
+        follow(client, root, ['todos']).done(response => {
+            client({
                 method: 'POST',
                 path: response.entity._links.self.href,
                 entity: newTodo,
                 headers: {'Content-Type': 'application/json'}
             })
-        }).then(response => {
-            return follow(client, root, [{rel: 'todos', params: {'size': self.state.pageSize}}]);
-        }).done(response => {
-            if (typeof response.entity._links.last !== "undefined") {
-                this.onNavigate(response.entity._links.last.href);
-            } else {
-                this.onNavigate(response.entity._links.self.href);
-            }
-        });
+        })
     }
     // end::create[]
 
@@ -141,9 +135,60 @@ class App extends React.Component {
     }
     // end::update-page-size[]
 
+    // tag::websocket-handlers[]
+    refreshAndGoToLastPage(message) {
+        follow(client, root, [{
+            rel: 'todos',
+            params: {size: this.state.pageSize}
+        }]).done(response => {
+            if (response.entity._links.last !== undefined) {
+                this.onNavigate(response.entity._links.last.href);
+            } else {
+                this.onNavigate(response.entity._links.self.href);
+            }
+        })
+    }
+
+    refreshCurrentPage(message) {
+        follow(client, root, [{
+            rel: 'todos',
+            params: {
+                size: this.state.pageSize,
+                page: this.state.page.number
+            }
+        }]).then(todoCollection => {
+            this.links = todoCollection.entity._links;
+            this.page = todoCollection.entity.page;
+
+            return todoCollection.entity._embedded.todos.map(todo => {
+                return client({
+                    method: 'GET',
+                    path: todo._links.self.href
+                })
+            });
+        }).then(todoPromises => {
+            return when.all(todoPromises);
+        }).then(todos => {
+            this.setState({
+                page: this.page,
+                todos: todos,
+                attributes: Object.keys(this.schema.properties),
+                pageSize: this.state.pageSize,
+                links: this.links
+            });
+        });
+    }
+    // end::websocket-handlers[]
+
     // tag::follow-1[]
     componentDidMount() {
         this.loadFromServer(this.state.pageSize);
+        stompClient.register([
+            {route: '/topic/newTodo', callback: this.refreshAndGoToLastPage},
+            {route: '/topic/updateTodo', callback: this.refreshCurrentPage},
+            {route: '/topic/deleteTodo', callback: this.refreshCurrentPage}
+        ]);
+
     }
     // end::follow-1[]
 
