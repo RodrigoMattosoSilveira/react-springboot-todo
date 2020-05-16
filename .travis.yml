@@ -4,8 +4,8 @@ jdk:
 
 script:
   - echo "Set the Todo application version"
-  - /home/travis/build/RodrigoMattosoSilveira/scripts/todo_version.sh
-  -  echo "Todo version - ${Version}"
+  - /home/travis/build/RodrigoMattosoSilveira/react-springboot-todo/scripts/todo_version.sh
+  - echo "Todo version - ${Version}"
   - echo "Build Todo Application"
   - mvn clean package
 
