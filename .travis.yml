@@ -4,7 +4,7 @@ jdk:
 
 script:
   - echo "Set the Todo application version"
-  - ./scripts/todo_version.sh
+  - /home/travis/build/RodrigoMattosoSilveira/scripts/todo_version.sh
   -  echo "Todo version - ${Version}"
   - echo "Build Todo Application"
   - mvn clean package
