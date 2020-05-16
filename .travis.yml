@@ -3,9 +3,9 @@ jdk:
   - oraclejdk11
 
 cache:
-  - yarn
-  - directories:
-      -$home/.m2
+  directories:
+    - $HOME/.cache/yarn
+    - $HOME/.m2
 
 script:
   - echo "Set the Todo application version"
