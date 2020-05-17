@@ -8,9 +8,6 @@ cache:
     - $HOME/.m2
 
 script:
-  - echo "Set the Todo application version"
-  - /home/travis/build/RodrigoMattosoSilveira/react-springboot-todo/scripts/todo_version.sh
-  - echo "Todo version - ${VERSION}"
   - echo "Build Todo Application"
   - mvn clean package
 
