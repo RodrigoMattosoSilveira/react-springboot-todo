@@ -2,6 +2,14 @@
 ## To launch the application
 Navigate to: [React-SpringBoot TODO](https://react-springboot-todo.herokuapp.com//)
 
+There are two users:
+* Donald Trump:
+  * _userid_: `donald`;
+  * _password_: `trump`;
+*Nancy Pelosi:
+  * _userid_: `nancy`;
+  * _password_: `pelosi`;
+
 ## Build status
 ![](https://travis-ci.org/RodrigoMattosoSilveira/react-springboot-todo.svg?branch=master)
 

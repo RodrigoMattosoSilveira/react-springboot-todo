@@ -1,6 +1,6 @@
 {
   "name": "spring-data-rest-and-reactjs",
-  "version": "0.1.0",
+  "version": "0.0.3",
   "description": "Demo of ReactJS + Spring Data REST",
   "repository": {
     "type": "git",
@@ -13,12 +13,12 @@
     "data",
     "react"
   ],
-  "author": "Greg L. Turnquist",
+  "author": "Rodrigo Silveira",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/spring-guides/tut-react-and-spring-data-rest/issues"
+    "url": "https://github.com/RodrigoMattosoSilveira/react-springboot-todo/issues"
   },
-  "homepage": "https://github.com/spring-guides/tut-react-and-spring-data-rest",
+  "homepage": "https://github.com/RodrigoMattosoSilveira/react-springboot-todo",
   "dependencies": {
     "net": "^1.0.2",
     "react": "^16.5.2",

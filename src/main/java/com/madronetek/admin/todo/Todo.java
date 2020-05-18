@@ -1,10 +1,7 @@
 package com.madronetek.admin.todo;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
+import javax.persistence.*;
 import java.util.Objects;
-import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,14 +14,19 @@ public class Todo {
     private String text;
     private Priorities priority;
     private boolean isCompleted;
+
     private @Version @JsonIgnore Long version;
+
+    private @ManyToOne
+    Owner owner;
 
     public Todo() {}
 
-    public Todo(String text, Priorities priority) {
+    public Todo(String text, Priorities priority, Owner owner) {
         this.text = text;
         this.priority = priority;
         this.isCompleted = false;
+        this.owner = owner;
     }
 
     @Override
@@ -36,13 +38,14 @@ public class Todo {
                 Objects.equals(text, todo.text) &&
                 Objects.equals(priority, todo.priority) &&
                 Objects.equals(isCompleted, todo.isCompleted) &&
-                Objects.equals(version, todo.version);
+                Objects.equals(version, todo.version)&&
+                Objects.equals(owner, todo.owner);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, text, priority, isCompleted);
+        return Objects.hash(id, text, priority, isCompleted, version, owner);
     }
 
     public Long getId() {
@@ -88,6 +91,14 @@ public class Todo {
 
     public void setVersion(Long version) { this.version = version;  }
 
+    public Owner getOwner() {
+        return this.owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
         return "Todo{" +
@@ -96,6 +107,7 @@ public class Todo {
                 ", priority='" + priority + '\'' +
                 ", isCompleted='" + isCompleted + '\'' +
                 ", version=" + version +
+                ", owner=" + owner +
                 '}';
     }
 }
