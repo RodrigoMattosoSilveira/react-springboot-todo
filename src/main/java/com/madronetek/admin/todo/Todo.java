@@ -18,7 +18,7 @@ public class Todo {
     private @Version @JsonIgnore Long version;
 
     private @ManyToOne
-    Owner owner; // (1)
+    Owner owner;
 
     public Todo() {}
 
@@ -45,7 +45,7 @@ public class Todo {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, text, priority, isCompleted, owner);
+        return Objects.hash(id, text, priority, isCompleted, version, owner);
     }
 
     public Long getId() {

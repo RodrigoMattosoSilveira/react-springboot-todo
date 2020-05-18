@@ -14,7 +14,7 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {todos: [], attributes: [], page: 1, pageSize: 2, links: {}};
+        this.state = {todos: [], attributes: [], page: 1, pageSize: 2, links: {}, loggedInOwner: this.props.loggedInOwner};
         this.updatePageSize = this.updatePageSize.bind(this);
         this.onCreate = this.onCreate.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
@@ -24,7 +24,6 @@ class App extends React.Component {
         this.refreshAndGoToLastPage = this.refreshAndGoToLastPage.bind(this);
     }
 
-    // tag::follow-2[]
     loadFromServer(pageSize) {
         follow(client, root, [ // <1>
             {rel: 'todos', params: {size: pageSize}}]
@@ -34,6 +33,20 @@ class App extends React.Component {
                 path: todoCollection.entity._links.profile.href,
                 headers: {'Accept': 'application/schema+json'}
             }).then(schema => {
+                /**
+                 * Filter unneeded JSON Schema properties, like uri references and
+                 * subtypes ($ref).
+                 */
+                Object.keys(schema.entity.properties).forEach(function (property) {
+                    if (schema.entity.properties[property].hasOwnProperty('format') &&
+                        schema.entity.properties[property].format === 'uri') {
+                        delete schema.entity.properties[property];
+                    }
+                    else if (schema.entity.properties[property].hasOwnProperty('$ref')) {
+                        delete schema.entity.properties[property];
+                    }
+                });
+
                 this.schema = schema.entity;
                 this.links = todoCollection.entity._links;
                 return todoCollection;
@@ -56,9 +69,7 @@ class App extends React.Component {
             });
         });
     }
-    // end::follow-2[]
 
-    // tag::create[]
     onCreate(newTodo) {
         follow(client, root, ['todos']).done(response => {
             client({
@@ -69,38 +80,46 @@ class App extends React.Component {
             })
         })
     }
-    // end::create[]
 
-    // tag::update[]
     onUpdate(todo, updatedTodo) {
-        client({
-            method: 'PUT',
-            path: todo.entity._links.self.href,
-            entity: updatedTodo,
-            headers: {
-                'Content-Type': 'application/json',
-                'If-Match': todo.headers.Etag
-            }
-        }).done(response => {
-            this.loadFromServer(this.state.pageSize);
-        }, response => {
-            if (response.status.code === 412) {
-                alert('DENIED: Unable to update ' +
-                    todo.entity._links.self.href + '. Your copy is stale.');
-            }
-        });
+        if(todo.entity.owner.name === this.state.loggedInOwner) {
+            updatedTodo["owner"] = todo.entity.owner;
+            client({
+                method: 'PUT',
+                path: todo.entity._links.self.href,
+                entity: updatedTodo,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'If-Match': todo.headers.Etag
+                }
+            }).done(response => {
+                /* Let the websocket handler update the state */
+            }, response => {
+                if (response.status.code === 403) {
+                    alert('ACCESS DENIED: You are not authorized to update ' +
+                        todo.entity._links.self.href);
+                }
+                if (response.status.code === 412) {
+                    alert('DENIED: Unable to update ' + todo.entity._links.self.href +
+                        '. Your copy is stale.');
+                }
+            });
+        } else {
+            alert("You are not authorized to update");
+        }
     }
-    // end::update[]
 
-    // tag::delete[]
     onDelete(todo) {
-        client({method: 'DELETE', path: todo.entity._links.self.href}).done(response => {
-            this.loadFromServer(this.state.pageSize);
-        });
+        client({method: 'DELETE', path: todo.entity._links.self.href}
+        ).done(response => {/* let the websocket handle updating the UI */},
+            response => {
+                if (response.status.code === 403) {
+                    alert('ACCESS DENIED: You are not authorized to delete ' +
+                        todo.entity._links.self.href);
+                }
+            });
     }
-    // end::delete[]
 
-    // tag::navigate[]
     onNavigate(navUri) {
         client({
             method: 'GET',
@@ -125,17 +144,13 @@ class App extends React.Component {
             });
         });
     }
-    // end::navigate[]
 
-    // tag::update-page-size[]
     updatePageSize(pageSize) {
         if (pageSize !== this.state.pageSize) {
             this.loadFromServer(pageSize);
         }
     }
-    // end::update-page-size[]
 
-    // tag::websocket-handlers[]
     refreshAndGoToLastPage(message) {
         follow(client, root, [{
             rel: 'todos',
@@ -178,9 +193,7 @@ class App extends React.Component {
             });
         });
     }
-    // end::websocket-handlers[]
 
-    // tag::follow-1[]
     componentDidMount() {
         this.loadFromServer(this.state.pageSize);
         stompClient.register([
@@ -190,7 +203,6 @@ class App extends React.Component {
         ]);
 
     }
-    // end::follow-1[]
 
     render() {
         return (
@@ -203,13 +215,13 @@ class App extends React.Component {
                               onNavigate={this.onNavigate}
                               onUpdate={this.onUpdate}
                               onDelete={this.onDelete}
-                              updatePageSize={this.updatePageSize}/>
+                              updatePageSize={this.updatePageSize}
+                              loggedInOwner={this.state.loggedInOwner}/>
             </div>
         )
     }
 }
 
-// tag::create-dialog[]
 class CreateDialog extends React.Component {
 
     constructor(props) {
@@ -282,9 +294,7 @@ class CreateDialog extends React.Component {
         )
     }
 }
-// end::create-dialog[]
 
-// tag::update-dialog[]
 class UpdateDialog extends React.Component {
 
     constructor(props) {
@@ -367,29 +377,36 @@ class UpdateDialog extends React.Component {
         );
 
         const dialogId = "updateTodo-" + this.props.todo.entity._links.self.href;
+        const isOwnerCorrect = this.props.todo.entity.owner.name === this.props.loggedInOwner;
 
-        return (
-            <div key={this.props.todo.entity._links.self.href}>
-                <a href={"#" + dialogId}>Update</a>
-                <div id={dialogId} className="modalDialog">
-                    <div>
-                        <a href="#" title="Close" className="close">X</a>
+        if (isOwnerCorrect === false) {
+            return (
+                <div>
+                    <a>Not Your Todo</a>
+                </div>
+            )
+        } else {
+            return (
+                <div key={this.props.todo.entity._links.self.href}>
+                    <a href={"#" + dialogId}>Update</a>
+                    <div id={dialogId} className="modalDialog">
+                        <div>
+                            <a href="#" title="Close" className="close">X</a>
 
-                        <h2>Update an todo</h2>
+                            <h2>Update an todo</h2>
 
-                        <form>
-                            {inputs}
-                            <button onClick={this.handleSubmit}>Update</button>
-                        </form>
+                            <form>
+                                {inputs}
+                                <button onClick={this.handleSubmit}>Update</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
     }
 
 };
-// end::update-dialog[]
-
 
 class TodoList extends React.Component {
 
@@ -402,7 +419,6 @@ class TodoList extends React.Component {
         this.handleInput = this.handleInput.bind(this);
     }
 
-    // tag::handle-page-size-updates[]
     handleInput(e) {
         e.preventDefault();
         const pageSize = ReactDOM.findDOMNode(this.refs.pageSize).value;
@@ -412,9 +428,7 @@ class TodoList extends React.Component {
             ReactDOM.findDOMNode(this.refs.pageSize).value = pageSize.substring(0, pageSize.length - 1);
         }
     }
-    // end::handle-page-size-updates[]
 
-    // tag::handle-nav[]
     handleNavFirst(e){
         e.preventDefault();
         this.props.onNavigate(this.props.links.first.href);
@@ -431,15 +445,15 @@ class TodoList extends React.Component {
         e.preventDefault();
         this.props.onNavigate(this.props.links.last.href);
     }
-    // end::handle-nav[]
-    // tag::todo-list-render[]
+
     render() {
         const todos = this.props.todos.map(todo =>
             <Todo key={todo.entity._links.self.href}
                       todo={todo}
                       attributes={this.props.attributes}
                       onUpdate={this.props.onUpdate}
-                      onDelete={this.props.onDelete}/>
+                      onDelete={this.props.onDelete}
+                      loggedInOwner={this.props.loggedInOwner}/>
         );
 
         const navLinks = [];
@@ -465,6 +479,7 @@ class TodoList extends React.Component {
                         <th>State</th>
                         <th>Text</th>
                         <th>Priority</th>
+                        <th>Owner</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -477,10 +492,8 @@ class TodoList extends React.Component {
             </div>
         )
     }
-    // end::todo-list-render[]
 }
 
-// tag::todo[]
 class Todo extends React.Component {
 
     constructor(props) {
@@ -498,10 +511,12 @@ class Todo extends React.Component {
                 <td>{this.props.todo.entity.isCompleted ? 'Done' : 'Open'}</td>
                 <td>{this.props.todo.entity.text}</td>
                 <td>{this.props.todo.entity.priority}</td>
+                <td>{this.props.todo.entity.owner.name}</td>
                 <td>
                     <UpdateDialog todo={this.props.todo}
                                   attributes={this.props.attributes}
-                                  onUpdate={this.props.onUpdate}/>
+                                  onUpdate={this.props.onUpdate}
+                                  loggedInOwner={this.props.loggedInOwner}/>
                 </td>
                 <td>
                     <button onClick={this.handleDelete}>Delete</button>
@@ -510,9 +525,8 @@ class Todo extends React.Component {
         )
     }
 }
-// end::todo[]
 
 ReactDOM.render(
-    <App />,
+    <App loggedInOwner={document.getElementById('ownername').innerHTML} />,
     document.getElementById('react')
 )

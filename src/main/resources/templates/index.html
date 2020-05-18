@@ -6,10 +6,13 @@
     <link rel="stylesheet" href="/main.css" />
 </head>
 <body>
-
-    <div id="react"></div>
-
-    <script src="built/bundle.js"></script>
-
+	<div>
+		Hello, <span id="ownername" th:text="${#authentication.name}">user</span>.
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Log Out"/>
+		</form>
+	</div>
+	<div id="react"></div>
+	<script src="built/bundle.js"></script>
 </body>
 </html>
