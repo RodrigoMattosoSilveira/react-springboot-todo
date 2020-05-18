@@ -26,8 +26,8 @@ public class DatabaseLoader implements CommandLineRunner {
     public void run(String... strings) {
 
         // Owners
-        Owner donald = this.owners.save(new Owner("donald", "trump"));
-        Owner nancy = this.owners.save(new Owner("nancy", "pelosi"));
+        Owner donald = this.owners.save(new Owner("donald", "trump", "ROLE_OWNER"));
+        Owner nancy = this.owners.save(new Owner("nancy", "pelosi", "ROLE_OWNER"));
 
         //  Todos
         this.todos.save(new Todo("Learn Springboot", Priorities.LOW, donald));
