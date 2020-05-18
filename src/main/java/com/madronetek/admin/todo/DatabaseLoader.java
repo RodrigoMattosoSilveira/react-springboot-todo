@@ -2,6 +2,9 @@ package com.madronetek.admin.todo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 // This class is marked with Spring’s @Component annotation so that it is automatically picked up by
@@ -29,15 +32,28 @@ public class DatabaseLoader implements CommandLineRunner {
         Owner donald = this.owners.save(new Owner("donald", "trump", "ROLE_OWNER"));
         Owner nancy = this.owners.save(new Owner("nancy", "pelosi", "ROLE_OWNER"));
 
+        SecurityContextHolder.clearContext();
+
         //  Todos
+        // this caused me a huge headache. I copied the logic, but innacurately!!!!
+        // I spent days looking for my error
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("donald", "does not matter",
+                        AuthorityUtils.createAuthorityList("ROLE_MANAGER")));
         this.todos.save(new Todo("Learn Springboot", Priorities.LOW, donald));
-        this.todos.save(new Todo("Learn Akka", Priorities.HIGH, nancy));
+        this.todos.save(new Todo("Learn Akka", Priorities.HIGH, donald));
         this.todos.save(new Todo("Swim 50 laps in 30 minutes", Priorities.LOW, donald));
-        this.todos.save(new Todo("Exercise on the TotalGym 3 times a week", Priorities.LOW, nancy));
+        this.todos.save(new Todo("Exercise on the TotalGym 3 times a week", Priorities.LOW, donald));
         this.todos.save(new Todo("Pedal on the recumbent 3 times a week", Priorities.HIGH, donald));
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("nancy", "does not matter",
+                        AuthorityUtils.createAuthorityList("ROLE_MANAGER")));
         this.todos.save(new Todo("Cook fish twice as week", Priorities.LOW, nancy));
-        this.todos.save(new Todo("Measure blood pressure daily", Priorities.LOW, donald));
+        this.todos.save(new Todo("Measure blood pressure daily", Priorities.LOW, nancy));
         this.todos.save(new Todo("Measure peek flow daily", Priorities.LOW, nancy));
-        this.todos.save(new Todo("Measure oxygen level daily", Priorities.LOW, donald));
+        this.todos.save(new Todo("Measure oxygen level daily", Priorities.LOW, nancy));
+
+        SecurityContextHolder.clearContext();
     }
 }
