@@ -2,7 +2,7 @@ var path = require('path');
 
 module.exports = {
 	entry: './src/main/js/app.jsx',
-	devtool: 'sourcemaps',
+	devtool: 'source-map',
 	cache: true,
 	mode: 'development',
 	output: {
@@ -20,7 +20,15 @@ module.exports = {
 						presets: ["@babel/preset-env", "@babel/preset-react"]
 					}
 				}]
-			}
+			},
+            {
+                test: /\.tsx?$/,
+                exclude: /(node_modules)/,
+                use: 'ts-loader'
+            }
 		]
-	}
+	},
+    resolve: {
+        extensions: [ '.tsx', '.ts', '.js' ],
+    }
 };
