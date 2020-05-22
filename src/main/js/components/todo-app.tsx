@@ -1,7 +1,7 @@
 // External Dependencies
 import * as React from "react";
 import { connect, ConnectedProps } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -17,7 +17,7 @@ import {useContext} from "react";
 // import "../styles/styles.css";
 
 // import classes from "*.module.scss";
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
 	root: {
 		flexGrow: 1,
 	},
@@ -28,44 +28,6 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 	},
 }));
-
-/*
- * *****************************************************************************
- * Start of the heart of the component
- * *****************************************************************************
- */
-// interface OwnProps {
-// 	userName: string;
-// }
-
-function mapStateToProps () {
-	return {
-	};
-}
-
-const mapDispatchToProps = {
-}
-
-const connector = connect(
-	mapStateToProps, // mapStateToProps
-	mapDispatchToProps // mapDispatchToProps,
-)
-
-// type StateProps = ReturnType<typeof mapStateToProps>;
-// type DispatchProps = typeof mapDispatchToProps;
-// // type Props = StateProps & DispatchProps & OwnProps;
-// type Props = StateProps & DispatchProps;
-// type PropsFromRedux = ConnectedProps<typeof connector>
-// interface Props extends PropsFromRedux {
-// 	loggedInOwner: string
-// }
-
-
-/*
- * *****************************************************************************
- * End of heart of the component
- * *****************************************************************************
- */
 
 const TodoApp = () => {
 	console.log('TodoApp: Loading the app')
