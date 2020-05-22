@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-	entry: './src/main/js/app.jsx',
+	entry: './src/main/js/app.tsx',
 	devtool: 'source-map',
 	cache: true,
 	mode: 'development',
@@ -22,9 +22,12 @@ module.exports = {
 				}]
 			},
             {
-                test: /\.tsx?$/,
-                exclude: /(node_modules)/,
-                use: 'ts-loader'
+                test: /.tsx?$/,
+                use: [
+                    { loader: 'ts-loader', options: { happyPackMode: true } }
+                ],
+                exclude: path.resolve(process.cwd(), 'node_modules'),
+                include: path.resolve(process.cwd(), 'src'),
             }
 		]
 	},
