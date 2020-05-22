@@ -7,7 +7,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-
+import { AuthenticationContext } from '../context-providers/autentication-context-provider';
+import {useContext} from "react";
 
 // Internal Dependencies
 // import TodoForm from "./todo-form";
@@ -54,10 +55,10 @@ const connector = connect(
 // type DispatchProps = typeof mapDispatchToProps;
 // // type Props = StateProps & DispatchProps & OwnProps;
 // type Props = StateProps & DispatchProps;
-type PropsFromRedux = ConnectedProps<typeof connector>
-interface Props extends PropsFromRedux {
-	loggedInOwner: string
-}
+// type PropsFromRedux = ConnectedProps<typeof connector>
+// interface Props extends PropsFromRedux {
+// 	loggedInOwner: string
+// }
 
 
 /*
@@ -66,10 +67,11 @@ interface Props extends PropsFromRedux {
  * *****************************************************************************
  */
 
-const TodoApp = (props: Props) => {
+const TodoApp = () => {
 	console.log('TodoApp: Loading the app')
 	const classes = useStyles();
-	console.log("TodoApp: Loading")
+	const userName = useContext(AuthenticationContext)
+	console.log("TodoApp: User name: " + userName);
 	return (
 		<div className="todo-list-app">
 			{/* <h1 className="todo-header">todo</h1>*/}
@@ -84,7 +86,7 @@ const TodoApp = (props: Props) => {
 				<AppBar position="static">
 					<Toolbar>
 						<Typography variant="h6" className={classes.title}>
-							Hello {props.loggedInOwner}
+							Hello {userName}
 						</Typography>
 						<Button color="inherit">Logout</Button>
 					</Toolbar>
