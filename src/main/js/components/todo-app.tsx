@@ -1,16 +1,15 @@
 // External Dependencies
 import * as React from "react";
-import { connect, ConnectedProps } from 'react-redux'
+import {useContext} from "react";
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-
-import { AuthenticationContext } from '../context-providers/autentication-context-provider';
-import {useContext} from "react";
+import { withLifecycleActions } from 'react-redux-lifecycle';
 
 // Internal Dependencies
+import { AuthenticationContext } from '../context-providers/autentication-context-provider';
 // import TodoForm from "./todo-form";
 // import TodoList from "./todo-list";
 // import VisibilityFilters from "./visibility-filters";
@@ -27,7 +26,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 	title: {
 		flexGrow: 1,
 	},
+	appbarHello: {
+		backgroundColor: "#5566c3",
+	}
 }));
+
+const readTodos = () => {
+	console.log('TodoApp/myActionCreator')
+	return { type: 'MY_ACTION' }
+}
 
 const TodoApp = () => {
 	console.log('TodoApp: Loading the app')
@@ -45,7 +52,7 @@ const TodoApp = () => {
 						</Typography>
 					</Toolbar>
 				</AppBar>
-				<AppBar position="static">
+				<AppBar position="static" className={classes.appbarHello}>
 					<Toolbar>
 						<Typography variant="h6" className={classes.title}>
 							Hello {userName}
@@ -54,6 +61,8 @@ const TodoApp = () => {
 					</Toolbar>
 				</AppBar>
 			</div>
+			{/*< CreateTodoItemForm />*/}
+			{/*< SelectPageSizeForm />*/}
 			{/*< TodoForm />*/}
 			{/*<TodoList*/}
 			{/*	// todoList={todoList}*/}
@@ -63,4 +72,5 @@ const TodoApp = () => {
 		</div>
 	)
 }
-export default TodoApp
+// export default TodoApp
+export default withLifecycleActions({ componentDidMount: readTodos })(TodoApp)

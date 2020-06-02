@@ -6,7 +6,7 @@ There are two users:
 * Donald Trump:
   * _userid_: `donald`;
   * _password_: `trump`;
-*Nancy Pelosi:
+* Nancy Pelosi:
   * _userid_: `nancy`;
   * _password_: `pelosi`;
 
