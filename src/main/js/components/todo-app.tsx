@@ -15,6 +15,13 @@ import { AuthenticationContext } from '../context-providers/autentication-contex
 // import VisibilityFilters from "./visibility-filters";
 // import "../styles/styles.css";
 
+// Internal dependencies
+import { RootState } from '../reducers/rootReducer'
+import {connect} from 'react-redux';
+// import TodoItem from './todo-item'
+// import { TodoInterface } from "../interfaces/interfaces";
+// import {todo_delete, todo_toggle, todo_update} from "../actions/todo-actions";
+
 // import classes from "*.module.scss";
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -36,7 +43,43 @@ const readTodos = () => {
 	return { type: 'MY_ACTION' }
 }
 
-const TodoApp = () => {
+/*
+ * *****************************************************************************
+ * This is the heart of the component
+ * *****************************************************************************
+ */
+
+// Comment out if not used
+// interface OwnProps {
+// }
+
+// Set to null if not used
+function mapStateToProps (state: RootState) {
+	return {
+		userName: state.authenticated_user_reducer
+	};
+}
+
+// Set to null if not used
+const mapDispatchToProps: any = null;
+
+// Hook them up; note that the static typing is constrained to what is in use
+const connector = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps
+type Props = StateProps & DispatchProps
+// type Props = StateProps & DispatchProps & OwnProps;
+
+/*
+ * *****************************************************************************
+ * End of the heart of the component
+ * *****************************************************************************
+ */
+
+const TodoApp = (props: Props) => {
 	console.log('TodoApp: Loading the app')
 	const classes = useStyles();
 	const userName = useContext(AuthenticationContext)
@@ -55,7 +98,7 @@ const TodoApp = () => {
 				<AppBar position="static" className={classes.appbarHello}>
 					<Toolbar>
 						<Typography variant="h6" className={classes.title}>
-							Hello {userName}
+							Hello {props.userName}
 						</Typography>
 						<Button color="inherit">Logout</Button>
 					</Toolbar>
@@ -73,4 +116,5 @@ const TodoApp = () => {
 	)
 }
 // export default TodoApp
-export default withLifecycleActions({ componentDidMount: readTodos })(TodoApp)
+// export default withLifecycleActions({ componentDidMount: readTodos })(TodoApp)
+export default connector(TodoApp)

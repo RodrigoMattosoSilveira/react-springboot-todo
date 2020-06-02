@@ -7,21 +7,19 @@ import {createStore} from "redux";
 // Internal Dependencies
 import TodoApp from "./components/todo-app";
 import {rootReducer} from "./reducers/rootReducer";
-import { AuthenticationContextProvider } from './context-providers/autentication-context-provider';
+import { set_user_name_action} from "./actions/authenticated_user_actions";
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer);
 
 const Root = () => {
-	let currentUser: string = document.getElementById('ownername').innerHTML
+	let currentUser: string = document.getElementById('ownername').innerHTML;
 	console.log("App: Loading as " + currentUser);
+	store.dispatch(set_user_name_action(currentUser))
 	return (
 			<Provider store={store}>
-				<AuthenticationContextProvider value={currentUser }>
 					<TodoApp/>
-				</AuthenticationContextProvider>
 			</Provider>
 	);
 }
-
 
 render(<Root />, document.getElementById("root"));

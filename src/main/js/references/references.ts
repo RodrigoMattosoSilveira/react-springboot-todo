@@ -14,3 +14,7 @@ export const VISIBILITY_FILTER_TYPES = {
 export const VISIBILITY_FILTER_ACTIONS = {
     SET: 'SET'
 }
+
+export const AUTHENTICATED_USER_ACTIONS = {
+	SET_USER_NAME: 'SET_USER_NAME'
+}

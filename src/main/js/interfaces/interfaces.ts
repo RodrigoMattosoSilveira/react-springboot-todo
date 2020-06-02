@@ -48,3 +48,9 @@ export interface VisibilityFilterActionInterface {
     type: string,
     filter: string
 }
+
+// User name Action Interface
+export interface AuthenticatedUserActionInterface {
+	type: string,
+	user_name: string
+}
