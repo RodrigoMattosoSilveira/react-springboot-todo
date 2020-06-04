@@ -1,4 +1,4 @@
-# Herokus
+# Heroku
 ## To launch the application
 Navigate to: [React-SpringBoot TODO](https://react-springboot-todo.herokuapp.com//)
 
