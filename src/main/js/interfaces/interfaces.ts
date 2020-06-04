@@ -2,6 +2,7 @@
 export interface TodoInterface {
   id: string;
   text: string;
+  priority: string,
   isCompleted: boolean;
 }
 
@@ -40,6 +41,7 @@ export interface VisibilityFiltersInterface {
 export interface TodoActionInterface {
     type: string,
     id: string,
+	priority: string,
     text: string
 }
 
@@ -53,4 +55,22 @@ export interface VisibilityFilterActionInterface {
 export interface AuthenticatedUserActionInterface {
 	type: string,
 	user_name: string
+}
+
+// Rest Parameters Action Interface
+export interface RestParameterAttributesActionInterface {
+	type: string,
+	attributes: any,
+}
+
+// Rest Parameters PageSize Interface
+export interface RestParameterPageSizeActionInterface {
+	type: string,
+	pageSize: number,
+}
+
+// Rest Parameters Links Interface
+export interface RestParameterLinksActionInterface {
+	type: string,
+	links: any
 }
