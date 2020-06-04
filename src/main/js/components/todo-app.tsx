@@ -20,7 +20,7 @@ import {connect} from 'react-redux';
 // import { TodoInterface } from "../interfaces/interfaces";
 // import {todo_delete, todo_toggle, todo_update} from "../actions/todo-actions";
 // import classes from "*.module.scss";
-import { loadFromServer } from "../services/load-from-server";
+const loadFromServer = require("../services/load-from-server");
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
