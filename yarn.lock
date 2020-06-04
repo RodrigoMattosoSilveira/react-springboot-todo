@@ -1695,6 +1695,11 @@
     "@types/testing-library__dom" "*"
     pretty-format "^25.1.0"
 
+"@types/when@^2.4.33":
+  version "2.4.33"
+  resolved "https://registry.yarnpkg.com/@types/when/-/when-2.4.33.tgz#9448fe142553af7cc47626569bb4bdefb00f9f2e"
+  integrity sha512-08Hn02uVEZ1dH5AXCMlnb26PS1HyIkDo32epUu/1KLuGugBaaIlHGeTJE9VpTIfM3s726/ZXyuloRsUistO3Lg==
+
 "@types/yargs-parser@*":
   version "15.0.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-15.0.0.tgz#cb3f9f741869e20cce330ffbeb9271590483882d"
