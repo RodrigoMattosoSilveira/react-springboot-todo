@@ -4,9 +4,9 @@ import { TodoInterface } from '../interfaces/interfaces';
 import shortid from "shortid";
 
 const seedTodoList:TodoInterface[] = [
-	{id: shortid.generate(), text: 'Learn Scala', isCompleted: false},
-	{id: shortid.generate(), text: 'Learn Akka', isCompleted: true},
-	{id: shortid.generate(), text: 'Learn MUI Styles', isCompleted: false}
+	{id: shortid.generate(), text: 'Learn Scala', isCompleted: false, priority: 'MEDIUM'},
+	{id: shortid.generate(), text: 'Learn Akka', isCompleted: true, priority: 'MEDIUM'},
+	{id: shortid.generate(), text: 'Learn MUI Styles', isCompleted: false, priority: 'MEDIUM'}
 ];
 
 export const todo_reducer = (state: TodoInterface[] = seedTodoList, action: TodoActionInterface): TodoInterface[] => {
@@ -15,6 +15,7 @@ export const todo_reducer = (state: TodoInterface[] = seedTodoList, action: Todo
             const todo: TodoInterface =     {
                     id: action.id,
                     text: action.text,
+				    priority: action.priority,
                     isCompleted: false
                 }
             return [...state,todo];
