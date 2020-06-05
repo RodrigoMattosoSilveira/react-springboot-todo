@@ -83,9 +83,9 @@ const TodoApp = (props: Props) => {
 	const classes = useStyles();
 	const userName = useContext(AuthenticationContext)
 	console.log("TodoApp: User name: " + props.userName);
-	useEffect(() => {
-		store.dispatch(todos_read_thunk());
-	});
+	// useEffect(() => {
+	// 	store.dispatch(todos_read_thunk());
+	// });
 	
 	return (
 		<div className="todo-list-app">

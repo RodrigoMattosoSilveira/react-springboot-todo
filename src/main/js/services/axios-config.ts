@@ -1,18 +1,12 @@
-export const axios_config = (): any => {
-	let config = {
-		headers: { 'Accept': 'application/hal+json' }
-	};
-	
-	return config;
-}
+const baseUrl = '/api/';
+const headers = { 'Accept': 'application/hal+json' };
 
-export const axios_uriTemplateInterceptor = (path: string): string => {
-	let newPath = path;
-	
-	if (path.indexOf('{') === -1) {
-		return newPath;
-	} else {
-		newPath = path.split('{')[0];
-		return newPath;
-	}
+export const axios_config_setup= (url: string, method: string, pageSize: number): any => {
+	return{
+		url: url.indexOf('{') !== -1 ? url.split('{')[0] : url,
+		method: method,
+		baseURL: baseUrl,
+		headers: headers,
+		params: { size: '' + pageSize }
+	};
 }

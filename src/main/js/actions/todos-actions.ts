@@ -1,16 +1,17 @@
+// External dependencies
 import { TODO_ACTIONS } from '../references/references';
 import { TodoInterface, TodoActionInterface } from '../interfaces/interfaces';
 
-import { axios_config, axios_uriTemplateInterceptor } from '../services/axios-config';
-
-const root = '/api';
+// Internal Dependencies
+import { axios_config_setup } from '../services/axios-config';
 
 export const todos_read_thunk = () =>
 	(dispatch: any, getState: any, axios: any) => {// thunk, also receives `axios` dep.
-		let config = axios_config();
-		let path = '/api/todos';
-		path = axios_uriTemplateInterceptor(path);
-		axios.get(path, config)
+		let url = 'todos';
+		let method = 'get';
+		let pageSize = getState().rest_parameter_page_size_reducer;
+		let config = axios_config_setup(url, method, pageSize);
+		axios(config)
 			.then(function (response: any) {
 				// handle success
 				dispatch(todos_read(response.data._embedded.todos))
