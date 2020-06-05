@@ -103,7 +103,10 @@ const TodoApp = (props: Props) => {
 						<Typography variant="h6" className={classes.title}>
 							Hello {props.userName}
 						</Typography>
-						<Button color="inherit">Logout</Button>
+						<form action="/logout" method="post">
+							<input type="submit" value="Log Out"/>
+						</form>
+					
 					</Toolbar>
 				</AppBar>
 			</div>
