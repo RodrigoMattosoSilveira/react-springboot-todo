@@ -109,7 +109,7 @@ body {
 .todo-list-app {
     padding-top: 32px;
     width: 100%;
-    max-width: 480px;
+    max-width: 640px;
 }
 
 /* Todo form styles */
