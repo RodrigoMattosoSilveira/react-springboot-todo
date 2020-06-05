@@ -1,13 +1,14 @@
 import { TODO_ACTIONS } from '../references/references';
 import { TodoInterface, TodoActionInterface } from '../interfaces/interfaces';
 
+import { axios_config } from '../services/axios-config';
+
 const root = '/api';
 
 export const todos_read_thunk = () =>
-	(dispatch: any, getState: any, axios: any) => // thunk, also receives `axios` dep.
-		axios.get('/api/todos', {
-				headers: { 'Accept': 'application/hal+json' }
-			})
+	(dispatch: any, getState: any, axios: any) => {// thunk, also receives `axios` dep.
+		let config = axios_config();
+		axios.get('/api/todos', config)
 			.then(function (response: any) {
 				// handle success
 				dispatch(todos_read(response.data._embedded.todos))
@@ -19,7 +20,7 @@ export const todos_read_thunk = () =>
 			.then(function () {
 				// always executed
 			});
-
+	}
 export const todos_read = (todos:  TodoInterface[]): TodoActionInterface => ({
 	type: TODO_ACTIONS.READ,
 	id: 'ignore',
