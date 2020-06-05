@@ -8,11 +8,6 @@ export const set_rest_parameter_attributes_action = (attributes: any): RestParam
 	attributes: attributes,
 })
 
-export const set_rest_parameter_page_action = (page: number): RestParameterPageSizeActionInterface => ({
-	type: REST_PARAMETERS_ACTIONS.SET_REST_PARAMETER_PAGE,
-	pageSize: page,
-})
-
 export const set_rest_parameter_page_size_action = (pageSize: number): RestParameterPageSizeActionInterface => ({
 	type: REST_PARAMETERS_ACTIONS.SET_REST_PARAMETER_PAGE_SIZE,
 	pageSize: pageSize,

@@ -24,6 +24,7 @@ import {connect} from 'react-redux';
 const loadFromServer = require("../services/load-from-server");
 import { store } from '../services/store'
 import { todos_read_thunk } from '../actions/todos-actions';
+import PageSize from "./page-size";
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -110,6 +111,7 @@ const TodoApp = (props: Props) => {
 					</Toolbar>
 				</AppBar>
 			</div>
+			<PageSize/>
 			{/*< CreateTodoItemForm />*/}
 			{/*< SelectPageSizeForm />*/}
 			{/*< TodoForm />*/}
