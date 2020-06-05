@@ -42,7 +42,8 @@ export interface TodoActionInterface {
     type: string,
     id: string,
 	priority: string,
-    text: string
+    text: string,
+	todos: TodoInterface[];
 }
 
 // Visibility Action Interface

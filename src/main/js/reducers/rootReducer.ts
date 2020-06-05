@@ -1,5 +1,5 @@
-import { combineReducers } from 'redux'
-import { todo_reducer } from './todo-reducer'
+import { combineReducers } from 'redux';
+import { todo_reducer } from './todo-reducer';
 import { authenticated_user_reducer} from "./authenticted_user-reducer";
 import { visibility_filter_reducer } from './visibility-filter-reducer'
 import { rest_parameter_attributes_reducer } from './rest-parameter-reducer'

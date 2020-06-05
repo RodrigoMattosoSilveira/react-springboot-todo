@@ -6,10 +6,8 @@ import {createStore} from "redux";
 
 // Internal Dependencies
 import TodoApp from "./components/todo-app";
-import {rootReducer} from "./reducers/rootReducer";
+import { store } from './services/store'
 import { set_user_name_action} from "./actions/authenticated_user_actions";
-
-const store = createStore(rootReducer);
 
 const Root = () => {
 	let currentUser: string = document.getElementById('ownername').innerHTML;

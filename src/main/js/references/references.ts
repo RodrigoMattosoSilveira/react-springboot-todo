@@ -1,8 +1,13 @@
 export const TODO_ACTIONS = {
-    CREATE: 'CREATE',
-    TOGGLE: 'TOGGLE',
+    READ: 'READ',
+	CREATE: 'CREATE',
+	TOGGLE: 'TOGGLE',
     UPDATE: 'UPDATE',
     DELETE: 'DELETE'
+}
+
+export const TODOS_ACTIONS = {
+	READ: 'READ'
 }
 
 export const VISIBILITY_FILTER_TYPES = {

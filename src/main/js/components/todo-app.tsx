@@ -7,6 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 // import { withLifecycleActions } from 'react-redux-lifecycle';
+import { useDispatch } from 'react-redux';
 
 // Internal Dependencies
 import { AuthenticationContext } from '../context-providers/autentication-context-provider';
@@ -21,6 +22,8 @@ import {connect} from 'react-redux';
 // import {todo_delete, todo_toggle, todo_update} from "../actions/todo-actions";
 // import classes from "*.module.scss";
 const loadFromServer = require("../services/load-from-server");
+import { store } from '../services/store'
+import { todos_read_thunk } from '../actions/todos-actions';
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -51,7 +54,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 function mapStateToProps (state: RootState) {
 	return {
 		userName: state.authenticated_user_reducer,
-		pageSize: state.rest_parameter_page_size_reducer
+		pageSize: state.rest_parameter_page_size_reducer,
+		todos: state.todo_reducer
 	};
 }
 
@@ -80,7 +84,7 @@ const TodoApp = (props: Props) => {
 	const userName = useContext(AuthenticationContext)
 	console.log("TodoApp: User name: " + props.userName);
 	useEffect(() => {
-		loadFromServer(props.pageSize);
+		store.dispatch(todos_read_thunk());
 	});
 	
 	return (
