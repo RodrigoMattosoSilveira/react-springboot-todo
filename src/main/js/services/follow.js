@@ -1,40 +1,42 @@
+/**
+ *
+ * @param client - the library used to make rest calls
+ * @param rootPath - the domain root
+ * @param relArray - an array of objects or a string
+ * @returns {*}
+ */
 module.exports = function follow(api, rootPath, relArray) {
-	const root = api({
-		method: 'GET',
-		path: rootPath
-	});
+    return relArray.reduce(function(root, arrayItem) {
+        const rel = typeof arrayItem === 'string' ? arrayItem : arrayItem.rel;
+        return traverseNext(root, rel, arrayItem);
+    }, api);
 
-	return relArray.reduce(function(root, arrayItem) {
-		const rel = typeof arrayItem === 'string' ? arrayItem : arrayItem.rel;
-		return traverseNext(root, rel, arrayItem);
-	}, root);
+    function traverseNext (root, rel, arrayItem) {
+         const config1 = {url: rootPath};
+         return api(config1)
+            .then((response) => {
+                console.log('travelNext top'); console.log(response);
+                if (hasEmbeddedRel(response.data, rel)) {
+                    return response.data._embedded[rel];
+                }
 
-	function traverseNext (root, rel, arrayItem) {
-		return root.then(function (response) {
-			if (hasEmbeddedRel(response.entity, rel)) {
-				return response.entity._embedded[rel];
-			}
+                if(!response.data._links) {
+                    return [];
+                }
 
-			if(!response.entity._links) {
-				return [];
-			}
+                const config2 = {
+                    url: response.data._links[rel].href,
+                    params: typeof arrayItem === 'string' ? '' : arrayItem.params
+                }
+                console.log('traverseNext/config2'); console.log(config2);
+                return api(config2)
+              })
+            .catch((error) => {
+                console.log('traverseNext/top: ' + error);
+            });
+     }
 
-			if (typeof arrayItem === 'string') {
-				return api({
-					method: 'GET',
-					path: response.entity._links[rel].href
-				});
-			} else {
-				return api({
-					method: 'GET',
-					path: response.entity._links[rel].href,
-					params: arrayItem.params
-				});
-			}
-		});
-	}
-
-	function hasEmbeddedRel (entity, rel) {
-		return entity._embedded && entity._embedded.hasOwnProperty(rel);
-	}
+    function hasEmbeddedRel (data, rel) {
+        return data._embedded && data._embedded.hasOwnProperty(rel);
+    }
 };

@@ -59,19 +59,19 @@ export interface AuthenticatedUserActionInterface {
 }
 
 // Rest Parameters Action Interface
-export interface RestParameterAttributesActionInterface {
+export interface RestAttributesActionInterface {
 	type: string,
 	attributes: any,
 }
 
 // Rest Parameters PageSize Interface
-export interface RestParameterPageSizeActionInterface {
+export interface RestPageSizeActionInterface {
 	type: string,
 	pageSize: number,
 }
 
 // Rest Parameters Links Interface
-export interface RestParameterLinksActionInterface {
+export interface RestLinksActionInterface {
 	type: string,
 	links: any
 }

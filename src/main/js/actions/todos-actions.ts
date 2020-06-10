@@ -4,6 +4,8 @@ import { TodoInterface, TodoActionInterface } from '../interfaces/interfaces';
 
 // Internal Dependencies
 import { axios_config_setup } from '../services/axios-config';
+import { axios_config } from '../services/axios-config';
+import { loadFromServer }  from '../services/load-from-server';
 
 export const todos_read_thunk = () =>
 	(dispatch: any, getState: any, axios: any) => {// thunk, also receives `axios` dep.
@@ -23,6 +25,12 @@ export const todos_read_thunk = () =>
 			.then(function () {
 				// always executed
 			});
+	}
+	
+export const todo_load_from_server = () =>
+	(dispatch: any, getState: any) => {// thunk, also receives `axios` dep.
+		let pageSize = getState().rest_page_size_reducer;
+		loadFromServer(pageSize, dispatch);
 	}
 export const todos_read = (todos:  TodoInterface[]): TodoActionInterface => ({
 	type: TODO_ACTIONS.READ,

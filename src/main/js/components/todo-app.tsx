@@ -6,7 +6,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-// import { withLifecycleActions } from 'react-redux-lifecycle';
 import { useDispatch } from 'react-redux';
 
 // Internal Dependencies
@@ -55,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 function mapStateToProps (state: RootState) {
 	return {
 		userName: state.authenticated_user_reducer,
-		pageSize: state.rest_parameter_page_size_reducer,
+		pageSize: state.rest_page_size_reducer,
 		todos: state.todo_reducer
 	};
 }
@@ -82,11 +81,7 @@ type Props = StateProps & DispatchProps
 const TodoApp = (props: Props) => {
 	console.log('TodoApp: Loading the app')
 	const classes = useStyles();
-	const userName = useContext(AuthenticationContext)
 	console.log("TodoApp: User name: " + props.userName);
-	// useEffect(() => {
-	// 	store.dispatch(todos_read_thunk());
-	// });
 	
 	return (
 		<div className="todo-list-app">

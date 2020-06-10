@@ -9,9 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
 import SaveIcon from "@material-ui/icons/Save";
+
+// Internal dependencies
 import {store} from "../services/store";
-import * as REST_PARAMS from "../actions/rest_parameters_actions";
-import {todos_read_thunk} from "../actions/todos-actions";
+import * as REST_PARAMS from "../actions/rest_actions";
+import {todo_load_from_server} from "../actions/todos-actions";
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -46,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 // Set to null if not used
 function mapStateToProps (state: RootState) {
 	return {
-		pageSize: state.rest_parameter_page_size_reducer
+		pageSize: state.rest_page_size_reducer
 	};
 }
 
@@ -91,8 +93,8 @@ const PageSize = (props: Props) => {
 		console.log("PageSize: " + pageSize);
 		// props.todo_add(textFieldValue, priorityFieldValue);
 		setPageSizePristine(true);
-		store.dispatch(REST_PARAMS.set_rest_parameter_page_size_action(pageSize));
-		store.dispatch(todos_read_thunk());
+		store.dispatch(REST_PARAMS.set_rest_page_size_action(pageSize));
+		store.dispatch(todo_load_from_server());
 	}
 	
 	return (
