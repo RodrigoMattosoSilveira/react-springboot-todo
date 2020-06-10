@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { AuthenticationContext } from '../context-providers/autentication-context-provider';
 // import TodoForm from "./todo-form";
 import TodoList from "./todo-list";
-// import VisibilityFilters from "./visibility-filters";
+import TodoFilters from "./todo-filters";
 // import "../styles/styles.css";
 import { RootState } from '../reducers/rootReducer'
 import {connect} from 'react-redux';
@@ -111,7 +111,7 @@ const TodoApp = (props: Props) => {
 			{/*< SelectPageSizeForm />*/}
 			{/*< TodoForm />*/}
 			<TodoList/>
-			{/*<VisibilityFilters />*/}
+			<TodoFilters/>
 		</div>
 	)
 }
