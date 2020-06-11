@@ -3,6 +3,7 @@ import * as React from 'react'
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Table from "@material-ui/core/Table";
+import TableHead from '@material-ui/core/TableHead';
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -14,6 +15,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Divider from "@material-ui/core/Divider";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import Tooltip from '@material-ui/core/Tooltip';
 
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
@@ -124,6 +126,14 @@ const TodoList = (props: Props) => {
 			<Divider />
 			<TableContainer component={Paper}>
 				<Table className={classes.table} size="small" aria-label="a dense table">
+					<TableHead>
+						<TableRow>
+							<TableCell>State</TableCell>
+							<TableCell>Text</TableCell>
+							<TableCell>Priority</TableCell>
+							<TableCell>Delete</TableCell>
+						</TableRow>
+					</TableHead>
 					<TableBody>
 						{
 							props.todoList.length > 0
@@ -159,12 +169,14 @@ const TodoList = (props: Props) => {
 												</Select>
 											</TableCell>
 											<TableCell align="right" className={"todo-delete-me"}>
-												<IconButton
-													aria-label="delete"
-													onClick={() => props.todo_delete(todo.id)}
-												>
-													<DeleteIcon fontSize="small" />
-												</IconButton>
+												<Tooltip title="delete">
+													<IconButton
+														aria-label="delete"
+														onClick={() => props.todo_delete(todo.id)}
+													>
+														<DeleteIcon fontSize="small" />
+													</IconButton>
+												</Tooltip>
 											</TableCell>
 										</TableRow>
 									))
