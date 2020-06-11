@@ -30,3 +30,10 @@ export const REST_ACTIONS = {
 	SET_REST_LINKS: 'SET_REST_PARAMETER_LINKS',
 	SET_REST_SCHEMA: 'SET_REST_PARAMETER_SCHEMA'
 }
+
+export const PAGINATION_TYPE = {
+	FIRST: 'first',
+	PREVIOUS: 'prev',
+	NEXT: 'next',
+	LAST: 'last'
+}

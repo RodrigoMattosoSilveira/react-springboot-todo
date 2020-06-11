@@ -1,9 +1,8 @@
 // External Dependencies
 import * as React from "react";
-import {connect} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from "../reducers/rootReducer";
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
@@ -17,9 +16,8 @@ import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
 import Tooltip from '@material-ui/core/Tooltip';
 
 // Internal dependencies
-import {store} from "../services/store";
-import * as REST_PARAMS from "../actions/rest_actions";
-import {todo_load_from_server} from "../actions/todos-actions";
+import { todo_navigate_to_page } from "../actions/todos-actions";
+import { PAGINATION_TYPE } from "../references/references";
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -63,22 +61,26 @@ const useStyles = makeStyles((theme: Theme) => ({
 // Set to null if not used
 function mapStateToProps (state: RootState) {
 	return {
-		pageSize: state.rest_page_size_reducer
+		links: state.rest_links_reducer
 	};
 }
 
 // Set to null if not used
-const mapDispatchToProps: any = null;
+const mapDispatchToProps = {
+	todo_navigate_to_page: (navUri: string) => todo_navigate_to_page(navUri)
+};
 
 // Hook them up; note that the static typing is constrained to what is in use
 const connector = connect(
 	mapStateToProps,
 	mapDispatchToProps
 )
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps
-type Props = StateProps & DispatchProps
-// type Props = StateProps & DispatchProps & OwnProps;
+type PropsFromRedux = ConnectedProps<typeof connector>
+type Props = PropsFromRedux & {}
+// type Props = PropsFromRedux & {
+// 	backgroundColor: string
+// }
+
 
 /*
  * *****************************************************************************
@@ -88,33 +90,77 @@ type Props = StateProps & DispatchProps
 const TodoFilters = (props: Props) => {
 	const classes = useStyles();
 	
+	const paginationTypeAvailable = (paginationType: string) => {
+		return  props.links.hasOwnProperty(paginationType);
+	}
+	
+	const handleNavFirst = () => {
+		handleNav(PAGINATION_TYPE.FIRST)
+	}
+	
+	const handleNavPrev = () => {
+		handleNav(PAGINATION_TYPE.PREVIOUS)
+	}
+	
+	const handleNavNext = () => {
+		handleNav(PAGINATION_TYPE.NEXT)
+	}
+	
+	const handleNavLast = () => {
+		handleNav(PAGINATION_TYPE.LAST)
+	}
+	
+	const handleNav = (paginationType: string) => {
+		const url = props.links[paginationType]['href'];
+		props.todo_navigate_to_page(url);
+	}
+	
 	return (
 		<div className={classes.root}>
 			<Grid container spacing={1}>
 				<Grid item xs={1}>
 					<Tooltip title="First Page">
-						<IconButton aria-label="delete" className={classes.iconMargin} size="small">
+						<IconButton
+							disabled={!(paginationTypeAvailable(PAGINATION_TYPE.FIRST))}
+							aria-label="delete" className={classes.iconMargin}
+							size="small"
+							onClick={() => handleNavFirst()}>
 							<FirstPageIcon fontSize="large" />
 						</IconButton>
 					</Tooltip>
 				</Grid>
 				<Grid item xs={1}>
 					<Tooltip title="Previous Page">
-						<IconButton aria-label="delete" className={classes.iconMargin} size="small">
+						<IconButton
+							disabled={!paginationTypeAvailable(PAGINATION_TYPE.PREVIOUS)}
+							aria-label="delete"
+							className={classes.iconMargin}
+							size="small"
+							onClick={() => handleNavPrev()}>
 							<NavigateBeforeIcon fontSize="large"  />
 						</IconButton>
 					</Tooltip>
 				</Grid>
 				<Grid item xs={1}>
 					<Tooltip title="Next Page">
-						<IconButton aria-label="delete" className={classes.iconMargin} size="small">
+						<IconButton
+							disabled={!paginationTypeAvailable(PAGINATION_TYPE.NEXT)}
+							aria-label="delete"
+							className={classes.iconMargin}
+							size="small"
+							onClick={() => handleNavNext()}>
 							<NavigateNextIcon fontSize="large"  />
 						</IconButton>
 					</Tooltip>
 				</Grid>
 				<Grid item xs={1}>
 					<Tooltip title="Last Page">
-						<IconButton aria-label="delete" className={classes.iconMargin} size="small">
+						<IconButton
+							disabled={!paginationTypeAvailable(PAGINATION_TYPE.LAST)}
+							aria-label="delete"
+							className={classes.iconMargin}
+							size="small"
+							onClick={() => handleNavLast()}>
 							<LastPageIcon fontSize="large" />
 						</IconButton>
 					</Tooltip>

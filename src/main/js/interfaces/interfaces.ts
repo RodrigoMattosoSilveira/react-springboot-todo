@@ -75,3 +75,6 @@ export interface RestLinksActionInterface {
 	type: string,
 	links: any
 }
+
+
+export type PaginationLinks = { [key: string]: any };

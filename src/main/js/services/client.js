@@ -1,7 +1,7 @@
 'use strict';
 
 // External Dependencies
-import axios  from 'axios';
+const axios = require('axios').default;
 
 export const client_setup_get = () => {
     const axios_get = axios.create({
