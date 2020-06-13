@@ -44,7 +44,7 @@ function mapStateToProps (state: RootState) {
 // Set to null if not used
 const mapDispatchToProps = {
 	todo_toggle_isCompleted_thunk: (todo: TodoRestInterface) => todo_toggle_isCompleted_thunk(todo),
-	todo_update: (todo: TodoRestInterface) => todo_update(todo),
+	todo_update: (todo: TodoRestInterface, attribute: string) => todo_update(todo, attribute),
 	todo_delete: (todo: TodoRestInterface) => todo_delete(todo)
 }
 
@@ -75,8 +75,8 @@ type Props = PropsFromRedux & {}
 // const todo_toggle = (id: string) => {
 //  	console.log('TodoList/todo_toggle id = ' + id);
 // }
-const todo_update = (todo: TodoRestInterface) => {
-	console.log('TodoList/todo_update href = ' + todo.data._links.self.href);
+const todo_update = (todo: TodoRestInterface, attribute: string) => {
+	console.log('TodoList/todo_update href = ' + todo.data._links.self.href + ', attribute: ' + attribute);
 }
 const todo_delete = (todo: TodoRestInterface) => {
 	console.log('TodoList/todo_delete href = ' + todo.data._links.self.href);
@@ -155,7 +155,7 @@ const TodoList = (props: Props) => {
 												<TextField
 													id="standard-basic"
 													value={todo.data.text}
-													onMouseOut={() => props.todo_update(todo)}
+													onMouseOut={() => props.todo_update(todo, 'text')}
 													fullWidth />
 											</TableCell>
 											<TableCell className={classes.todoPriority}>
@@ -163,7 +163,7 @@ const TodoList = (props: Props) => {
 														labelId="demo-simple-select-label"
 														id="demo-simple-select"
 														value={todo.data.priority}
-														onClick={() => props.todo_update(todo)}
+														onClick={() => props.todo_update(todo, 'priority')}
 												>
 													<MenuItem value={'LOW'}>LOW</MenuItem>
 													<MenuItem value={'MEDIUM'}>MEDIUM</MenuItem>

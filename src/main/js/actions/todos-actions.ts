@@ -3,58 +3,36 @@ const axios = require('axios').default;
 
 // Internal Dependencies
 import { TODO_ACTIONS } from '../references/references';
-// import { TodoInterface, TodoActionInterface } from '../interfaces/interfaces';
 import { TodoRestInterface, TodoActionInterface } from '../interfaces/interfaces';
-import { axios_config_setup } from '../services/axios-config';
 import { client_setup_get } from '../services/client';
-import { client_put_config } from '../services/client';
+import { client_update_config } from '../services/client';
 import { loadFromServer }  from '../services/load-from-server';
-import {set_rest_links_action} from "./rest_actions";
+import { set_rest_links_action } from "./rest_actions";
 import { TODO_COMPLETED } from "../references/references";
 
-export const todos_read_thunk = () =>
-	(dispatch: any, getState: any, axios: any) => {// thunk, also receives `axios` dep.
-		let url = 'todos';
-		let method = 'get';
-		let pageSize = getState().rest_parameter_page_size_reducer;
-		let config = axios_config_setup(url, method, pageSize);
-		axios(config)
-			.then(function (response: any) {
-				// handle success
-				dispatch(todos_read(response.data._embedded.todos))
-			})
-			.catch(function (error: any) {
-				// handle error
-				console.log(error);
-			})
-			.then(function () {
-				// always executed
-			});
-	}
-	
 export const todo_toggle_isCompleted_thunk = (todo: TodoRestInterface) =>
 	(dispatch: any, getState: any, axios: any) => {
 		let url = todo.data._links.self.href;
-		let updatedTodo = {
-			text: todo.data.text,
-			priority: todo.data.priority,
-			isCompleted: !todo.data.isCompleted,
-			owner: todo.data.owner,
+		let updateTodo = {
+			isCompleted: todo.data.isCompleted === false ? TODO_COMPLETED.TRUE : TODO_COMPLETED.FALSE
 		}
-		let etag = todo.headers['Etag'];
-		let client = client_put_config(url, updatedTodo, etag);
-		client.put(url)
+		let etag = todo.headers['etag'];
+		let client = client_update_config(etag);
+		client.patch(url, updateTodo)
 			.then(function (response: any) {
-				if (response.status.code === 403) {
-					alert('ACCESS DENIED: You are not authorized to update ' +
-						todo.data._links.self.href);
-				} else {
-					if (response.status.code === 412) {
-						alert('DENIED: Unable to update ' + todo.data._links.self.href +
-							'. Your copy is stale.');
-					} else {
-						dispatch(todos_read(response.data._embedded.todos))
-					}
+				switch (response.status) {
+					case 400:
+						alert(url + '\n\nBAD Request: like malformed request syntax, invalid request message parameters, or deceptive request routing etc.');
+						break
+					case 403:
+						alert(url + '\n\nACCESS DENIED: You are not authorized to update this record');
+						break;
+					case 412:
+						alert(url + '\n\nDENIED: Your copy is stale.');
+						break;
+					default:
+						dispatch(todo_load_from_server());
+						break
 				}
 			})
 			.catch(function (error: any) {
@@ -66,7 +44,7 @@ export const todo_toggle_isCompleted_thunk = (todo: TodoRestInterface) =>
 				// always executed
 			});
 	}
-
+	
 export const todo_load_from_server = () =>
 	(dispatch: any, getState: any) => {// thunk, also receives `axios` dep.
 		let pageSize = getState().rest_page_size_reducer;

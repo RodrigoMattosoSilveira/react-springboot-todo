@@ -20,15 +20,27 @@ export const client_setup_get = () => {
     return axios_get;
 }
 
-export const client_put_config = (path: string,  updateTodo: any, etag: string) => {
+export const client_update_configx = (path: string,  method: string, updateTodo: any, etag: string) => {
 	return axios.create({
-		method: 'PUT',
-		path: path,
-		entity: updateTodo,
+		method: method,
+		url: path,
+		data: updateTodo,
 		validateStatus: null,
 		headers: {
 			'Content-Type': 'application/json',
 			'If-Match': etag
-		}
+		},
+		timeout: 10000
+	})
+}
+
+export const client_update_config = (etag: string) => {
+	return axios.create({
+		validateStatus: null,
+		headers: {
+			'Content-Type': 'application/json',
+			'If-Match': etag
+		},
+		timeout: 10000
 	})
 }

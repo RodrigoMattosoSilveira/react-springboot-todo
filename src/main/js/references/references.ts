@@ -11,8 +11,8 @@ export const TODOS_ACTIONS = {
 }
 
 export const TODO_COMPLETED = {
-	FALSE: false,
-	TRUE: true
+	FALSE: "false",
+	TRUE: "true"
 }
 
 export const VISIBILITY_FILTER_TYPES = {
