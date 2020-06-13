@@ -1,5 +1,6 @@
 // External dependencies
 import * as React from 'react'
+import {connect, ConnectedProps} from 'react-redux';
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Table from "@material-ui/core/Table";
@@ -19,10 +20,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
-import {connect} from 'react-redux';
-// import TodoItem from './todo-item'
-import { TodoInterface } from "../interfaces/interfaces";
-// import {todo_delete, todo_toggle, todo_update} from "../actions/todo-actions";
+import { TodoRestInterface } from "../interfaces/interfaces";
+import { todo_toggle_isCompleted_thunk } from '../actions/todos-actions'
 
 /*
  * *****************************************************************************
@@ -44,9 +43,9 @@ function mapStateToProps (state: RootState) {
 
 // Set to null if not used
 const mapDispatchToProps = {
-	todo_toggle: (id: string) => todo_toggle(id),
-	todo_update: (id: string, text: string, priority: string) => todo_update(id, text, priority),
-	todo_delete: (text: string) => todo_delete(text)
+	todo_toggle_isCompleted_thunk: (todo: TodoRestInterface) => todo_toggle_isCompleted_thunk(todo),
+	todo_update: (todo: TodoRestInterface) => todo_update(todo),
+	todo_delete: (todo: TodoRestInterface) => todo_delete(todo)
 }
 
 // Hook them up; note that the static typing is constrained to what is in use
@@ -54,10 +53,13 @@ const connector = connect(
 	mapStateToProps,
 	mapDispatchToProps
 )
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps
-type Props = StateProps & DispatchProps
-// type Props = StateProps & DispatchProps & OwnProps;
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+type Props = PropsFromRedux & {}
+// type Props = PropsFromRedux & {
+// 	backgroundColor: string
+// }
+
 
 /*
  * *****************************************************************************
@@ -70,14 +72,14 @@ type Props = StateProps & DispatchProps
  * Temporary ... replace with actions
  * *****************************************************************************
  */
-const todo_toggle = (id: string) => {
- 	console.log('TodoList/todo_toggle id = ' + id);
+// const todo_toggle = (id: string) => {
+//  	console.log('TodoList/todo_toggle id = ' + id);
+// }
+const todo_update = (todo: TodoRestInterface) => {
+	console.log('TodoList/todo_update href = ' + todo.data._links.self.href);
 }
-const todo_update = (id: string, text: string, priority: string) => {
-	console.log('TodoList/todo_update id = ' + id + ', text = ' + text + ', priority = ' + priority);
-}
-const todo_delete = (id: string) => {
-	console.log('TodoList/todo_delete id = ' + id);
+const todo_delete = (todo: TodoRestInterface) => {
+	console.log('TodoList/todo_delete href = ' + todo.data._links.self.href);
 }
 
 function computeVisible (visibilityFilter: string, isCompleted: boolean ): string {
@@ -139,29 +141,29 @@ const TodoList = (props: Props) => {
 							props.todoList.length > 0
 								?
 								(
-									props.todoList.map((todo: TodoInterface) => (
-										<TableRow key={todo.id} className={computeVisible(props.visibilityFilter, todo.isCompleted)}>
+									props.todoList.map((todo: TodoRestInterface) => (
+										<TableRow className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
 											<TableCell
 												component="th"
 												scope="row"
 												className={"todo-is-completed"}
-												onClick={() => props.todo_toggle(todo.id)}
+												onClick={() => props.todo_toggle_isCompleted_thunk(todo)}
 											>
-												{computeState(todo.isCompleted)}
+												{computeState(todo.data.isCompleted)}
 											</TableCell>
 											<TableCell className={classes.todoTextFont}>
 												<TextField
 													id="standard-basic"
-													value={todo.text}
-													onChange={() => props.todo_update(todo.id, todo.text, todo.priority)}
+													value={todo.data.text}
+													onMouseOut={() => props.todo_update(todo)}
 													fullWidth />
 											</TableCell>
 											<TableCell className={classes.todoPriority}>
 												<Select className={classes.todoPriorityFont}
 														labelId="demo-simple-select-label"
 														id="demo-simple-select"
-														value={todo.priority}
-														onChange={(event: React.ChangeEvent<{ value: unknown }>) => props.todo_update(todo.id, todo.text, event.target.value as string)}
+														value={todo.data.priority}
+														onClick={() => props.todo_update(todo)}
 												>
 													<MenuItem value={'LOW'}>LOW</MenuItem>
 													<MenuItem value={'MEDIUM'}>MEDIUM</MenuItem>
@@ -172,7 +174,7 @@ const TodoList = (props: Props) => {
 												<Tooltip title="delete">
 													<IconButton
 														aria-label="delete"
-														onClick={() => props.todo_delete(todo.id)}
+														onClick={() => props.todo_delete(todo)}
 													>
 														<DeleteIcon fontSize="small" />
 													</IconButton>

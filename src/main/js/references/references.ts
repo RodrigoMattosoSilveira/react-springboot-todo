@@ -10,6 +10,11 @@ export const TODOS_ACTIONS = {
 	READ: 'READ'
 }
 
+export const TODO_COMPLETED = {
+	FALSE: false,
+	TRUE: true
+}
+
 export const VISIBILITY_FILTER_TYPES = {
     ALL: 'all',
     OPEN: 'open',

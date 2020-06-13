@@ -43,7 +43,7 @@ export const loadFromServer = (pageSize, dispatch) => {
                 client({ method: 'GET', url: todo._links.self.href }))
             Promise.all(todoPromises)
                 .then(function (collection) {
-                    const todos = collection.map(todo => todo.data)
+                    const todos = collection.map(todo => todo)
                     dispatch(todos_read(todos));
                 });
         });

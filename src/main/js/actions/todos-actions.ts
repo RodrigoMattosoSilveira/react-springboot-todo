@@ -1,13 +1,16 @@
 // External dependencies
-import { TODO_ACTIONS } from '../references/references';
-import { TodoInterface, TodoActionInterface } from '../interfaces/interfaces';
 const axios = require('axios').default;
 
 // Internal Dependencies
+import { TODO_ACTIONS } from '../references/references';
+// import { TodoInterface, TodoActionInterface } from '../interfaces/interfaces';
+import { TodoRestInterface, TodoActionInterface } from '../interfaces/interfaces';
 import { axios_config_setup } from '../services/axios-config';
 import { client_setup_get } from '../services/client';
+import { client_put_config } from '../services/client';
 import { loadFromServer }  from '../services/load-from-server';
 import {set_rest_links_action} from "./rest_actions";
+import { TODO_COMPLETED } from "../references/references";
 
 export const todos_read_thunk = () =>
 	(dispatch: any, getState: any, axios: any) => {// thunk, also receives `axios` dep.
@@ -29,6 +32,41 @@ export const todos_read_thunk = () =>
 			});
 	}
 	
+export const todo_toggle_isCompleted_thunk = (todo: TodoRestInterface) =>
+	(dispatch: any, getState: any, axios: any) => {
+		let url = todo.data._links.self.href;
+		let updatedTodo = {
+			text: todo.data.text,
+			priority: todo.data.priority,
+			isCompleted: !todo.data.isCompleted,
+			owner: todo.data.owner,
+		}
+		let etag = todo.headers['Etag'];
+		let client = client_put_config(url, updatedTodo, etag);
+		client.put(url)
+			.then(function (response: any) {
+				if (response.status.code === 403) {
+					alert('ACCESS DENIED: You are not authorized to update ' +
+						todo.data._links.self.href);
+				} else {
+					if (response.status.code === 412) {
+						alert('DENIED: Unable to update ' + todo.data._links.self.href +
+							'. Your copy is stale.');
+					} else {
+						dispatch(todos_read(response.data._embedded.todos))
+					}
+				}
+			})
+			.catch(function (error: any) {
+				// handle error
+				console.log('todo_toggle_isCompleted_thunk');
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
+	}
+
 export const todo_load_from_server = () =>
 	(dispatch: any, getState: any) => {// thunk, also receives `axios` dep.
 		let pageSize = getState().rest_page_size_reducer;
@@ -49,7 +87,7 @@ export const todo_navigate_to_page = (navUri: string) =>
 					client({ method: 'GET', url: todo._links.self.href }))
 				Promise.all(todoPromises)
 					.then(function (collection) {
-						const todos = collection.map((todo: any) => todo.data)
+						const todos = collection.map((todo: any) => todo)
 						dispatch(todos_read(todos));
 					});
 			})
@@ -59,11 +97,8 @@ export const todo_navigate_to_page = (navUri: string) =>
 			})
 	}
 
-export const todos_read = (todos:  TodoInterface[]): TodoActionInterface => ({
+export const todos_read = (todos:  TodoRestInterface[]): TodoActionInterface => ({
 	type: TODO_ACTIONS.READ,
-	id: 'ignore',
-	priority: 'ignore',
-	text: 'ignore',
 	todos: todos
 })
 

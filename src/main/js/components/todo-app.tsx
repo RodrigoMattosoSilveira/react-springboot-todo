@@ -5,24 +5,12 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import { useDispatch } from 'react-redux';
 
 // Internal Dependencies
-import { AuthenticationContext } from '../context-providers/autentication-context-provider';
-// import TodoForm from "./todo-form";
 import TodoList from "./todo-list";
 import TodoFilters from "./todo-filters";
-// import "../styles/styles.css";
 import { RootState } from '../reducers/rootReducer'
 import {connect} from 'react-redux';
-// import TodoItem from './todo-item'
-// import { TodoInterface } from "../interfaces/interfaces";
-// import {todo_delete, todo_toggle, todo_update} from "../actions/todo-actions";
-// import classes from "*.module.scss";
-const loadFromServer = require("../services/load-from-server");
-import { store } from '../services/store'
-import { todos_read_thunk } from '../actions/todos-actions';
 import PageSize from "./page-size";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -99,7 +87,7 @@ const TodoApp = (props: Props) => {
 						<Typography variant="h6" className={classes.title}>
 							Hello {props.userName}
 						</Typography>
-						<form action="/logout" method="post">
+						<form action='/logout' method="post">
 							<input type="submit" value="Log Out"/>
 						</form>
 					

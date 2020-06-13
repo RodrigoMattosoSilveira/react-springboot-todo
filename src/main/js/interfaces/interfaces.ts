@@ -1,9 +1,34 @@
+// Todo Rest Interface
+export interface TodoRestInterface {
+	config: any;
+	data: TodoInterface;
+	headers: any;
+	request: XMLHttpRequest;
+	status: number;
+	statusText: string;
+}
+
 // Todo interface
 export interface TodoInterface {
-  id: string;
   text: string;
   priority: string,
   isCompleted: boolean;
+  owner: Owner;
+  _links: Links;
+}
+
+export interface Owner {
+	name: string;
+	roles: string[];
+}
+
+export interface Links {
+	self: Href,
+	todo: Href
+}
+
+export interface Href {
+	href: string
 }
 
 // Todo form interface
@@ -40,10 +65,7 @@ export interface VisibilityFiltersInterface {
 // Todo Action Interface
 export interface TodoActionInterface {
     type: string,
-    id: string,
-	priority: string,
-    text: string,
-	todos: TodoInterface[];
+	todos: TodoRestInterface[];
 }
 
 // Visibility Action Interface
