@@ -21,7 +21,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
 import { TodoRestInterface } from "../interfaces/interfaces";
-import { todo_toggle_isCompleted_thunk } from '../actions/todos-actions'
+import { todo_toggle_isCompleted_thunk, todo_priority_thunk } from '../actions/todos-actions'
 
 /*
  * *****************************************************************************
@@ -44,7 +44,7 @@ function mapStateToProps (state: RootState) {
 // Set to null if not used
 const mapDispatchToProps = {
 	todo_toggle_isCompleted_thunk: (todo: TodoRestInterface) => todo_toggle_isCompleted_thunk(todo),
-	todo_update: (todo: TodoRestInterface, attribute: string) => todo_update(todo, attribute),
+	todo_priority_thunk: (todo: TodoRestInterface, attribute: string) => todo_priority_thunk(todo, attribute),
 	todo_delete: (todo: TodoRestInterface) => todo_delete(todo)
 }
 
@@ -75,9 +75,9 @@ type Props = PropsFromRedux & {}
 // const todo_toggle = (id: string) => {
 //  	console.log('TodoList/todo_toggle id = ' + id);
 // }
-const todo_update = (todo: TodoRestInterface, attribute: string) => {
-	console.log('TodoList/todo_update href = ' + todo.data._links.self.href + ', attribute: ' + attribute);
-}
+// const todo_update = (todo: TodoRestInterface, attribute: string, event: React.MouseEvent) => {
+// 	console.log('TodoList/todo_update href = ' + todo.data._links.self.href + ', attribute: ' + attribute + ', value: ' + event.target.value);
+// }
 const todo_delete = (todo: TodoRestInterface) => {
 	console.log('TodoList/todo_delete href = ' + todo.data._links.self.href);
 }
@@ -155,7 +155,7 @@ const TodoList = (props: Props) => {
 												<TextField
 													id="standard-basic"
 													value={todo.data.text}
-													onMouseOut={() => props.todo_update(todo, 'text')}
+													onMouseOut={(e) => props.todo_priority_thunk(todo, e.target.value)}
 													fullWidth />
 											</TableCell>
 											<TableCell className={classes.todoPriority}>
@@ -163,7 +163,7 @@ const TodoList = (props: Props) => {
 														labelId="demo-simple-select-label"
 														id="demo-simple-select"
 														value={todo.data.priority}
-														onClick={() => props.todo_update(todo, 'priority')}
+														onClick={ (e) => props.todo_priority_thunk(todo, e.target.value)}
 												>
 													<MenuItem value={'LOW'}>LOW</MenuItem>
 													<MenuItem value={'MEDIUM'}>MEDIUM</MenuItem>
