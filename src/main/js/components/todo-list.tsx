@@ -230,23 +230,6 @@ const TodoList = (props: Props) => {
 													id="standard-basic"
 													value={todo.data.text}
 													fullWidth />
-											{/*	<form className={classes.root} noValidate autoComplete="off">*/}
-											{/*		<FormControl>*/}
-											{/*			<Tooltip title="Next Page">*/}
-											{/*				<Input*/}
-											{/*					id="component-helper"*/}
-											{/*					disabled={!isOwner(todo)}*/}
-											{/*					value={renderTextField(todo)}*/}
-											{/*					onMouseOver={(e) => onMouseOverTextHandler(todo)}*/}
-											{/*					onChange={handleTextChange}*/}
-											{/*					onKeyPress={handleTextKeyPress}*/}
-											{/*					onMouseOut={(e) => onMouseOutTextHandler(todo}*/}
-											{/*					aria-describedby="component-helper-text"*/}
-											{/*				/>*/}
-											{/*			</Tooltip>*/}
-											{/*			<FormHelperText hidden={textFieldLabelHide} id="component-helper-text">{textFieldLabelValue}</FormHelperText>*/}
-											{/*		</FormControl>*/}
-											{/*	</form>*/}
 											</TableCell>
 											<TableCell className={classes.todoPriority}>
 												<Select className={classes.todoPriorityFont}
