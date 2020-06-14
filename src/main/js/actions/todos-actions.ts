@@ -12,73 +12,47 @@ import { TODO_COMPLETED } from "../references/references";
 
 export const todo_toggle_isCompleted_thunk = (todo: TodoRestInterface) =>
 	(dispatch: any, getState: any, axios: any) => {
-		let url = todo.data._links.self.href;
 		let updateTodo = {
 			isCompleted: todo.data.isCompleted === false ? TODO_COMPLETED.TRUE : TODO_COMPLETED.FALSE
 		}
-		let etag = todo.headers['etag'];
-		let client = client_update_config(etag);
-		client.patch(url, updateTodo)
-			.then(function (response: any) {
-				switch (response.status) {
-					case 400:
-						alert(alertMsg(url, 'BAD Request','like malformed request syntax, invalid request message parameters, or deceptive request routing etc.' ));
-						break
-					case 403:
-						alert(alertMsg(url, 'ACCESS DENIED', 'You are not authorized to update this record'));
-						break;
-					case 412:
-						alert(alertMsg(url, 'DENIED', 'Your copy of this record is stale.'));
-						break;
-					default:
-						dispatch(todo_load_from_server());
-						break
-				}
-			})
-			.catch(function (error: any) {
-				// handle error
-				console.log('todo_toggle_isCompleted_thunk');
-				console.log(error);
-			})
-			.then(function () {
-				// always executed
-			});
+		todo_update_thunk(dispatch, todo, updateTodo)
 	}
 	
 export const todo_priority_thunk = (todo: TodoRestInterface, priority: string) =>
 	(dispatch: any, getState: any, axios: any) => {
-		let url = todo.data._links.self.href;
-		let updateTodo = {
-			priority: priority
-		}
-		let etag = todo.headers['etag'];
-		let client = client_update_config(etag);
-		client.patch(url, updateTodo)
-			.then(function (response: any) {
-				switch (response.status) {
-					case 400:
-						alert(url + '\n\nBAD Request: like malformed request syntax, invalid request message parameters, or deceptive request routing etc.');
-						break
-					case 403:
-						alert(url + '\n\nACCESS DENIED: You are not authorized to update this record');
-						break;
-					case 412:
-						alert(url + '\n\nDENIED: Your copy is stale.');
-						break;
-					default:
-						dispatch(todo_load_from_server());
-						break
-				}
-			})
-			.catch(function (error: any) {
-				// handle error
-				console.log('todo_toggle_isCompleted_thunk');
-				console.log(error);
-			})
-			.then(function () {
-				// always executed
-			});
+		let updateTod0 = { priority: priority}
+		todo_update_thunk(dispatch, todo, updateTod0)
 	}
+export const todo_update_thunk = (dispatch: any, todo: TodoRestInterface, updateTodo: {}) => {
+	let url = todo.data._links.self.href;
+	let etag = todo.headers['etag'];
+	let client = client_update_config(etag);
+	client.patch(url, updateTodo)
+		.then(function (response: any) {
+			switch (response.status) {
+				case 400:
+					alert(url + '\n\nBAD Request: like malformed request syntax, invalid request message parameters, or deceptive request routing etc.');
+					break
+				case 403:
+					alert(url + '\n\nACCESS DENIED: You are not authorized to update this record');
+					break;
+				case 412:
+					alert(url + '\n\nDENIED: Your copy is stale.');
+					break;
+				default:
+					dispatch(todo_load_from_server());
+					break
+			}
+		})
+		.catch(function (error: any) {
+			// handle error
+			console.log('todo_toggle_isCompleted_thunk');
+			console.log(error);
+		})
+		.then(function () {
+			// always executed
+		});
+}
 
 export const todo_load_from_server = () =>
 	(dispatch: any, getState: any) => {// thunk, also receives `axios` dep.
