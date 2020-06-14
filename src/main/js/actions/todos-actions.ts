@@ -15,15 +15,16 @@ export const todo_toggle_isCompleted_thunk = (todo: TodoRestInterface) =>
 		let updateTodo = {
 			isCompleted: todo.data.isCompleted === false ? TODO_COMPLETED.TRUE : TODO_COMPLETED.FALSE
 		}
-		todo_update_thunk(dispatch, todo, updateTodo)
+		todo_update(dispatch, todo, updateTodo)
 	}
 	
-export const todo_priority_thunk = (todo: TodoRestInterface, priority: string) =>
+export const todo_edit_priority_thunk = (todo: TodoRestInterface, priority: string) =>
 	(dispatch: any, getState: any, axios: any) => {
-		let updateTod0 = { priority: priority}
-		todo_update_thunk(dispatch, todo, updateTod0)
+		let updateTodo = { priority: priority}
+		todo_update(dispatch, todo, updateTodo)
 	}
-export const todo_update_thunk = (dispatch: any, todo: TodoRestInterface, updateTodo: {}) => {
+	
+const todo_update = (dispatch: any, todo: TodoRestInterface, updateTodo: {}) => {
 	let url = todo.data._links.self.href;
 	let etag = todo.headers['etag'];
 	let client = client_update_config(etag);
@@ -46,13 +47,46 @@ export const todo_update_thunk = (dispatch: any, todo: TodoRestInterface, update
 		})
 		.catch(function (error: any) {
 			// handle error
-			console.log('todo_toggle_isCompleted_thunk');
+			console.log('todo_update_thunk');
 			console.log(error);
 		})
-		.then(function () {
-			// always executed
-		});
 }
+
+
+export const todo_delete_thunk = (todo: TodoRestInterface) =>
+	(dispatch: any, getState: any, axios: any) => {
+		let url = todo.data._links.self.href;
+		let etag = todo.headers['etag'];
+		let config = {
+			validateStatus: false,
+			headers: {
+			'Content-Type': 'application/json',
+				'If-Match': etag
+			},
+			timeout: 10000
+		}
+		axios.delete(url, config)
+			.then(function (response: any) {
+				switch (response.status) {
+					case 400:
+						alert(url + '\n\nBAD Request: like malformed request syntax, invalid request message parameters, or deceptive request routing etc.');
+						break
+					case 403:
+						alert(url + '\n\nDelete DENIED: You are not authorized to delete this record');
+						
+						break;
+					default:
+						dispatch(todo_load_from_server());
+						break
+				}
+			})
+			.catch(function (error: any) {
+				// handle error
+				console.log('todo_delete_thunk');
+				console.log(error);
+			})
+		
+	}
 
 export const todo_load_from_server = () =>
 	(dispatch: any, getState: any) => {// thunk, also receives `axios` dep.

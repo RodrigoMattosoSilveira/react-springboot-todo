@@ -17,11 +17,17 @@ import Divider from "@material-ui/core/Divider";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Input from '@material-ui/core/Input';
+
 
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
 import { TodoRestInterface } from "../interfaces/interfaces";
-import { todo_toggle_isCompleted_thunk, todo_priority_thunk } from '../actions/todos-actions'
+import { todo_toggle_isCompleted_thunk,
+	todo_edit_priority_thunk,
+	todo_delete_thunk } from '../actions/todos-actions'
 
 /*
  * *****************************************************************************
@@ -36,6 +42,7 @@ import { todo_toggle_isCompleted_thunk, todo_priority_thunk } from '../actions/t
 // Set to null if not used
 function mapStateToProps (state: RootState) {
 	return {
+		userName: state.authenticated_user_reducer,
 		todoList: state.todo_reducer.slice(0),
 		visibilityFilter: state.visibility_filter_reducer
 	};
@@ -44,8 +51,8 @@ function mapStateToProps (state: RootState) {
 // Set to null if not used
 const mapDispatchToProps = {
 	todo_toggle_isCompleted_thunk: (todo: TodoRestInterface) => todo_toggle_isCompleted_thunk(todo),
-	todo_priority_thunk: (todo: TodoRestInterface, attribute: string) => todo_priority_thunk(todo, attribute),
-	todo_delete: (todo: TodoRestInterface) => todo_delete(todo)
+	todo_edit_priority_thunk: (todo: TodoRestInterface, attribute: string) => todo_edit_priority_thunk(todo, attribute),
+	todo_delete_thunk: (todo: TodoRestInterface) => todo_delete_thunk(todo)
 }
 
 // Hook them up; note that the static typing is constrained to what is in use
@@ -123,6 +130,73 @@ const computeState = (isCompleted: boolean) => {
 const TodoList = (props: Props) => {
 	const classes = useStyles();
 	
+	const [textFieldValue, setTextFieldValue] = React.useState('');
+	const [textFieldLabelValue, setTextFieldLabelValue] = React.useState('');
+	
+	const [textFieldPristine, seTextFieldPristine] = React.useState(true);
+	const [textFieldValid, setTextFieldValid] = React.useState(true);
+	const [textFieldLabelHide, setTextFieldLabelHide] = React.useState(true);
+	
+	const isOwner = (todo: TodoRestInterface): boolean => {
+		return  todo.data.owner.name === props.userName
+	}
+	
+	const renderTextField = (todo: TodoRestInterface): string => {
+		let value = todo.data.text;
+		return value;
+	}
+	
+	const onMouseOverTextHandler = (todo: TodoRestInterface) => {
+		setTextFieldLabelHide(false);
+		setTextFieldValid(true);
+		if (isOwner(todo)) {
+			setTextFieldLabelValue('Enter text and navigate outside text box to update')
+		} else {
+			setTextFieldLabelValue('Must own to edit')
+		}
+	}
+	const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		let valid = true;
+		setTextFieldLabelValue('Enter text and navigate outside text box to update');
+		seTextFieldPristine(false);
+
+		setTextFieldValue(event.target.value);
+		
+		// If its length is zero
+		if (event.target.value === "") {
+			// its state is not valid
+			valid = !valid;
+		} else {
+			// when the field has been touched and it has one or more characters
+			// At least one of these characters must be non blank
+			valid = /.*\S.*/.test(event.target.value);
+		}
+		
+		if (!valid) {
+			setTextFieldLabelValue('Must start with a non blank character and have at least one non-blank character')
+		}
+		
+		// console.log("value: " + event.target.value);
+		// console.log("value length: " + event.target.value.length);
+		// console.log("valid: " + valid);
+		setTextFieldValid(valid);
+	};
+	const handleTextKeyPress = () => {
+		setTextFieldLabelHide(true);
+		seTextFieldPristine(true);
+	}
+	const onMouseOutTextHandler = (todo: TodoRestInterface) => {
+		setTextFieldLabelHide(true);
+		seTextFieldPristine(true);
+		
+		// Restore original text
+		if (!textFieldPristine)  {
+			if (textFieldValid) {
+				props.todo_priority_thunk(todo, textFieldValue)
+			}
+		}
+	}
+	
 	return (
 		<div>
 			<Divider />
@@ -155,15 +229,31 @@ const TodoList = (props: Props) => {
 												<TextField
 													id="standard-basic"
 													value={todo.data.text}
-													onMouseOut={(e) => props.todo_priority_thunk(todo, e.target.value)}
 													fullWidth />
+											{/*	<form className={classes.root} noValidate autoComplete="off">*/}
+											{/*		<FormControl>*/}
+											{/*			<Tooltip title="Next Page">*/}
+											{/*				<Input*/}
+											{/*					id="component-helper"*/}
+											{/*					disabled={!isOwner(todo)}*/}
+											{/*					value={renderTextField(todo)}*/}
+											{/*					onMouseOver={(e) => onMouseOverTextHandler(todo)}*/}
+											{/*					onChange={handleTextChange}*/}
+											{/*					onKeyPress={handleTextKeyPress}*/}
+											{/*					onMouseOut={(e) => onMouseOutTextHandler(todo}*/}
+											{/*					aria-describedby="component-helper-text"*/}
+											{/*				/>*/}
+											{/*			</Tooltip>*/}
+											{/*			<FormHelperText hidden={textFieldLabelHide} id="component-helper-text">{textFieldLabelValue}</FormHelperText>*/}
+											{/*		</FormControl>*/}
+											{/*	</form>*/}
 											</TableCell>
 											<TableCell className={classes.todoPriority}>
 												<Select className={classes.todoPriorityFont}
 														labelId="demo-simple-select-label"
 														id="demo-simple-select"
 														value={todo.data.priority}
-														onClick={ (e) => props.todo_priority_thunk(todo, e.target.value)}
+														onClick={ (e) => props.todo_edit_priority_thunk(todo, e.target.value)}
 												>
 													<MenuItem value={'LOW'}>LOW</MenuItem>
 													<MenuItem value={'MEDIUM'}>MEDIUM</MenuItem>
@@ -174,7 +264,7 @@ const TodoList = (props: Props) => {
 												<Tooltip title="delete">
 													<IconButton
 														aria-label="delete"
-														onClick={() => props.todo_delete(todo)}
+														onClick={() => props.todo_delete_thunk(todo)}
 													>
 														<DeleteIcon fontSize="small" />
 													</IconButton>

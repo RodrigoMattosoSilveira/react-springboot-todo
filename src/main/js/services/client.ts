@@ -44,3 +44,14 @@ export const client_update_config = (etag: string) => {
 		timeout: 10000
 	})
 }
+
+export const client_delete_config = (etag: string) => {
+	return axios.create({
+		validateStatus: null,
+		headers: {
+			'Content-Type': 'application/json',
+			'If-Match': etag
+		},
+		timeout: 10000
+	})
+}
