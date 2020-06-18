@@ -17,10 +17,14 @@ import Divider from "@material-ui/core/Divider";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Input from '@material-ui/core/Input';
 
+import Button from '@material-ui/core/Button';
+// import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
@@ -146,7 +150,7 @@ const TodoList = (props: Props) => {
 		return value;
 	}
 	
-	const onMouseOverTextHandler = (todo: TodoRestInterface) => {
+	const onMouseOverTextHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setTextFieldLabelHide(false);
 		setTextFieldValid(true);
 		if (isOwner(todo)) {
@@ -220,23 +224,30 @@ const TodoList = (props: Props) => {
 											<TableCell
 												component="th"
 												scope="row"
-												className={"todo-is-completed"}
-												onClick={() => props.todo_toggle_isCompleted_thunk(todo)}
 											>
-												{computeState(todo.data.isCompleted)}
+												<div
+													className={"todo-is-completed"}
+													onClick={() => props.todo_toggle_isCompleted_thunk(todo)}
+													disabled={!isOwner(todo)}
+												>
+													{computeState(todo.data.isCompleted)}
+												</div>
 											</TableCell>
 											<TableCell className={classes.todoTextFont}>
 												<TextField
 													id="standard-basic"
 													value={todo.data.text}
-													fullWidth />
+													fullWidth
+													disabled={!isOwner(todo)}
+												/>
 											</TableCell>
-											<TableCell className={classes.todoPriority}>
+											<TableCell className={classes.todoPriority} >
 												<Select className={classes.todoPriorityFont}
 														labelId="demo-simple-select-label"
 														id="demo-simple-select"
 														value={todo.data.priority}
 														onClick={ (e) => props.todo_edit_priority_thunk(todo, e.target.value)}
+														disabled={!isOwner(todo)}
 												>
 													<MenuItem value={'LOW'}>LOW</MenuItem>
 													<MenuItem value={'MEDIUM'}>MEDIUM</MenuItem>
@@ -248,6 +259,7 @@ const TodoList = (props: Props) => {
 													<IconButton
 														aria-label="delete"
 														onClick={() => props.todo_delete_thunk(todo)}
+														disabled={!isOwner(todo)}
 													>
 														<DeleteIcon fontSize="small" />
 													</IconButton>
