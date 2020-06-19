@@ -1,3 +1,5 @@
+export const PAGE_SIZE_DEFAULT = 3;
+
 export const TODO_ACTIONS = {
     READ: 'READ',
 	CREATE: 'CREATE',

@@ -14,6 +14,7 @@ export const rest_attributes_reducer = (state = '', action: RestAttributesAction
 }
 
 export const rest_page_size_reducer = (state = 3, action: RestPageSizeActionInterface): number => {
+	// console.log('rest_page_size_reducer: ' + action.pageSize);
 	switch (action.type) {
 		case REST_ACTIONS.SET_REST_PAGE_SIZE:
 			return action.pageSize;

@@ -1,6 +1,6 @@
 // External Dependencies
 import * as React from "react";
-import {connect} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from "../reducers/rootReducer";
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -13,7 +13,8 @@ import SaveIcon from "@material-ui/icons/Save";
 // Internal dependencies
 import {store} from "../services/store";
 import * as REST_PARAMS from "../actions/rest_actions";
-import {todo_load_from_server} from "../actions/todos-actions";
+import { set_rest_page_size_action_thunk } from "../actions/rest_actions";
+import {TodoRestInterface} from "../interfaces/interfaces";
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -37,39 +38,35 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 /*
  * *****************************************************************************
- * This is the heart of the component
+ * Prop configuration
  * *****************************************************************************
  */
 
-// Comment out if not used
-// interface OwnProps {
-// }
-
 // Set to null if not used
-function mapStateToProps (state: RootState) {
+// const mapStateToProps = null
+const mapStateToProps = (state: RootState) => {
 	return {
 		pageSize: state.rest_page_size_reducer
 	};
 }
 
 // Set to null if not used
-const mapDispatchToProps: any = null;
+// const mapDispatchToProps = null
+const mapDispatchToProps = {
+	set_rest_page_size_action_thunk: (pageSize: number) => set_rest_page_size_action_thunk(pageSize)
+}
 
-// Hook them up; note that the static typing is constrained to what is in use
-const connector = connect(
-	mapStateToProps,
-	mapDispatchToProps
-)
-type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps
-type Props = StateProps & DispatchProps
-// type Props = StateProps & DispatchProps & OwnProps;
+const connector = connect(mapStateToProps, mapDispatchToProps)
 
-/*
- * *****************************************************************************
- * End of the heart of the component
- * *****************************************************************************
- */
+// The inferred type will look like:
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+// Add own properties
+type Props = PropsFromRedux & {}
+// type Props = PropsFromRedux & {
+// someAttributeName: someAttributeNameValue
+// }
+
 const PageSize = (props: Props) => {
 	const classes = useStyles();
 	const [pageSize, setPageSize] = React.useState(props.pageSize);
@@ -90,11 +87,10 @@ const PageSize = (props: Props) => {
 		setPageSize(event.target.value);
 	};
 	const savePageSize = () => {
-		console.log("PageSize: " + pageSize);
+		console.log("PageSize/Saving pageSize: " + pageSize);
 		// props.todo_add(textFieldValue, priorityFieldValue);
 		setPageSizePristine(true);
-		store.dispatch(REST_PARAMS.set_rest_page_size_action(pageSize));
-		store.dispatch(todo_load_from_server());
+		props.set_rest_page_size_action_thunk(+pageSize)
 	}
 	
 	return (
