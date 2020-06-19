@@ -1,7 +1,7 @@
 // External dependencies
 import * as React from 'react'
 import {connect, ConnectedProps} from 'react-redux';
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TextField from "@material-ui/core/TextField";
 import Table from "@material-ui/core/Table";
 import TableHead from '@material-ui/core/TableHead';
@@ -18,30 +18,19 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import Button from '@material-ui/core/Button';
-// import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
 import { TodoRestInterface } from "../interfaces/interfaces";
+import TodoState from './todo-state';
 import { todo_toggle_isCompleted_thunk,
 	todo_edit_priority_thunk,
 	todo_delete_thunk } from '../actions/todos-actions'
 
 /*
  * *****************************************************************************
- * This is the heart of the component
+ * Prop configuration
  * *****************************************************************************
  */
-
-// Comment out if not used
-// interface OwnProps {
-// }
 
 // Set to null if not used
 function mapStateToProps (state: RootState) {
@@ -60,48 +49,20 @@ const mapDispatchToProps = {
 }
 
 // Hook them up; note that the static typing is constrained to what is in use
-const connector = connect(
-	mapStateToProps,
-	mapDispatchToProps
-)
-
+const connector = connect( mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>
+
+// Add own properties
 type Props = PropsFromRedux & {}
 // type Props = PropsFromRedux & {
-// 	backgroundColor: string
+// 	someOwnProperty: someOwnPropertyValue
 // }
-
 
 /*
  * *****************************************************************************
- * End of the heart of the component
+ * Styles configuration Start
  * *****************************************************************************
  */
-
-/*
- * *****************************************************************************
- * Temporary ... replace with actions
- * *****************************************************************************
- */
-// const todo_toggle = (id: string) => {
-//  	console.log('TodoList/todo_toggle id = ' + id);
-// }
-// const todo_update = (todo: TodoRestInterface, attribute: string, event: React.MouseEvent) => {
-// 	console.log('TodoList/todo_update href = ' + todo.data._links.self.href + ', attribute: ' + attribute + ', value: ' + event.target.value);
-// }
-const todo_delete = (todo: TodoRestInterface) => {
-	console.log('TodoList/todo_delete href = ' + todo.data._links.self.href);
-}
-
-function computeVisible (visibilityFilter: string, isCompleted: boolean ): string {
-	// console.log('TodoList/computeVisible visibilityFilter: ' + visibilityFilter)
-	let className = 'show-todo-item';
-	if ((visibilityFilter === 'open' && isCompleted) || (visibilityFilter === 'done' && !isCompleted)) {
-		className = 'hide-todo-item';
-	}
-	return className;
-}
-
 const useStyles = makeStyles({
 	table: {
 		/* minWidth: 650, */
@@ -122,13 +83,14 @@ const useStyles = makeStyles({
 	}
 });
 
-const computeState = (isCompleted: boolean) => {
-	return isCompleted ? (
-		<span className="todo-item-state todo-item-checked">✔</span>
-	) : (
-		<span className="todo-item-state todo-item-unchecked" />
-	);
-};
+function computeVisible (visibilityFilter: string, isCompleted: boolean ): string {
+	// console.log('TodoList/computeVisible visibilityFilter: ' + visibilityFilter)
+	let className = 'show-todo-item';
+	if ((visibilityFilter === 'open' && isCompleted) || (visibilityFilter === 'done' && !isCompleted)) {
+		className = 'hide-todo-item';
+	}
+	return className;
+}
 
 // TodoList component
 const TodoList = (props: Props) => {
@@ -221,17 +183,8 @@ const TodoList = (props: Props) => {
 								(
 									props.todoList.map((todo: TodoRestInterface) => (
 										<TableRow className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
-											<TableCell
-												component="th"
-												scope="row"
-											>
-												<div
-													className={"todo-is-completed"}
-													onClick={() => props.todo_toggle_isCompleted_thunk(todo)}
-													disabled={!isOwner(todo)}
-												>
-													{computeState(todo.data.isCompleted)}
-												</div>
+											<TableCell component="th" scope="row" >
+												<TodoState todo={todo}/>
 											</TableCell>
 											<TableCell className={classes.todoTextFont}>
 												<TextField
