@@ -1,29 +1,26 @@
 // External dependencies
 import * as React from 'react'
 import {connect, ConnectedProps} from 'react-redux';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import TextField from "@material-ui/core/TextField";
+import { makeStyles} from '@material-ui/core/styles';
 import Table from "@material-ui/core/Table";
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-// import TableHead from '@material-ui/core/TableHead';
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import Divider from "@material-ui/core/Divider";
-import Tooltip from '@material-ui/core/Tooltip';
 
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
 import { TodoRestInterface } from "../interfaces/interfaces";
 import TodoState from './todo-state';
 import TodoPriority from "./todo-priority";
+import TodoDelete from './todo-delete'
 import { todo_toggle_isCompleted_thunk,
 	todo_edit_priority_thunk,
 	todo_delete_thunk } from '../actions/todos-actions'
+import TodoText from "./todo-text.ts";
 
 /*
  * *****************************************************************************
@@ -120,26 +117,9 @@ const TodoList = (props: Props) => {
 									props.todoList.map((todo: TodoRestInterface) => (
 										<TableRow className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
 											<TableCell component="th" scope="row" ><TodoState todo={todo}/></TableCell>
-											<TableCell className={classes.todoTextFont}>
-												<TextField
-													id="standard-basic"
-													value={todo.data.text}
-													fullWidth
-													disabled={!isOwner(todo)}
-												/>
-											</TableCell>
+											<TableCell className={classes.todoTextFont}><TodoText todo={todo}/> </TableCell>
 											<TableCell className={classes.todoPriority} ><TodoPriority todo={todo}/></TableCell>
-											<TableCell align="right" className={"todo-delete-me"}>
-												<Tooltip title="delete">
-													<IconButton
-														aria-label="delete"
-														onClick={() => props.todo_delete_thunk(todo)}
-														disabled={!isOwner(todo)}
-													>
-														<DeleteIcon fontSize="small" />
-													</IconButton>
-												</Tooltip>
-											</TableCell>
+											<TableCell align="right" className={"todo-delete-me"}><TodoDelete todo={todo}/></TableCell>
 										</TableRow>
 									))
 								)
