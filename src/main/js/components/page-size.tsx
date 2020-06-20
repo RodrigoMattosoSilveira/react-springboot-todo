@@ -11,10 +11,7 @@ import Button from '@material-ui/core/Button';
 import SaveIcon from "@material-ui/icons/Save";
 
 // Internal dependencies
-import {store} from "../services/store";
-import * as REST_PARAMS from "../actions/rest_actions";
 import { set_rest_page_size_action_thunk } from "../actions/rest_actions";
-import {TodoRestInterface} from "../interfaces/interfaces";
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -84,7 +81,7 @@ const PageSize = (props: Props) => {
 			setPageSizePristine(false);
 			setPageSizeValid(/^\d+$/.test(event.target.value))
 		}
-		setPageSize(event.target.value);
+		setPageSize(+event.target.value as number);
 	};
 	const savePageSize = () => {
 		console.log("PageSize/Saving pageSize: " + pageSize);

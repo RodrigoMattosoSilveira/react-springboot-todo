@@ -97,7 +97,7 @@ const TodoPriority = (props: Props) => {
 	};
 	
 	return (
-		<FormControl className={classes.formControl} {...notAnOwner()}>
+		<FormControl className={classes.formControl} {...notAnOwner() as string}>
 			<Select className={setClasses(props.todo.data.owner.name, props.userName)}
 					labelId="demo-simple-select-label"
 					id="demo-simple-select"
