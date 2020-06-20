@@ -7,6 +7,7 @@ import {todo_edit_priority_thunk} from "../actions/todos-actions";
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 
 // Internal dependencies
 
@@ -69,14 +70,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 	todoPriorityFont: {
 		fontSize: "1rem"
 	},
+	formControl: {
+		margin: theme.spacing(1),
+		minWidth: 120,
+	},
 }));
 
 const TodoPriority = (props: Props) => {
 	const classes = useStyles();
-	
-	const handleClick = (event: React.MouseEventHandler<HTMLSelectElement>) => {
-		props.todo_edit_priority_thunk(props.todo, event.target.value)
-	}
 	
 	const setClasses = (owner: string, userName: string) => {
 		let classNames = `classes.todoPriorityFont`;
@@ -84,23 +85,30 @@ const TodoPriority = (props: Props) => {
 		return classNames;
 	}
 	
-	const notAnOwner = (): boolean => {
-		return props.todo.data.owner.name !== props.userName;
+	const notAnOwner = () => {
+		// https://stackoverflow.com/questions/29103096/dynamic-attribute-in-reactjs
+		return props.todo.data.owner.name !== props.userName
+			? {disabled: 'disabled'}
+			: {};
 	}
-
+	
+	const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+		props.todo_edit_priority_thunk(props.todo, event.target.value as string)
+	};
+	
 	return (
-		<Select className={setClasses(props.todo.data.owner.name, props.userName)}
-				labelId="demo-simple-select-label"
-				id="demo-simple-select"
-				value={props.todo.data.priority}
-				// https://stackoverflow.com/questions/51977823/type-void-is-not-assignable-to-type-event-mouseeventhtmlinputelement
-				onClick={(event: React.MouseEventHandler<HTMLSelectElement>) => handleClick(event)}
-				disable={notAnOwner()}
-		>
-			<MenuItem value={'LOW'}>LOW</MenuItem>
-			<MenuItem value={'MEDIUM'}>MEDIUM</MenuItem>
-			<MenuItem value={'HIGH'}>HIGH</MenuItem>
-		</Select>
+		<FormControl className={classes.formControl} {...notAnOwner()}>
+			<Select className={setClasses(props.todo.data.owner.name, props.userName)}
+					labelId="demo-simple-select-label"
+					id="demo-simple-select"
+					value={props.todo.data.priority}
+					onChange={handleChange}
+			>
+				<MenuItem value={'LOW'}>LOW</MenuItem>
+				<MenuItem value={'MEDIUM'}>MEDIUM</MenuItem>
+				<MenuItem value={'HIGH'}>HIGH</MenuItem>
+			</Select>
+		</FormControl>
 	)
 }
 export default connector(TodoPriority)
