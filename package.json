@@ -62,6 +62,7 @@
     "@types/shortid": "^0.0.29",
     "@types/when": "^2.4.33",
     "babel-loader": "^8.0.2",
+    "hal-types": "^1.0.0",
     "ts-loader": "^7.0.4",
     "typescript": "^3.9.3",
     "webpack": "^4.19.1",
