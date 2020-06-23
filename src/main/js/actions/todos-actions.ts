@@ -95,16 +95,17 @@ export const todo_load_from_server = () =>
 	(dispatch: any, getState: any) => {// thunk, also receives `axios` dep.
 		let pageSize = getState().rest_page_size_reducer;
 		let root = getState().rest_root_reducer;
+		// @ts-ignore
 		loadFromServer(pageSize, root, dispatch);
 	}
 	
-export const todo_navigate_to_page = (navUri: string) =>
+export const todo_navigate_to_page_thunk = (navUri: string) =>
 	(dispatch: any, getState: any) => {
 		const client = client_setup_get();
 		client.get(navUri)
 			.then(function (todoCollection: any) {
 				// handle success
-				console.log('todo_navigate_to_page');
+				console.log('todo_navigate_to_page_thunk');
 				console.log(todoCollection);
 				
 				dispatch(set_rest_links_action(todoCollection.data._links));
@@ -133,4 +134,3 @@ const alertMsg = (url: string, summary: string, detail: string): string => {
 	alertMsg += '\n' + detail;
 	return alertMsg;
 }
-

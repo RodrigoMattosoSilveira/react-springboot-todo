@@ -2,23 +2,19 @@
 import * as React from "react";
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from "../reducers/rootReducer";
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import TextField from "@material-ui/core/TextField";
-import Button from '@material-ui/core/Button';
-import SaveIcon from "@material-ui/icons/Save";
+import { makeStyles, createStyles, useTheme, Theme } from '@material-ui/core/styles';
+import TablePagination from '@material-ui/core/TablePagination';
+
 
 // Internal dependencies
-// import { set_rest_page_size_action_thunk } from "../actions/rest_actions";
+import {set_rest_page_size_action_thunk} from "../actions/rest_actions";
+import TodoTablePaginationActions from "./todo-table-pagination-actions";
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
 		flexGrow: 1,
 	}
 }));
-
 
 /*
  * *****************************************************************************
@@ -30,15 +26,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 // const mapStateToProps: any = null
 const mapStateToProps = (state: RootState) => {
 	return {
-		halPage: state.hal_page_reducer
+		count: state.hal_page_reducer.totalElements,
+		rowsPerPage: state.hal_page_reducer.size,
+		page: state.hal_page_reducer.number,
 	};
 }
 
 // Set to null if not used
-const mapDispatchToProps: any = null
-// const mapDispatchToProps = {
-// 	set_rest_page_size_action_thunk: (pageSize: number) => set_rest_page_size_action_thunk(pageSize)
-// }
+// const mapDispatchToProps = null
+const mapDispatchToProps = {
+	set_rest_page_size_action_thunk: (pageSize: number) => set_rest_page_size_action_thunk(pageSize)
+}
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
 
@@ -53,11 +51,44 @@ type Props = PropsFromRedux & {}
 
 const TodoTablePagination = (props: Props) => {
 	// const classes = useStyles();
-	console.log('TodoTablePagination/halPage');
-	console.log(props.halPage);
+	console.log('TodoTablePagination/props.count: ' + props.count);
+	console.log('TodoTablePagination/props.page: ' + props.page);
+	console.log('TodoTablePagination/props.rowsPerPage: ' + props.rowsPerPage);
+	
+	const [page, setPage] = React.useState(props.page);
+	console.log('TodoTablePagination/page: ' + page);
+	
+	const [rowsPerPage, setRowsPerPage] = React.useState(3); //TODO find out why props.rowsPerPage does not work
+	console.log('TodoTablePagination/rowsPerPage: ' + rowsPerPage);
+	
+	
+	const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+		setPage(newPage);
+	};
+	
+	const handleChangeRowsPerPage = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		const size =  parseInt(event.target.value, 10) === -1 ? props.count : parseInt(event.target.value, 10);
+		setRowsPerPage (size);
+		props.set_rest_page_size_action_thunk(size);
+	};
 	
 	return (
-		<div>Table Footer / Pagination </div>
+		<TablePagination
+			rowsPerPageOptions={[1, 2, 3, 5, 8, 13, 21, { label: 'All', value: -1 }]}
+			colSpan={5}
+			count={props.count}
+			rowsPerPage={rowsPerPage}
+			page={page}
+			SelectProps={{
+				inputProps: { 'aria-label': 'rows per page' },
+				native: true,
+			}}
+			onChangePage={handleChangePage}
+			onChangeRowsPerPage={handleChangeRowsPerPage}
+			ActionsComponent={TodoTablePaginationActions}
+		/>
 	)
 }
 

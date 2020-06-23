@@ -40,11 +40,7 @@ export const REST_ACTIONS = {
 }
 
 export const HAL_ACTIONS = {
-	SET_HAL_PAGE: 'SET_HAL_PAGE',                               // the whole object
-	SET_HAL_PAGE_NUMBER: 'SET_HAL_PAGE_NUMBER',                 // the number of rows per page, a.k.a page size
-	SET_HAL_PAGE_SIZE: 'SET_HAL_PAGE_SIZE',                     // the number of domain rows
-	SET_HAL_PAGE_TOTAL_ELEMENTS: 'SET_HAL_PAGE_TOTAL_ELEMENTS', // the number of pages based on the page size
-	SET_HAL_PAGE_TOTAL_PAGES: 'SET_HAL_PAGE_TOTAL_PAGES'        // the current page number
+	SET_HAL_PAGE: 'SET_HAL_PAGE'
 }
 
 export const PAGINATION_TYPE = {

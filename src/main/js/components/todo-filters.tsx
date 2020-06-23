@@ -16,7 +16,7 @@ import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
 import Tooltip from '@material-ui/core/Tooltip';
 
 // Internal dependencies
-import { todo_navigate_to_page } from "../actions/todos-actions";
+import { todo_navigate_to_page_thunk } from "../actions/todos-actions";
 import { PAGINATION_TYPE } from "../references/references";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -67,7 +67,7 @@ function mapStateToProps (state: RootState) {
 
 // Set to null if not used
 const mapDispatchToProps = {
-	todo_navigate_to_page: (navUri: string) => todo_navigate_to_page(navUri)
+	todo_navigate_to_page: (navUri: string) => todo_navigate_to_page_thunk(navUri)
 };
 
 // Hook them up; note that the static typing is constrained to what is in use
