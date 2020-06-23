@@ -84,7 +84,6 @@ const TodoApp = (props: Props) => {
 					</Toolbar>
 				</AppBar>
 			</div>
-			<PageSize/>
 			{/*< CreateTodoItemForm />*/}
 			{/*< SelectPageSizeForm />*/}
 			{/*< TodoForm />*/}

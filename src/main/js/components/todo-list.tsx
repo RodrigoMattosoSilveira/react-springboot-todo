@@ -101,6 +101,11 @@ const TodoList = (props: Props) => {
 				<Table className={classes.table} size="small" aria-label="a dense table">
 					<TableHead>
 						<TableRow>
+							<TableCell colSpan={5} align={'center'}><h1>Todo Table</h1></TableCell>
+						</TableRow>
+					</TableHead>
+					<TableHead>
+						<TableRow>
 							<TableCell>State</TableCell>
 							<TableCell>Text</TableCell>
 							<TableCell>Priority</TableCell>
