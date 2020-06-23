@@ -5,6 +5,7 @@ import { makeStyles} from '@material-ui/core/styles';
 import Table from "@material-ui/core/Table";
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from "@material-ui/core/TableBody";
+import TableFooter from "@material-ui/core/TableFooter";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
@@ -16,7 +17,8 @@ import { RootState } from '../reducers/rootReducer'
 import { TodoRestInterface } from "../interfaces/interfaces";
 import TodoState from './todo-state';
 import TodoPriority from "./todo-priority";
-import TodoDelete from './todo-delete'
+import TodoDelete from './todo-delete';
+import TodoTablePagination from './todo-table-pagination';
 import { todo_toggle_isCompleted_thunk,
 	todo_edit_priority_thunk,
 	todo_delete_thunk } from '../actions/todos-actions'
@@ -92,10 +94,6 @@ function computeVisible (visibilityFilter: string, isCompleted: boolean ): strin
 const TodoList = (props: Props) => {
 	const classes = useStyles();
 	
-	const isOwner = (todo: TodoRestInterface): boolean => {
-		return  todo.data.owner.name === props.userName
-	}
-	
 	return (
 		<div>
 			<Divider />
@@ -133,6 +131,11 @@ const TodoList = (props: Props) => {
 								)
 						}
 					</TableBody>
+					<TableFooter>
+						<TableRow>
+							<TodoTablePagination/>
+						</TableRow>
+					</TableFooter>
 				</Table>
 			</TableContainer>
 		</div>
