@@ -103,5 +103,16 @@ export interface RestLinksActionInterface {
 	links: any
 }
 
-
 export type PaginationLinks = { [key: string]: any };
+
+export interface IHalPage {
+	number: number,			// the number of rows per page, a.k.a page size
+	pageSize: number, 		// the number of domain rows
+	totalElements: number, 	// the number of pages based on the page size
+	totalPages: number     	// the current page number
+}
+
+export interface IHalPageAction {
+	type: string,
+	halPage: IHalPage
+}

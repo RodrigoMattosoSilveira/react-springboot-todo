@@ -14,6 +14,7 @@ export const set_rest_page_size_action_thunk = (pageSize: number) =>
 		console.log('todo-actions/set_rest_page_size_action_thunk: ' + pageSize)
 		dispatch(set_rest_page_size_action(pageSize));
 		let root = getState().rest_root_reducer;
+		// @ts-ignore
 		loadFromServer(pageSize, root, dispatch);
 	}
 
@@ -26,5 +27,3 @@ export const set_rest_links_action = (links: any): RestLinksActionInterface => (
 	type: REST_ACTIONS.SET_REST_LINKS,
 	links: links
 })
-
-

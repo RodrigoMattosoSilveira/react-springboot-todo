@@ -27,12 +27,12 @@ const useStyles = makeStyles((theme: Theme) => ({
  */
 
 // Set to null if not used
-const mapStateToProps: any = null
-// const mapStateToProps = (state: RootState) => {
-// 	return {
-// 		pageSize: state.rest_page_size_reducer
-// 	};
-// }
+// const mapStateToProps: any = null
+const mapStateToProps = (state: RootState) => {
+	return {
+		halPage: state.hal_page_reducer
+	};
+}
 
 // Set to null if not used
 const mapDispatchToProps: any = null
@@ -53,6 +53,8 @@ type Props = PropsFromRedux & {}
 
 const TodoTablePagination = (props: Props) => {
 	// const classes = useStyles();
+	console.log('TodoTablePagination/halPage');
+	console.log(props.halPage);
 	
 	return (
 		<div>Table Footer / Pagination </div>

@@ -6,6 +6,7 @@ import { rest_attributes_reducer } from './rest-reducer';
 import { rest_page_size_reducer } from './rest-reducer';
 import { rest_links_reducer } from './rest-reducer';
 import { rest_root_reducer } from './rest-reducer';
+import {hal_page_reducer} from "./hal-reducer";
 
 export const rootReducer = combineReducers({
 	todo_reducer,
@@ -14,7 +15,8 @@ export const rootReducer = combineReducers({
 	rest_attributes_reducer,
 	rest_page_size_reducer,
 	rest_links_reducer,
-	rest_root_reducer
+	rest_root_reducer,
+	hal_page_reducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>
