@@ -2,8 +2,7 @@ import { REST_ACTIONS } from '../references/references';
 import { RestAttributesActionInterface } from '../interfaces/interfaces';
 import { RestPageSizeActionInterface } from '../interfaces/interfaces';
 import { RestLinksActionInterface } from '../interfaces/interfaces';
-import {store} from "../services/store";
-import {loadFromServer} from "../services/load-from-server";
+import { loadFromServer } from "../services/load-from-server";
 
 export const set_rest_attributes_action = (attributes: any): RestAttributesActionInterface => ({
 	type: REST_ACTIONS.SET_REST_ATTRIBUTES,
@@ -12,9 +11,10 @@ export const set_rest_attributes_action = (attributes: any): RestAttributesActio
 
 export const set_rest_page_size_action_thunk = (pageSize: number) =>
 	(dispatch: any, getState: any) => {// thunk, also receives `axios` dep.
-	console.log('set_rest_page_size_action_thunk: ' + pageSize)
+		console.log('todo-actions/set_rest_page_size_action_thunk: ' + pageSize)
 		dispatch(set_rest_page_size_action(pageSize));
-		loadFromServer(pageSize, dispatch);
+		let root = getState().rest_root_reducer;
+		loadFromServer(pageSize, root, dispatch);
 	}
 
 export const set_rest_page_size_action = (pageSize: number): RestPageSizeActionInterface => ({

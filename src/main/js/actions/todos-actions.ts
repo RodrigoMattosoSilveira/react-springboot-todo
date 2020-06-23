@@ -1,14 +1,18 @@
 // External dependencies
+import get = Reflect.get;
+
 const axios = require('axios').default;
 
 // Internal Dependencies
 import { TODO_ACTIONS } from '../references/references';
-import { TodoRestInterface, TodoActionInterface } from '../interfaces/interfaces';
+import { TODO_COMPLETED } from "../references/references";
+import { TodoRestInterface } from '../interfaces/interfaces';
+import { TodoActionInterface } from '../interfaces/interfaces';
 import { client_setup_get } from '../services/client';
 import { client_update_config } from '../services/client';
 import { loadFromServer }  from '../services/load-from-server';
 import { set_rest_links_action } from "./rest_actions";
-import { TODO_COMPLETED } from "../references/references";
+
 
 export const todo_toggle_isCompleted_thunk = (todo: TodoRestInterface) =>
 	(dispatch: any, getState: any, axios: any) => {
@@ -85,13 +89,13 @@ export const todo_delete_thunk = (todo: TodoRestInterface) =>
 				console.log('todo_delete_thunk');
 				console.log(error);
 			})
-		
 	}
 
 export const todo_load_from_server = () =>
 	(dispatch: any, getState: any) => {// thunk, also receives `axios` dep.
 		let pageSize = getState().rest_page_size_reducer;
-		loadFromServer(pageSize, dispatch);
+		let root = getState().rest_root_reducer;
+		loadFromServer(pageSize, root, dispatch);
 	}
 	
 export const todo_navigate_to_page = (navUri: string) =>

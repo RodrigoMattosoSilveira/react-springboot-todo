@@ -92,6 +92,11 @@ export interface RestPageSizeActionInterface {
 	pageSize: number,
 }
 
+export interface IRestRootAction {
+	type: string,
+	root: string
+}
+
 // Rest Parameters Links Interface
 export interface RestLinksActionInterface {
 	type: string,

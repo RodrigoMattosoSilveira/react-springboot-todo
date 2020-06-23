@@ -6,9 +6,7 @@ import {todos_read} from "../actions/todos-actions";
 import { set_rest_attributes_action, set_rest_links_action } from "../actions/rest_actions";
 const follow = require('./follow'); // function to hop multiple links by "rel"
 
-const root = '/api';
-
-export const loadFromServer = (pageSize, dispatch) => {
+export const loadFromServer = (pageSize, root, dispatch) => {
     const client = client_setup_get();
     follow(client, root,[
         {rel: 'todos', params: {size: pageSize}}]

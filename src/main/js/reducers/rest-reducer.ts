@@ -3,6 +3,7 @@ import { RestAttributesActionInterface } from '../interfaces/interfaces';
 import { RestPageSizeActionInterface } from '../interfaces/interfaces';
 import { RestLinksActionInterface } from '../interfaces/interfaces';
 import { PaginationLinks } from '../interfaces/interfaces';
+import { IRestRootAction } from '../interfaces/interfaces';
 
 export const rest_attributes_reducer = (state = '', action: RestAttributesActionInterface): any => {
     switch (action.type) {
@@ -27,6 +28,15 @@ export const rest_links_reducer = (state: PaginationLinks = {}, action: RestLink
 	switch (action.type) {
 		case REST_ACTIONS.SET_REST_LINKS:
 			return action.links;
+		default:
+			return state;
+	}
+}
+
+export const rest_root_reducer = (state: string = ' /api', action: IRestRootAction): any => {
+	switch (action.type) {
+		case REST_ACTIONS.SET_REST_ROOT:
+			return action.root;
 		default:
 			return state;
 	}
