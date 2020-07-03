@@ -15,7 +15,7 @@ module.exports = function follow(api, rootPath, relArray) {
          const config1 = {url: rootPath};
          return api(config1)
             .then((response) => {
-                console.log('travelNext top'); console.log(response);
+                // console.log('travelNext top'); console.log(response);
                 if (hasEmbeddedRel(response.data, rel)) {
                     return response.data._embedded[rel];
                 }
@@ -28,11 +28,11 @@ module.exports = function follow(api, rootPath, relArray) {
                     url: response.data._links[rel].href,
                     params: typeof arrayItem === 'string' ? '' : arrayItem.params
                 }
-                console.log('traverseNext/config2'); console.log(config2);
+                // console.log('traverseNext/config2'); console.log(config2);
                 return api(config2)
               })
             .catch((error) => {
-                console.log('traverseNext/top: ' + error);
+                // console.log('traverseNext/top: ' + error);
             });
      }
 
