@@ -1540,6 +1540,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/classnames@^2.2.10":
+  version "2.2.10"
+  resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.10.tgz#cc658ca319b6355399efc1f5b9e818f1a24bf999"
+  integrity sha512-1UzDldn9GfYYEsWWnn/P4wkTlkZDH7lDb0wBMGbtIQc9zXEQq7FlKBdZUn6OBqD8sKZZ2RQO2mAjGpXiDGoRmQ==
+
 "@types/color-name@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
@@ -5339,11 +5344,6 @@ gzip-size@5.1.1:
   dependencies:
     duplexer "^0.1.1"
     pify "^4.0.1"
-
-hal-types@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/hal-types/-/hal-types-1.0.0.tgz#e50b81eb3499bbad741137e1f8b0a6efb9e8d9f4"
-  integrity sha512-Se5eOMOVGls5T6FfXGxPyVlKdnrecniKX90a2pTXNiLe+avk7EwR79Ojx7nztIa3sPQ2svEFrCIPoNtGxOLMCg==
 
 handle-thing@^2.0.0:
   version "2.0.1"
