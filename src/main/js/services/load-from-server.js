@@ -35,8 +35,8 @@ export const loadFromServer = (pageSize, root, dispatch) => {
             // this.response = response.entity;
             // this.links = todoCollection.entity._links;
             dispatch(set_rest_attributes_action(Object.keys(response.data.$schema)));
-            console.log('loadFromServer/links');
-            console.log(todoCollection.data._links);
+            // console.log('loadFromServer/links');
+            // console.log(todoCollection.data._links);
             dispatch(set_rest_links_action(todoCollection.data._links));
 
             // save the page object
