@@ -116,3 +116,13 @@ export interface IHalPageAction {
 	type: string,
 	halPage: IHalPage
 }
+
+export interface ITodoItemStates {
+	active?: boolean,
+	completed?: boolean
+}
+
+export interface ITodoItemAction {
+	type: string,
+	activeCompleted: ITodoItemStates
+}

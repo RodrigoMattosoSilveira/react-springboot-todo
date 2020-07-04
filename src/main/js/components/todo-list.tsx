@@ -1,7 +1,7 @@
 // External dependencies
 import * as React from 'react'
 import {connect, ConnectedProps} from 'react-redux';
-import { makeStyles} from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme} from '@material-ui/core/styles';
 import Table from "@material-ui/core/Table";
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from "@material-ui/core/TableBody";
@@ -15,6 +15,7 @@ import Divider from "@material-ui/core/Divider";
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
 import { TodoRestInterface } from "../interfaces/interfaces";
+import TodoTableHeaderState from './todo-table-header-state';
 import TodoState from './todo-state';
 import TodoPriority from "./todo-priority";
 import TodoDelete from './todo-delete';
@@ -35,7 +36,8 @@ function mapStateToProps (state: RootState) {
 	return {
 		userName: state.authenticated_user_reducer,
 		todoList: state.todo_reducer.slice(0),
-		visibilityFilter: state.visibility_filter_reducer
+		visibilityFilter: state.visibility_filter_reducer,
+		todo_item_state_filter: state.todo_item_state_reducer
 	};
 }
 
@@ -61,25 +63,33 @@ type Props = PropsFromRedux & {}
  * Styles configuration Start
  * *****************************************************************************
  */
-const useStyles = makeStyles({
-	table: {
-		/* minWidth: 650, */
-		tableLayout: "auto",
-		width: "100%",
-		'& .hide-todo-item': {
-			display: 'none',
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		root: {
+			display: 'flex',
 		},
-	},
-	todoTextFont: {
-		fontSize: "1rem",
-	},
-	todoPriority: {
-		width: "32px"
-	},
-	todoPriorityFont: {
-		fontSize: "1rem"
-	}
-});
+		formControl: {
+			margin: theme.spacing(3),
+		},
+		table: {
+			/* minWidth: 650, */
+			tableLayout: "auto",
+			width: "100%",
+			'& .hide-todo-item': {
+				display: 'none',
+			},
+		},
+		todoTextFont: {
+			fontSize: "1rem",
+		},
+		todoPriority: {
+			width: "32px"
+		},
+		todoPriorityFont: {
+			fontSize: "1rem"
+		},
+	})
+);
 
 function computeVisible (visibilityFilter: string, isCompleted: boolean ): string {
 	// console.log('TodoList/computeVisible visibilityFilter: ' + visibilityFilter)
@@ -93,6 +103,14 @@ function computeVisible (visibilityFilter: string, isCompleted: boolean ): strin
 // TodoList component
 const TodoList = (props: Props) => {
 	const classes = useStyles();
+	const showThisRow = (todo: TodoRestInterface): boolean => {
+		let _showThisRow = false;
+		if (todo.data.isCompleted === false && props.todo_item_state_filter.active ||
+			todo.data.isCompleted === true && props.todo_item_state_filter.completed) {
+			_showThisRow = true
+		}
+		return _showThisRow;
+	}
 	
 	return (
 		<div>
@@ -106,7 +124,9 @@ const TodoList = (props: Props) => {
 					</TableHead>
 					<TableHead>
 						<TableRow>
-							<TableCell>State</TableCell>
+							<TableCell>
+								<TodoTableHeaderState title='State'></TodoTableHeaderState>
+							</TableCell>
 							<TableCell>Text</TableCell>
 							<TableCell>Priority</TableCell>
 							<TableCell>Delete</TableCell>
@@ -117,14 +137,19 @@ const TodoList = (props: Props) => {
 							props.todoList.length > 0
 								?
 								(
-									props.todoList.map((todo: TodoRestInterface) => (
-										<TableRow className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
-											<TableCell component="th" scope="row" ><TodoState todo={todo}/></TableCell>
-											<TableCell className={classes.todoTextFont}><TodoText todo={todo}/> </TableCell>
-											<TableCell className={classes.todoPriority} ><TodoPriority todo={todo}/></TableCell>
-											<TableCell align="right" className={"todo-delete-me"}><TodoDelete todo={todo}/></TableCell>
-										</TableRow>
-									))
+									props.todoList.map((todo: TodoRestInterface) => {
+										if (showThisRow(todo)) {
+											return (
+												<TableRow className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
+													<TableCell component="th" scope="row" ><TodoState todo={todo}/></TableCell>
+													<TableCell className={classes.todoTextFont}><TodoText todo={todo}/> </TableCell>
+													<TableCell className={classes.todoPriority} ><TodoPriority todo={todo}/></TableCell>
+													<TableCell align="right" className={"todo-delete-me"}><TodoDelete todo={todo}/></TableCell>
+												</TableRow>
+											)
+										}
+										}
+									)
 								)
 								:
 								(

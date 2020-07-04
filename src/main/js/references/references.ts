@@ -49,3 +49,7 @@ export const PAGINATION_TYPE = {
 	NEXT: 'next',
 	LAST: 'last'
 }
+
+export const TODO_ITEM_STATE_ACTIONS = {
+	SET_STATE: 'SET_STATE'
+}

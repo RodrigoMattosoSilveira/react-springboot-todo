@@ -6,7 +6,12 @@ const axios = require('axios').default;
 // Internal Dependencies
 import { TODO_ACTIONS } from '../references/references';
 import { TODO_COMPLETED } from "../references/references";
-import { TodoRestInterface } from '../interfaces/interfaces';
+import { TODO_ITEM_STATE_ACTIONS } from "../references/references";
+import {
+	ITodoItemAction,
+	TodoRestInterface,
+	ITodoItemStates
+} from '../interfaces/interfaces';
 import { TodoActionInterface } from '../interfaces/interfaces';
 import { client_setup_get } from '../services/client';
 import { client_update_config } from '../services/client';
@@ -126,6 +131,11 @@ export const todo_navigate_to_page_thunk = (navUri: string) =>
 export const todos_read = (todos:  TodoRestInterface[]): TodoActionInterface => ({
 	type: TODO_ACTIONS.READ,
 	todos: todos
+})
+
+export const todos_table_header_state_actions = ( newState:  ITodoItemStates): ITodoItemAction => ({
+	type: TODO_ITEM_STATE_ACTIONS.SET_STATE,
+	activeCompleted: newState
 })
 
 const alertMsg = (url: string, summary: string, detail: string): string => {
