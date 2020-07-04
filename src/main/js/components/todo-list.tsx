@@ -15,7 +15,7 @@ import Divider from "@material-ui/core/Divider";
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
 import { TodoRestInterface } from "../interfaces/interfaces";
-import TodoTableHeaderState from './todo-table-header-state';
+import TodoTableStateFilter from './todo-table-state-filter';
 import TodoState from './todo-state';
 import TodoPriority from "./todo-priority";
 import TodoDelete from './todo-delete';
@@ -136,7 +136,7 @@ const TodoList = (props: Props) => {
 					<TableHead>
 						<TableRow>
 							<TableCell>
-								<TodoTableHeaderState title='State'></TodoTableHeaderState>
+								<TodoTableStateFilter title='State'></TodoTableStateFilter>
 							</TableCell>
 							<TableCell>Text</TableCell>
 							<TableCell>Priority</TableCell>

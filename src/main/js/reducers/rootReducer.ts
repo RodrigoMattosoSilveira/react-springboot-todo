@@ -7,7 +7,7 @@ import { rest_page_size_reducer } from './rest-reducer';
 import { rest_links_reducer } from './rest-reducer';
 import { rest_root_reducer } from './rest-reducer';
 import { hal_page_reducer } from "./hal-reducer";
-import { todo_item_state_reducer } from './todo-item-state-reducer'
+import { todo_item_state_reducer } from './todo-item-state-filter-reducer'
 import { todo_item_priority_reducer } from "./todo-item-priority-reducer";
 
 export const rootReducer = combineReducers({

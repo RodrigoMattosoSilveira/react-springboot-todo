@@ -50,14 +50,13 @@ export const PAGINATION_TYPE = {
 	LAST: 'last'
 }
 
-export const TODO_ITEM_STATE_ACTIONS = {
+export const TODO_ITEM_STATE_FILTER_ACTIONS = {
 	SET_STATE: 'SET_STATE'
 }
 
 export const TODO_ITEM_PRIORITY_ACTIONS = {
 	SET_STATE: 'SET_STATE'
 }
-
 
 export const TODO_ITEM_PRIORITY = {
 	LOW: 'LOW',

@@ -117,14 +117,14 @@ export interface IHalPageAction {
 	halPage: IHalPage
 }
 
-export interface ITodoItemStates {
+export interface ITodoItemStateFilter {
 	active?: boolean,
 	completed?: boolean
 }
 
-export interface ITodoItemAction {
+export interface ITodoItemStateFilterAction {
 	type: string,
-	activeCompleted: ITodoItemStates
+	filterType: ITodoItemStateFilter
 }
 
 export interface ITodoItemPriorities {

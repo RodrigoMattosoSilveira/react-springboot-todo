@@ -6,11 +6,11 @@ const axios = require('axios').default;
 // Internal Dependencies
 import { TODO_ACTIONS } from '../references/references';
 import { TODO_COMPLETED } from "../references/references";
-import { TODO_ITEM_STATE_ACTIONS } from "../references/references";
+import { TODO_ITEM_STATE_FILTER_ACTIONS } from "../references/references";
 import {
-	ITodoItemAction,
+	ITodoItemStateFilterAction,
 	TodoRestInterface,
-	ITodoItemStates, ITodoItemPriorities, ITodoPrioritiesAction
+	ITodoItemStateFilter, ITodoItemPriorities, ITodoPrioritiesAction
 } from '../interfaces/interfaces';
 import { TodoActionInterface } from '../interfaces/interfaces';
 import { client_setup_get } from '../services/client';
@@ -133,13 +133,13 @@ export const todos_read = (todos:  TodoRestInterface[]): TodoActionInterface => 
 	todos: todos
 })
 
-export const todos_table_header_state_actions = ( newState:  ITodoItemStates): ITodoItemAction => ({
-	type: TODO_ITEM_STATE_ACTIONS.SET_STATE,
-	activeCompleted: newState
+export const todos_table_header_state_actions = ( newState:  ITodoItemStateFilter): ITodoItemStateFilterAction => ({
+	type: TODO_ITEM_STATE_FILTER_ACTIONS.SET_STATE,
+	filterType: newState
 })
 
 export const todos_table_header_priority_actions = ( newState:  ITodoItemPriorities): ITodoPrioritiesAction => ({
-	type: TODO_ITEM_STATE_ACTIONS.SET_STATE,
+	type: TODO_ITEM_STATE_FILTER_ACTIONS.SET_STATE,
 	priorities: newState
 })
 
