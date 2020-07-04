@@ -24,6 +24,7 @@ import { todo_toggle_isCompleted_thunk,
 	todo_edit_priority_thunk,
 	todo_delete_thunk } from '../actions/todos-actions'
 import TodoText from "./todo-text.ts";
+import {TODO_ITEM_PRIORITY} from "../references/references";
 
 /*
  * *****************************************************************************
@@ -37,7 +38,8 @@ function mapStateToProps (state: RootState) {
 		userName: state.authenticated_user_reducer,
 		todoList: state.todo_reducer.slice(0),
 		visibilityFilter: state.visibility_filter_reducer,
-		todo_item_state_filter: state.todo_item_state_reducer
+		todo_item_state_filter: state.todo_item_state_reducer,
+		todo_item_priority_filter: state.todo_item_priority_reducer
 	};
 }
 
@@ -104,12 +106,21 @@ function computeVisible (visibilityFilter: string, isCompleted: boolean ): strin
 const TodoList = (props: Props) => {
 	const classes = useStyles();
 	const showThisRow = (todo: TodoRestInterface): boolean => {
-		let _showThisRow = false;
+		let _showThisRowState = false;
 		if (todo.data.isCompleted === false && props.todo_item_state_filter.active ||
 			todo.data.isCompleted === true && props.todo_item_state_filter.completed) {
-			_showThisRow = true
+			_showThisRowState = true
 		}
-		return _showThisRow;
+		
+		let _showThisRowPriority = false;
+		if (todo.data.priority === TODO_ITEM_PRIORITY.LOW && props.todo_item_priority_filter.low ||
+			todo.data.priority === TODO_ITEM_PRIORITY.MEDIUM && props.todo_item_priority_filter.medium ||
+			todo.data.priority === TODO_ITEM_PRIORITY.HIGH && props.todo_item_priority_filter.high
+		) {
+			_showThisRowPriority = true
+		}
+		
+		return _showThisRowState && _showThisRowPriority;
 	}
 	
 	return (

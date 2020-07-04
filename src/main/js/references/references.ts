@@ -53,3 +53,14 @@ export const PAGINATION_TYPE = {
 export const TODO_ITEM_STATE_ACTIONS = {
 	SET_STATE: 'SET_STATE'
 }
+
+export const TODO_ITEM_PRIORITY_ACTIONS = {
+	SET_STATE: 'SET_STATE'
+}
+
+
+export const TODO_ITEM_PRIORITY = {
+	LOW: 'LOW',
+	MEDIUM: 'MEDIUM',
+	HIGH: 'HIGH'
+}

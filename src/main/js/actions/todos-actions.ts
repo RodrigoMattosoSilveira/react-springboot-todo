@@ -10,7 +10,7 @@ import { TODO_ITEM_STATE_ACTIONS } from "../references/references";
 import {
 	ITodoItemAction,
 	TodoRestInterface,
-	ITodoItemStates
+	ITodoItemStates, ITodoItemPriorities, ITodoPrioritiesAction
 } from '../interfaces/interfaces';
 import { TodoActionInterface } from '../interfaces/interfaces';
 import { client_setup_get } from '../services/client';
@@ -136,6 +136,11 @@ export const todos_read = (todos:  TodoRestInterface[]): TodoActionInterface => 
 export const todos_table_header_state_actions = ( newState:  ITodoItemStates): ITodoItemAction => ({
 	type: TODO_ITEM_STATE_ACTIONS.SET_STATE,
 	activeCompleted: newState
+})
+
+export const todos_table_header_priority_actions = ( newState:  ITodoItemPriorities): ITodoPrioritiesAction => ({
+	type: TODO_ITEM_STATE_ACTIONS.SET_STATE,
+	priorities: newState
 })
 
 const alertMsg = (url: string, summary: string, detail: string): string => {

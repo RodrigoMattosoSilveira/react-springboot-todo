@@ -126,3 +126,14 @@ export interface ITodoItemAction {
 	type: string,
 	activeCompleted: ITodoItemStates
 }
+
+export interface ITodoItemPriorities {
+	low?: boolean,
+	medium?: boolean,
+	high?: boolean
+}
+
+export interface ITodoPrioritiesAction {
+	type: string,
+	priorities: ITodoItemPriorities
+}
