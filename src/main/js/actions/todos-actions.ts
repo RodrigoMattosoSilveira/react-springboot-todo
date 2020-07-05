@@ -7,10 +7,11 @@ const axios = require('axios').default;
 import { TODO_ACTIONS } from '../references/references';
 import { TODO_COMPLETED } from "../references/references";
 import { TODO_ITEM_STATE_FILTER_ACTIONS } from "../references/references";
+import { PRIORITIES_ACTIONS } from "../references/references";
 import {
 	ITodoItemStateFilterAction,
 	TodoRestInterface,
-	ITodoItemStateFilter, ITodoItemPriorities, ITodoPrioritiesAction
+	ITodoItemStateFilter, IPrioritiesFilter, IPrioritiesFilterAction
 } from '../references/interfaces';
 import { TodoActionInterface } from '../references/interfaces';
 import { client_setup_get } from '../services/client';
@@ -138,14 +139,7 @@ export const todos_table_header_state_actions = ( newState:  ITodoItemStateFilte
 	filterType: newState
 })
 
-export const todos_table_header_priority_actions = ( newState:  ITodoItemPriorities): ITodoPrioritiesAction => ({
-	type: TODO_ITEM_STATE_FILTER_ACTIONS.SET_STATE,
-	priorities: newState
+export const APriorityFilter = ( newState:  IPrioritiesFilter): IPrioritiesFilterAction => ({
+	type: PRIORITIES_ACTIONS.SET_STATE,
+	filterType: newState
 })
-
-const alertMsg = (url: string, summary: string, detail: string): string => {
-	let alertMsg = url;
-	alertMsg += '\n\n' + summary;
-	alertMsg += '\n' + detail;
-	return alertMsg;
-}

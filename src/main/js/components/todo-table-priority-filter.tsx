@@ -7,12 +7,12 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import {todos_table_header_state_actions} from "../actions/todos-actions";
+import { APriorityFilter } from "../actions/todos-actions";
 import Popover from '@material-ui/core/Popover';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 // Internal dependencies
-import {ITodoItemStateFilter} from "../references/interfaces";
+import {IPrioritiesFilter} from "../references/interfaces";
 
 // Styles configuration
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,7 +60,7 @@ const mapStateToProps: any = null
 // Set to null if not used
 // const mapDispatchToProps: any = null
 const mapDispatchToProps = {
-	todos_table_header_state_actions: (newState:  ITodoItemStateFilter) => todos_table_header_state_actions(newState)
+	APriorityFilter: (newState:  IPrioritiesFilter) => APriorityFilter(newState)
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -79,17 +79,18 @@ const TodoTablePriorityFilter = (props: Props) => {
 	
 	// Checkbox control
 	const [state, setState] = React.useState({
-		active: true,
-		completed: true
+		low: true,
+		medium: true,
+		high: true
 	});
-	const { active, completed } = state;
+	const { low, medium, high } = state;
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setState({ ...state, [event.target.name]: event.target.checked });
 		
-		let newState: ITodoItemStateFilter = {
+		let newState: IPrioritiesFilter = {
 			[event.target.name]: event.target.checked
 		}
-		props.todos_table_header_state_actions(newState);
+		props.APriorityFilter(newState);
 	};
 	
 	// State management
@@ -105,9 +106,9 @@ const TodoTablePriorityFilter = (props: Props) => {
 	
 	const open = Boolean(anchorEl);
 	const id = open ? 'simple-popover' : undefined;
-	console.log('TodoTableStateFilter, open: ' + open);
-	console.log('TodoTableStateFilter, ID: ' + id);
-	console.log('TodoTableStateFilter, state');
+	console.log('TodoTablePriorityFilter, open: ' + open);
+	console.log('TodoTablePriorityFilter, ID: ' + id);
+	console.log('TodoTablePriorityFilter, state');
 	console.log(state);
 	
 	return (
@@ -130,12 +131,16 @@ const TodoTablePriorityFilter = (props: Props) => {
 				<FormControl component="fieldset" className={classes.formControl}>
 					<FormGroup>
 						<FormControlLabel
-							control={<Checkbox checked={active} onChange={handleChange} name="active" />}
-							label="active"
+							control={<Checkbox checked={low} onChange={handleChange} name="low" />}
+							label="LOW"
 						/>
 						<FormControlLabel
-							control={<Checkbox checked={completed} onChange={handleChange} name="completed" />}
-							label="completed"
+							control={<Checkbox checked={medium} onChange={handleChange} name="medium" />}
+							label="MEDIUM"
+						/>
+						<FormControlLabel
+							control={<Checkbox checked={high} onChange={handleChange} name="high" />}
+							label="HIGH"
 						/>
 					</FormGroup>
 				</FormControl>

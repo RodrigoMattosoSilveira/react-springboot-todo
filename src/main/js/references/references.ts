@@ -54,11 +54,11 @@ export const TODO_ITEM_STATE_FILTER_ACTIONS = {
 	SET_STATE: 'SET_STATE'
 }
 
-export const TODO_ITEM_PRIORITY_ACTIONS = {
+export const PRIORITIES_ACTIONS = {
 	SET_STATE: 'SET_STATE'
 }
 
-export const TODO_ITEM_PRIORITY = {
+export const PRIORITIES = {
 	LOW: 'LOW',
 	MEDIUM: 'MEDIUM',
 	HIGH: 'HIGH'

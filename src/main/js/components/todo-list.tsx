@@ -24,7 +24,8 @@ import { todo_toggle_isCompleted_thunk,
 	todo_edit_priority_thunk,
 	todo_delete_thunk } from '../actions/todos-actions'
 import TodoText from "./todo-text.ts";
-import {TODO_ITEM_PRIORITY} from "../references/references";
+import TodoTablePriorityFilter from './todo-table-priority-filter';
+import { PRIORITIES } from "../references/references";
 
 /*
  * *****************************************************************************
@@ -40,7 +41,7 @@ function mapStateToProps (state: RootState) {
 		todoList: state.todo_reducer.slice(0),
 		visibilityFilter: state.visibility_filter_reducer,
 		todo_item_state_filter: state.todo_item_state_reducer,
-		todo_item_priority_filter: state.todo_item_priority_reducer
+		todo_item_priority_filter: state.RPriorityFilter
 	};
 }
 
@@ -115,9 +116,9 @@ const TodoList = (props: Props) => {
 		}
 		
 		let _showThisRowPriority = false;
-		if (todo.data.priority === TODO_ITEM_PRIORITY.LOW && props.todo_item_priority_filter.low ||
-			todo.data.priority === TODO_ITEM_PRIORITY.MEDIUM && props.todo_item_priority_filter.medium ||
-			todo.data.priority === TODO_ITEM_PRIORITY.HIGH && props.todo_item_priority_filter.high
+		if (todo.data.priority === PRIORITIES.LOW && props.todo_item_priority_filter.low ||
+			todo.data.priority === PRIORITIES.MEDIUM && props.todo_item_priority_filter.medium ||
+			todo.data.priority === PRIORITIES.HIGH && props.todo_item_priority_filter.high
 		) {
 			_showThisRowPriority = true
 		}
@@ -141,7 +142,9 @@ const TodoList = (props: Props) => {
 								<TodoTableStateFilter title='State'></TodoTableStateFilter>
 							</TableCell>
 							<TableCell>Text</TableCell>
-							<TableCell>Priority</TableCell>
+							<TableCell>
+								<TodoTablePriorityFilter title='Priority'></TodoTablePriorityFilter>
+							</TableCell>
 							<TableCell>Delete</TableCell>
 						</TableRow>
 					</TableHead>
@@ -184,5 +187,4 @@ const TodoList = (props: Props) => {
 		</div>
 	)
 }
-
 export default connector(TodoList)

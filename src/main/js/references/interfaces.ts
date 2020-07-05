@@ -127,13 +127,14 @@ export interface ITodoItemStateFilterAction {
 	filterType: ITodoItemStateFilter
 }
 
-export interface ITodoItemPriorities {
+export interface IPrioritiesFilter {
 	low?: boolean,
 	medium?: boolean,
 	high?: boolean
 }
 
-export interface ITodoPrioritiesAction {
+export interface IPrioritiesFilterAction {
 	type: string,
-	priorities: ITodoItemPriorities
+	filterType: IPrioritiesFilter
 }
+
