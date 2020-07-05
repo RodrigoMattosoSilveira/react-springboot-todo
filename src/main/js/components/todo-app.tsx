@@ -8,9 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 // Internal Dependencies
 import TodoList from "./todo-list";
-import TodoFilters from "./todo-filters";
 import { RootState } from '../reducers/rootReducer'
-import PageSize from "./page-size";
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -88,7 +86,6 @@ const TodoApp = (props: Props) => {
 			{/*< SelectPageSizeForm />*/}
 			{/*< TodoForm />*/}
 			<TodoList/>
-			<TodoFilters/>
 		</div>
 	)
 }
