@@ -14,7 +14,7 @@ import Divider from "@material-ui/core/Divider";
 
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
-import { TodoRestInterface } from "../interfaces/interfaces";
+import { TodoRestInterface } from "../references/interfaces";
 import TodoTableStateFilter from './todo-table-state-filter';
 import TodoState from './todo-state';
 import TodoPriority from "./todo-priority";
@@ -28,11 +28,12 @@ import {TODO_ITEM_PRIORITY} from "../references/references";
 
 /*
  * *****************************************************************************
- * Prop configuration
+ * Prop configuration ... do not remove the comments
  * *****************************************************************************
  */
 
 // Set to null if not used
+// const mapStateToProps: any = null
 function mapStateToProps (state: RootState) {
 	return {
 		userName: state.authenticated_user_reducer,
@@ -44,6 +45,7 @@ function mapStateToProps (state: RootState) {
 }
 
 // Set to null if not used
+// const mapDispatchToProps: any = null
 const mapDispatchToProps = {
 	todo_toggle_isCompleted_thunk: (todo: TodoRestInterface) => todo_toggle_isCompleted_thunk(todo),
 	todo_edit_priority_thunk: (todo: TodoRestInterface, attribute: string) => todo_edit_priority_thunk(todo, attribute),

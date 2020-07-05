@@ -11,8 +11,8 @@ import {
 	ITodoItemStateFilterAction,
 	TodoRestInterface,
 	ITodoItemStateFilter, ITodoItemPriorities, ITodoPrioritiesAction
-} from '../interfaces/interfaces';
-import { TodoActionInterface } from '../interfaces/interfaces';
+} from '../references/interfaces';
+import { TodoActionInterface } from '../references/interfaces';
 import { client_setup_get } from '../services/client';
 import { client_update_config } from '../services/client';
 import { loadFromServer }  from '../services/load-from-server';

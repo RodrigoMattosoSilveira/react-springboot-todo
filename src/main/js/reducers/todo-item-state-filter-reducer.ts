@@ -1,4 +1,4 @@
-import {ITodoItemStateFilter, ITodoItemStateFilterAction} from "../interfaces/interfaces";
+import {ITodoItemStateFilter, ITodoItemStateFilterAction} from "../references/interfaces";
 import {TODO_ITEM_STATE_FILTER_ACTIONS} from "../references/references";
 
 

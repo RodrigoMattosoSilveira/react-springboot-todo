@@ -1,4 +1,4 @@
-import {ITodoPrioritiesAction, ITodoItemPriorities} from "../interfaces/interfaces";
+import {ITodoPrioritiesAction, ITodoItemPriorities} from "../references/interfaces";
 import {TODO_ITEM_PRIORITY_ACTIONS} from "../references/references";
 
 const defaultTodoItemPriorities: ITodoItemPriorities = {

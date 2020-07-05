@@ -1,5 +1,5 @@
 import {HAL_ACTIONS} from '../references/references';
-import {IHalPage, IHalPageAction} from '../interfaces/interfaces';
+import {IHalPage, IHalPageAction} from '../references/interfaces';
 
 const defaultHalPage: IHalPage = {
 	number: 0,			// the number of rows per page, a.k.a page size

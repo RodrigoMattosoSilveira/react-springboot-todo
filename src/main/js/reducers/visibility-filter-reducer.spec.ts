@@ -1,7 +1,7 @@
 import { VISIBILITY_FILTER_TYPES } from '../references/references'
 import { VISIBILITY_FILTER_ACTIONS } from '../references/references'
 import { visibility_filter_reducer }  from './visibility-filter-reducer';
-import { VisibilityFilterActionInterface } from '../interfaces/interfaces';
+import { VisibilityFilterActionInterface } from '../references/interfaces';
 
 describe('visibility-filter-reducers', () => {
     it('should handle initial state', () => {

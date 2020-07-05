@@ -74,7 +74,7 @@ type Props = PropsFromRedux & {
 	title: string
 }
 
-const TodoTableStateFilter = (props: Props) => {
+const TodoTablePriorityFilter = (props: Props) => {
 	const classes = useStyles();
 	
 	// Checkbox control
@@ -85,7 +85,7 @@ const TodoTableStateFilter = (props: Props) => {
 	const { active, completed } = state;
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setState({ ...state, [event.target.name]: event.target.checked });
-
+		
 		let newState: ITodoItemStateFilter = {
 			[event.target.name]: event.target.checked
 		}
@@ -143,4 +143,4 @@ const TodoTableStateFilter = (props: Props) => {
 		</div>
 	)
 }
-export default connector(TodoTableStateFilter)
+export default connector(TodoTablePriorityFilter)

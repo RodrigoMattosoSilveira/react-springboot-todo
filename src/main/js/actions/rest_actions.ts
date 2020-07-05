@@ -1,7 +1,7 @@
 import { REST_ACTIONS } from '../references/references';
-import { RestAttributesActionInterface } from '../interfaces/interfaces';
-import { RestPageSizeActionInterface } from '../interfaces/interfaces';
-import { RestLinksActionInterface } from '../interfaces/interfaces';
+import { RestAttributesActionInterface } from '../references/interfaces';
+import { RestPageSizeActionInterface } from '../references/interfaces';
+import { RestLinksActionInterface } from '../references/interfaces';
 import { loadFromServer } from "../services/load-from-server";
 
 export const set_rest_attributes_action = (attributes: any): RestAttributesActionInterface => ({
