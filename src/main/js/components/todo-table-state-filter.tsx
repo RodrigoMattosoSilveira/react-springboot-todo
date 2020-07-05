@@ -3,13 +3,10 @@ import React from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
-import classNames from 'classnames';
 import {todos_table_header_state_actions} from "../actions/todos-actions";
 import Popover from '@material-ui/core/Popover';
 import Icon from '@material-ui/core/Icon';
@@ -46,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 /*
  * *****************************************************************************
- * Prop configuration
+ * Prop configuration ... do not remove the comments
  * *****************************************************************************
  */
 
@@ -99,20 +96,9 @@ const TodoTableStateFilter = (props: Props) => {
 	// Get current element with onMouseOver or onMouseEnter in React
 	// https://linguinecode.com/post/get-current-element-react-onmouseover-or-onmouseenter
 	const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-	// const handleOnFocus = (event: React.ChangeEvent<HTMLInputElement>): void => {
-	// 	setAnchorEl(event.currentTarget);
-	// 	console.log('TodoTableStateFilter/handleOnFocus/event');
-	// 	console.log(event);
-	// }
-	// const handleOnBlur = (event: React.ChangeEvent<HTMLInputElement>): void => {
-	// 	setAnchorEl(null);
-	// 	console.log('TodoTableStateFilter/handleOnBlur/state');
-	// 	console.log(state);
-	// }
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
-	
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
@@ -126,15 +112,6 @@ const TodoTableStateFilter = (props: Props) => {
 	
 	return (
 		<div className={classes.root} >
-			{/*<div*/}
-			{/*	onMouseEnter={handleOnFocus}*/}
-			{/*	onMouseLeave={handleOnBlur}*/}
-			{/*>*/}
-			{/*	{props.title}*/}
-			{/*</div>*/}
-			{/*<Button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>*/}
-			{/*	{props.title}*/}
-			{/*</Button>*/}
 			<Button onClick={handleClick} endIcon={<Icon>filter_list</Icon>}>{props.title}</Button>
 			<Popover
 				id={id}
@@ -151,7 +128,6 @@ const TodoTableStateFilter = (props: Props) => {
 				}}
 			>
 				<FormControl component="fieldset" className={classes.formControl}>
-					{/*<FormLabel component="legend">State</FormLabel>*/}
 					<FormGroup>
 						<FormControlLabel
 							control={<Checkbox checked={active} onChange={handleChange} name="active" />}
@@ -162,7 +138,6 @@ const TodoTableStateFilter = (props: Props) => {
 							label="completed"
 						/>
 					</FormGroup>
-					{/*<FormHelperText>Select State(s)</FormHelperText>*/}
 				</FormControl>
 			</Popover>
 		</div>
