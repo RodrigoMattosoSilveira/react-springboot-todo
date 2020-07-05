@@ -10,6 +10,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import {todos_table_header_state_actions} from "../actions/todos-actions";
 import Popover from '@material-ui/core/Popover';
 import Icon from '@material-ui/core/Icon';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 // Internal dependencies
 import {ITodoItemStateFilter} from "../interfaces/interfaces";
@@ -112,7 +113,7 @@ const TodoTableStateFilter = (props: Props) => {
 	
 	return (
 		<div className={classes.root} >
-			<Button onClick={handleClick} endIcon={<Icon>filter_list</Icon>}>{props.title}</Button>
+			<Button onClick={handleClick} endIcon={<FilterListIcon></FilterListIcon>}>{props.title}</Button>
 			<Popover
 				id={id}
 				open={open}
