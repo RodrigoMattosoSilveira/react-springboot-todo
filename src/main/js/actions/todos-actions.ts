@@ -30,7 +30,7 @@ export const todo_toggle_isCompleted_thunk = (todo: TodoRestInterface) =>
 	
 export const todo_edit_text_thunk = (todo: TodoRestInterface, text: string) =>
 	(dispatch: any, getState: any, axios: any) => {
-		let updateTodo = { priority: text}
+		let updateTodo = { text: text}
 		todo_update(dispatch, todo, updateTodo)
 	}
 

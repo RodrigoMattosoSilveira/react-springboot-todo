@@ -66,6 +66,7 @@ type Props = PropsFromRedux & {
 const TodoText = (props: Props) => {
 	// const classes = useStyles();
 	
+	const [trackingMouse, setTrackingMouse] = React.useState(false);
 	const [textFieldValid, setTextFieldValid] = React.useState(true);
 	const [textFieldValue, setTextFieldValue] = React.useState(props.todo.data.text);
 	const [pristine, setPristine] = React.useState(true);
@@ -96,20 +97,55 @@ const TodoText = (props: Props) => {
 			: {};
 	}
 	
+	const handleOnMouseEnter = (): any => {
+		// console.log('TodoText/handleOnMouseEnter')
+		// console.log('textFieldValid = ' + textFieldValid + ', textFieldValue = ' + textFieldValue + ', pristine: ' + pristine + ', trackingMouse: ' + trackingMouse)
+	}
+	
+	const handleOnMouseOut = (): any => {
+		console.log('TodoText/handleMouseOut')
+		console.log('textFieldValid = ' + textFieldValid + ', textFieldValue = ' + textFieldValue + ', pristine: ' + pristine + ', trackingMouse: ' + trackingMouse)
+		if (trackingMouse && textFieldValid && !pristine) {
+			console.log('TodoText/handleMouseOut ... thunking')
+			props.todo_edit_text_thunk(props.todo, textFieldValue);
+		} else {
+			setTextFieldValue(props.todo.data.text)
+		}
+		setTrackingMouse(false);
+	}
+	
+	const helperTextToShow = (): string => {
+		let textToShow = '';
+		if (!textFieldValid) {
+			textToShow = 'Must have at least one non-blank character'
+		}
+		else {
+			if (!pristine) {
+				textToShow = 'Type enter to update'
+			}
+		}
+		return textToShow;
+	}
+	const handleOnKeyEvent = (key: string): any => {
+		if (key === 'Enter') {
+			props.todo_edit_text_thunk(props.todo, textFieldValue);
+		}
+		if (key === 'Esc') {
+			setTextFieldValue(props.todo.data.text)
+			setPristine(true);
+		}
+	}
+	
 	return (
 		<KeyboardEventHandler
-			handleKeys={['Esc']}
-			onKeyEvent={(key: string, e: any) => setTextFieldValue(props.todo.data.text)} >
+			handleKeys={['Esc', 'Enter']}
+			onKeyEvent={(key: string, e: any) => handleOnKeyEvent(key)} >
 			<TextField
 				id="standard-basic"
 				value={textFieldValue}
 				onChange={handleChange}
 				error={!textFieldValid}
-				helperText={
-					textFieldValid
-						? ''
-						: "Must have at least one non-blank character"
-				}
+				helperText={helperTextToShow()}
 				fullWidth
 				{...notAnOwner() as string}
 			/>
