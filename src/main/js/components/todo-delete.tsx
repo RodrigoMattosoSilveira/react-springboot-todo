@@ -48,7 +48,7 @@ type Props = PropsFromRedux & {
  */
 // const useStyles = makeStyles((theme: Theme) => ({}));
 
-const TodoText = (props: Props) => {
+const TodoDelete = (props: Props) => {
 	// const classes = useStyles();
 	
 	const notAnOwner = () => {
@@ -70,4 +70,4 @@ const TodoText = (props: Props) => {
 		</Tooltip>
 	)
 }
-export default connector(TodoText)
+export default connector(TodoDelete)
