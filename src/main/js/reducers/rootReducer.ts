@@ -6,7 +6,9 @@ import { rest_attributes_reducer } from './rest-reducer';
 import { rest_page_size_reducer } from './rest-reducer';
 import { rest_links_reducer } from './rest-reducer';
 import { rest_root_reducer } from './rest-reducer';
-import {hal_page_reducer} from "./hal-reducer";
+import { hal_page_reducer } from "./hal-reducer";
+import { todo_item_state_reducer } from './todo-item-state-filter-reducer'
+import { RPriorityFilter } from './priority-filter-reducer'
 
 export const rootReducer = combineReducers({
 	todo_reducer,
@@ -16,7 +18,9 @@ export const rootReducer = combineReducers({
 	rest_page_size_reducer,
 	rest_links_reducer,
 	rest_root_reducer,
-	hal_page_reducer
+	hal_page_reducer,
+	todo_item_state_reducer,
+	RPriorityFilter
 })
 
 export type RootState = ReturnType<typeof rootReducer>

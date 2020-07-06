@@ -6,8 +6,14 @@ const axios = require('axios').default;
 // Internal Dependencies
 import { TODO_ACTIONS } from '../references/references';
 import { TODO_COMPLETED } from "../references/references";
-import { TodoRestInterface } from '../interfaces/interfaces';
-import { TodoActionInterface } from '../interfaces/interfaces';
+import { TODO_ITEM_STATE_FILTER_ACTIONS } from "../references/references";
+import { PRIORITIES_ACTIONS } from "../references/references";
+import {
+	ITodoItemStateFilterAction,
+	TodoRestInterface,
+	ITodoItemStateFilter, IPrioritiesFilter, IPrioritiesFilterAction
+} from '../references/interfaces';
+import { TodoActionInterface } from '../references/interfaces';
 import { client_setup_get } from '../services/client';
 import { client_update_config } from '../services/client';
 import { loadFromServer }  from '../services/load-from-server';
@@ -128,9 +134,12 @@ export const todos_read = (todos:  TodoRestInterface[]): TodoActionInterface => 
 	todos: todos
 })
 
-const alertMsg = (url: string, summary: string, detail: string): string => {
-	let alertMsg = url;
-	alertMsg += '\n\n' + summary;
-	alertMsg += '\n' + detail;
-	return alertMsg;
-}
+export const todos_table_header_state_actions = ( newState:  ITodoItemStateFilter): ITodoItemStateFilterAction => ({
+	type: TODO_ITEM_STATE_FILTER_ACTIONS.SET_STATE,
+	filterType: newState
+})
+
+export const APriorityFilter = ( newState:  IPrioritiesFilter): IPrioritiesFilterAction => ({
+	type: PRIORITIES_ACTIONS.SET_STATE,
+	filterType: newState
+})

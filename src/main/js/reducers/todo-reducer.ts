@@ -1,6 +1,6 @@
 import { TODO_ACTIONS } from '../references/references';
-import { TodoActionInterface } from '../interfaces/interfaces';
-import { TodoRestInterface } from '../interfaces/interfaces';
+import { TodoActionInterface } from '../references/interfaces';
+import { TodoRestInterface } from '../references/interfaces';
 
 const seedTodoList:TodoRestInterface[] = [];
 

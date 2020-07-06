@@ -8,7 +8,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 // Internal dependencies
 import {RootState} from "../reducers/rootReducer";
-import {TodoRestInterface} from "../interfaces/interfaces";
+import {TodoRestInterface} from "../references/interfaces";
 import { todo_delete_thunk } from "../actions/todos-actions";
 
 /*

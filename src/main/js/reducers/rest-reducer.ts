@@ -1,9 +1,9 @@
 import { REST_ACTIONS } from '../references/references';
-import { RestAttributesActionInterface } from '../interfaces/interfaces';
-import { RestPageSizeActionInterface } from '../interfaces/interfaces';
-import { RestLinksActionInterface } from '../interfaces/interfaces';
-import { PaginationLinks } from '../interfaces/interfaces';
-import { IRestRootAction } from '../interfaces/interfaces';
+import { RestAttributesActionInterface } from '../references/interfaces';
+import { RestPageSizeActionInterface } from '../references/interfaces';
+import { RestLinksActionInterface } from '../references/interfaces';
+import { PaginationLinks } from '../references/interfaces';
+import { IRestRootAction } from '../references/interfaces';
 
 export const rest_attributes_reducer = (state = '', action: RestAttributesActionInterface): any => {
     switch (action.type) {

@@ -1,5 +1,5 @@
 import {HAL_ACTIONS} from "../references/references";
-import {IHalPage, IHalPageAction} from "../interfaces/interfaces";
+import {IHalPage, IHalPageAction} from "../references/interfaces";
 
 export const set_hal_page = (halPage: IHalPage): IHalPageAction => ({
 	type: HAL_ACTIONS.SET_HAL_PAGE,

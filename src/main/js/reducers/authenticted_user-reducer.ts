@@ -1,5 +1,5 @@
 import { AUTHENTICATED_USER_ACTIONS } from '../references/references';
-import { AuthenticatedUserActionInterface } from '../interfaces/interfaces';
+import { AuthenticatedUserActionInterface } from '../references/interfaces';
 
 export const authenticated_user_reducer = (state = '', action: AuthenticatedUserActionInterface): string => {
     switch (action.type) {

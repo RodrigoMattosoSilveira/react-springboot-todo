@@ -2,7 +2,7 @@ import shortid from 'shortid';
 
 import { todo_reducer }  from './todo-reducer';
 import { TODO_ACTIONS } from '../references/references';
-import { TodoActionInterface, TodoInterface } from '../interfaces/interfaces';
+import { TodoActionInterface, TodoInterface } from '../references/interfaces';
 
 describe('todo-reducers', () => {
     it('should handle initial state', () => {

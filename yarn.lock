@@ -5340,11 +5340,6 @@ gzip-size@5.1.1:
     duplexer "^0.1.1"
     pify "^4.0.1"
 
-hal-types@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/hal-types/-/hal-types-1.0.0.tgz#e50b81eb3499bbad741137e1f8b0a6efb9e8d9f4"
-  integrity sha512-Se5eOMOVGls5T6FfXGxPyVlKdnrecniKX90a2pTXNiLe+avk7EwR79Ojx7nztIa3sPQ2svEFrCIPoNtGxOLMCg==
-
 handle-thing@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-2.0.1.tgz#857f79ce359580c340d43081cc648970d0bb234e"

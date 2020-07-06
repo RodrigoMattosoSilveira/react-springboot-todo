@@ -1,7 +1,7 @@
 import { VISIBILITY_FILTER_TYPES } from '../references/references'
 import { AUTHENTICATED_USER_ACTIONS } from '../references/references'
 import { authenticated_user_reducer }  from './authenticted_user-reducer';
-import { AuthenticatedUserActionInterface } from '../interfaces/interfaces';
+import { AuthenticatedUserActionInterface } from '../references/interfaces';
 
 describe('authenticated user reducers', () => {
 	it('should handle initial state', () => {

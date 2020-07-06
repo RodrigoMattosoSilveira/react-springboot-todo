@@ -5,7 +5,6 @@ import {RootState} from "../reducers/rootReducer";
 import { makeStyles, createStyles, useTheme, Theme } from '@material-ui/core/styles';
 import TablePagination from '@material-ui/core/TablePagination';
 
-
 // Internal dependencies
 import {set_rest_page_size_action_thunk} from "../actions/rest_actions";
 import TodoTablePaginationActions from "./todo-table-pagination-actions";
@@ -51,15 +50,15 @@ type Props = PropsFromRedux & {}
 
 const TodoTablePagination = (props: Props) => {
 	// const classes = useStyles();
-	console.log('TodoTablePagination/props.count: ' + props.count);
-	console.log('TodoTablePagination/props.page: ' + props.page);
-	console.log('TodoTablePagination/props.rowsPerPage: ' + props.rowsPerPage);
+	// console.log('TodoTablePagination/props.count: ' + props.count);
+	// console.log('TodoTablePagination/props.page: ' + props.page);
+	// console.log('TodoTablePagination/props.rowsPerPage: ' + props.rowsPerPage);
 	
 	const [page, setPage] = React.useState(props.page);
-	console.log('TodoTablePagination/page: ' + page);
+	// console.log('TodoTablePagination/page: ' + page);
 	
 	const [rowsPerPage, setRowsPerPage] = React.useState(3); //TODO find out why props.rowsPerPage does not work
-	console.log('TodoTablePagination/rowsPerPage: ' + rowsPerPage);
+	// console.log('TodoTablePagination/rowsPerPage: ' + rowsPerPage);
 	
 	
 	const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {

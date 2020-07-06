@@ -116,3 +116,25 @@ export interface IHalPageAction {
 	type: string,
 	halPage: IHalPage
 }
+
+export interface ITodoItemStateFilter {
+	active?: boolean,
+	completed?: boolean
+}
+
+export interface ITodoItemStateFilterAction {
+	type: string,
+	filterType: ITodoItemStateFilter
+}
+
+export interface IPrioritiesFilter {
+	low?: boolean,
+	medium?: boolean,
+	high?: boolean
+}
+
+export interface IPrioritiesFilterAction {
+	type: string,
+	filterType: IPrioritiesFilter
+}
+

@@ -49,3 +49,17 @@ export const PAGINATION_TYPE = {
 	NEXT: 'next',
 	LAST: 'last'
 }
+
+export const TODO_ITEM_STATE_FILTER_ACTIONS = {
+	SET_STATE: 'SET_STATE'
+}
+
+export const PRIORITIES_ACTIONS = {
+	SET_STATE: 'SET_STATE'
+}
+
+export const PRIORITIES = {
+	LOW: 'LOW',
+	MEDIUM: 'MEDIUM',
+	HIGH: 'HIGH'
+}

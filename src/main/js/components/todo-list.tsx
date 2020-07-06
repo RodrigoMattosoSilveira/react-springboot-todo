@@ -1,7 +1,7 @@
 // External dependencies
 import * as React from 'react'
 import {connect, ConnectedProps} from 'react-redux';
-import { makeStyles} from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme} from '@material-ui/core/styles';
 import Table from "@material-ui/core/Table";
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from "@material-ui/core/TableBody";
@@ -14,7 +14,8 @@ import Divider from "@material-ui/core/Divider";
 
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
-import { TodoRestInterface } from "../interfaces/interfaces";
+import { TodoRestInterface } from "../references/interfaces";
+import TodoTableStateFilter from './todo-table-state-filter';
 import TodoState from './todo-state';
 import TodoPriority from "./todo-priority";
 import TodoDelete from './todo-delete';
@@ -23,23 +24,29 @@ import { todo_toggle_isCompleted_thunk,
 	todo_edit_priority_thunk,
 	todo_delete_thunk } from '../actions/todos-actions'
 import TodoText from "./todo-text.ts";
+import TodoTablePriorityFilter from './todo-table-priority-filter';
+import { PRIORITIES } from "../references/references";
 
 /*
  * *****************************************************************************
- * Prop configuration
+ * Prop configuration ... do not remove the comments
  * *****************************************************************************
  */
 
 // Set to null if not used
+// const mapStateToProps: any = null
 function mapStateToProps (state: RootState) {
 	return {
 		userName: state.authenticated_user_reducer,
 		todoList: state.todo_reducer.slice(0),
-		visibilityFilter: state.visibility_filter_reducer
+		visibilityFilter: state.visibility_filter_reducer,
+		todo_item_state_filter: state.todo_item_state_reducer,
+		todo_item_priority_filter: state.RPriorityFilter
 	};
 }
 
 // Set to null if not used
+// const mapDispatchToProps: any = null
 const mapDispatchToProps = {
 	todo_toggle_isCompleted_thunk: (todo: TodoRestInterface) => todo_toggle_isCompleted_thunk(todo),
 	todo_edit_priority_thunk: (todo: TodoRestInterface, attribute: string) => todo_edit_priority_thunk(todo, attribute),
@@ -61,25 +68,33 @@ type Props = PropsFromRedux & {}
  * Styles configuration Start
  * *****************************************************************************
  */
-const useStyles = makeStyles({
-	table: {
-		/* minWidth: 650, */
-		tableLayout: "auto",
-		width: "100%",
-		'& .hide-todo-item': {
-			display: 'none',
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		root: {
+			display: 'flex',
 		},
-	},
-	todoTextFont: {
-		fontSize: "1rem",
-	},
-	todoPriority: {
-		width: "32px"
-	},
-	todoPriorityFont: {
-		fontSize: "1rem"
-	}
-});
+		formControl: {
+			margin: theme.spacing(3),
+		},
+		table: {
+			/* minWidth: 650, */
+			tableLayout: "auto",
+			width: "100%",
+			'& .hide-todo-item': {
+				display: 'none',
+			},
+		},
+		todoTextFont: {
+			fontSize: "1rem",
+		},
+		todoPriority: {
+			width: "32px"
+		},
+		todoPriorityFont: {
+			fontSize: "1rem"
+		},
+	})
+);
 
 function computeVisible (visibilityFilter: string, isCompleted: boolean ): string {
 	// console.log('TodoList/computeVisible visibilityFilter: ' + visibilityFilter)
@@ -93,6 +108,23 @@ function computeVisible (visibilityFilter: string, isCompleted: boolean ): strin
 // TodoList component
 const TodoList = (props: Props) => {
 	const classes = useStyles();
+	const showThisRow = (todo: TodoRestInterface): boolean => {
+		let _showThisRowState = false;
+		if (todo.data.isCompleted === false && props.todo_item_state_filter.active ||
+			todo.data.isCompleted === true && props.todo_item_state_filter.completed) {
+			_showThisRowState = true
+		}
+		
+		let _showThisRowPriority = false;
+		if (todo.data.priority === PRIORITIES.LOW && props.todo_item_priority_filter.low ||
+			todo.data.priority === PRIORITIES.MEDIUM && props.todo_item_priority_filter.medium ||
+			todo.data.priority === PRIORITIES.HIGH && props.todo_item_priority_filter.high
+		) {
+			_showThisRowPriority = true
+		}
+		
+		return _showThisRowState && _showThisRowPriority;
+	}
 	
 	return (
 		<div>
@@ -106,9 +138,13 @@ const TodoList = (props: Props) => {
 					</TableHead>
 					<TableHead>
 						<TableRow>
-							<TableCell>State</TableCell>
+							<TableCell>
+								<TodoTableStateFilter title='State'></TodoTableStateFilter>
+							</TableCell>
 							<TableCell>Text</TableCell>
-							<TableCell>Priority</TableCell>
+							<TableCell>
+								<TodoTablePriorityFilter title='Priority'></TodoTablePriorityFilter>
+							</TableCell>
 							<TableCell>Delete</TableCell>
 						</TableRow>
 					</TableHead>
@@ -117,14 +153,19 @@ const TodoList = (props: Props) => {
 							props.todoList.length > 0
 								?
 								(
-									props.todoList.map((todo: TodoRestInterface) => (
-										<TableRow className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
-											<TableCell component="th" scope="row" ><TodoState todo={todo}/></TableCell>
-											<TableCell className={classes.todoTextFont}><TodoText todo={todo}/> </TableCell>
-											<TableCell className={classes.todoPriority} ><TodoPriority todo={todo}/></TableCell>
-											<TableCell align="right" className={"todo-delete-me"}><TodoDelete todo={todo}/></TableCell>
-										</TableRow>
-									))
+									props.todoList.map((todo: TodoRestInterface) => {
+										if (showThisRow(todo)) {
+											return (
+												<TableRow className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
+													<TableCell component="th" scope="row" ><TodoState todo={todo}/></TableCell>
+													<TableCell className={classes.todoTextFont}><TodoText todo={todo}/> </TableCell>
+													<TableCell className={classes.todoPriority} ><TodoPriority todo={todo}/></TableCell>
+													<TableCell align="right" className={"todo-delete-me"}><TodoDelete todo={todo}/></TableCell>
+												</TableRow>
+											)
+										}
+										}
+									)
 								)
 								:
 								(
@@ -146,5 +187,4 @@ const TodoList = (props: Props) => {
 		</div>
 	)
 }
-
 export default connector(TodoList)

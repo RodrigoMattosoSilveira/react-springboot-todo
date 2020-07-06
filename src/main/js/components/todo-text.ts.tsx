@@ -2,7 +2,7 @@
 import * as React from 'react'
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from "../reducers/rootReducer";
-import {TodoRestInterface} from "../interfaces/interfaces";
+import {TodoRestInterface} from "../references/interfaces";
 import {todo_edit_priority_thunk} from "../actions/todos-actions";
 // import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
