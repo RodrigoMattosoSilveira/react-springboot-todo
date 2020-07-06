@@ -28,6 +28,7 @@
     "net": "^1.0.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-keyboard-event-handler": "^1.5.4",
     "react-redux": "^7.2.0",
     "react-redux-lifecycle": "^2.2.0",
     "react-scripts": "^3.4.1",

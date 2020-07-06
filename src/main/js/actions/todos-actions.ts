@@ -28,12 +28,19 @@ export const todo_toggle_isCompleted_thunk = (todo: TodoRestInterface) =>
 		todo_update(dispatch, todo, updateTodo)
 	}
 	
+export const todo_edit_text_thunk = (todo: TodoRestInterface, text: string) =>
+	(dispatch: any, getState: any, axios: any) => {
+		let updateTodo = { priority: text}
+		todo_update(dispatch, todo, updateTodo)
+	}
+
 export const todo_edit_priority_thunk = (todo: TodoRestInterface, priority: string) =>
 	(dispatch: any, getState: any, axios: any) => {
 		let updateTodo = { priority: priority}
 		todo_update(dispatch, todo, updateTodo)
 	}
-	
+
+
 const todo_update = (dispatch: any, todo: TodoRestInterface, updateTodo: {}) => {
 	let url = todo.data._links.self.href;
 	let etag = todo.headers['etag'];

@@ -3,9 +3,11 @@ import * as React from 'react'
 import {connect, ConnectedProps} from 'react-redux';
 import {RootState} from "../reducers/rootReducer";
 import {TodoRestInterface} from "../references/interfaces";
-import {todo_edit_priority_thunk} from "../actions/todos-actions";
+import {todo_edit_text_thunk} from "../actions/todos-actions";
 // import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+// import KeyboardEventHandler from 'react-keyboard-event-handler';
+import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 // Internal dependencies
 
@@ -24,7 +26,7 @@ function mapStateToProps (state: RootState) {
 
 // Set to null if not used
 const mapDispatchToProps = {
-	todo_edit_priority_thunk: (todo: TodoRestInterface, newPriority: string) => todo_edit_priority_thunk(todo, newPriority)
+	todo_edit_text_thunk: (todo: TodoRestInterface, newText: string) => todo_edit_text_thunk(todo, newText)
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -64,6 +66,29 @@ type Props = PropsFromRedux & {
 const TodoText = (props: Props) => {
 	// const classes = useStyles();
 	
+	const [textFieldValid, setTextFieldValid] = React.useState(true);
+	const [textFieldValue, setTextFieldValue] = React.useState(props.todo.data.text);
+	const [pristine, setPristine] = React.useState(true);
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		let valid = true;
+		setPristine(false);
+		setTextFieldValue(event.target.value);
+		
+		// If its length is zero
+		if (event.target.value === "") {
+			// its state is not valid
+			valid = !valid;
+		} else {
+			// when the field has been touched and it has one or more characters
+			// At leat one of these characters must be non blank
+			valid = /.*\S.*/.test(event.target.value);
+		}
+		// console.log("value: " + event.target.value);
+		// console.log("value length: " + event.target.value.length);
+		// console.log("valid: " + valid);
+		setTextFieldValid(valid);
+	}
+	
 	const notAnOwner = () => {
 		// https://stackoverflow.com/questions/29103096/dynamic-attribute-in-reactjs
 		return props.todo.data.owner.name !== props.userName
@@ -72,12 +97,23 @@ const TodoText = (props: Props) => {
 	}
 	
 	return (
-		<TextField
-			id="standard-basic"
-			value={props.todo.data.text}
-			fullWidth
-			{...notAnOwner() as string}
-		/>
+		<KeyboardEventHandler
+			handleKeys={['Esc']}
+			onKeyEvent={(key: string, e: any) => setTextFieldValue(props.todo.data.text)} >
+			<TextField
+				id="standard-basic"
+				value={textFieldValue}
+				onChange={handleChange}
+				error={!textFieldValid}
+				helperText={
+					textFieldValid
+						? ''
+						: "Must have at least one non-blank character"
+				}
+				fullWidth
+				{...notAnOwner() as string}
+			/>
+		</KeyboardEventHandler>
 	)
 }
 export default connector(TodoText)
