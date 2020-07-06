@@ -23,7 +23,7 @@ import TodoTablePagination from './todo-table-pagination';
 import { todo_toggle_isCompleted_thunk,
 	todo_edit_priority_thunk,
 	todo_delete_thunk } from '../actions/todos-actions'
-import TodoText from "./todo-text.ts";
+import TodoText from "./todo-text";
 import TodoTablePriorityFilter from './todo-table-priority-filter';
 import { PRIORITIES } from "../references/references";
 
