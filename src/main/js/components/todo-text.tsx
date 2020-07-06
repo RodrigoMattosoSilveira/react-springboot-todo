@@ -127,12 +127,13 @@ const TodoText = (props: Props) => {
 		return textToShow;
 	}
 	const handleOnKeyEvent = (key: string): any => {
+		setPristine(true);
+		setTextFieldValid(true);
 		if (key === 'Enter') {
 			props.todo_edit_text_thunk(props.todo, textFieldValue);
 		}
 		if (key === 'Esc') {
 			setTextFieldValue(props.todo.data.text)
-			setPristine(true);
 		}
 	}
 	
