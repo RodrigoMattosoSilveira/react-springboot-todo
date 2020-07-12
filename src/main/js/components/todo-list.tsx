@@ -70,12 +70,6 @@ type Props = PropsFromRedux & {}
  */
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		root: {
-			display: 'flex',
-		},
-		formControl: {
-			margin: theme.spacing(3),
-		},
 		table: {
 			/* minWidth: 650, */
 			tableLayout: "auto",
@@ -89,9 +83,6 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		todoPriority: {
 			width: "32px"
-		},
-		todoPriorityFont: {
-			fontSize: "1rem"
 		},
 	})
 );
@@ -130,12 +121,16 @@ const TodoList = (props: Props) => {
 		<div>
 			<Divider />
 			<TableContainer component={Paper}>
-				<Table className={classes.table} size="small" aria-label="a dense table">
+				<Table className={classes.table} size="small" aria-label="a dense table" stickyHeader>
 					<TableHead>
 						<TableRow>
 							<TableCell colSpan={5} align={'center'}><h1>Todo Table</h1></TableCell>
 						</TableRow>
 					</TableHead>
+				</Table>
+			</TableContainer>
+			<TableContainer component={Paper}>
+				<Table className={classes.table} size="small" aria-label="a dense table" stickyHeader>
 					<TableHead>
 						<TableRow>
 							<TableCell align={'center'}>
