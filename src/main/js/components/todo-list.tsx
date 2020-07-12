@@ -141,11 +141,11 @@ const TodoList = (props: Props) => {
 							<TableCell>
 								<TodoTableStateFilter title='State'></TodoTableStateFilter>
 							</TableCell>
-							<TableCell>Text</TableCell>
+							<TableCell>TEXT</TableCell>
 							<TableCell>
 								<TodoTablePriorityFilter title='Priority'></TodoTablePriorityFilter>
 							</TableCell>
-							<TableCell>Delete</TableCell>
+							<TableCell>DELETE</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
