@@ -130,10 +130,10 @@ const TodoList = (props: Props) => {
 				</Table>
 			</TableContainer>
 			<TableContainer component={Paper}>
-				<Table className={classes.table} size="small" aria-label="a dense table" stickyHeader>
+				<Table style={{ width: 'auto', tableLayout: 'auto' }} size="small" aria-label="a dense table" stickyHeader>
 					<TableHead>
 						<TableRow>
-							<TableCell align={'center'}>
+							<TableCell align={'center'} component="th" scope="row" style={{ width: '5%' }}>
 								<TodoTableStateFilter title='State'></TodoTableStateFilter>
 							</TableCell>
 							<TableCell>TEXT</TableCell>
