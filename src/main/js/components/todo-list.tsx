@@ -138,7 +138,7 @@ const TodoList = (props: Props) => {
 					</TableHead>
 					<TableHead>
 						<TableRow>
-							<TableCell>
+							<TableCell align={'center'}>
 								<TodoTableStateFilter title='State'></TodoTableStateFilter>
 							</TableCell>
 							<TableCell>TEXT</TableCell>
@@ -157,7 +157,7 @@ const TodoList = (props: Props) => {
 										if (showThisRow(todo)) {
 											return (
 												<TableRow className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
-													<TableCell component="th" scope="row" ><TodoState todo={todo}/></TableCell>
+													<TableCell component="th" scope="row" align={'center'}><TodoState todo={todo}/></TableCell>
 													<TableCell className={classes.todoTextFont}><TodoText todo={todo}/> </TableCell>
 													<TableCell className={classes.todoPriority} ><TodoPriority todo={todo}/></TableCell>
 													<TableCell align="right" className={"todo-delete-me"}><TodoDelete todo={todo}/></TableCell>
