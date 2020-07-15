@@ -1,3 +1,8 @@
+export const URL = {
+	API: '/api',
+	TODO: 'api/todos'
+}
+
 export const PAGE_SIZE_DEFAULT = 3;
 
 export const TODO_ACTIONS = {

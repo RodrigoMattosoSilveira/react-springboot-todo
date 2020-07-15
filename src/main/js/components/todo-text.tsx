@@ -6,7 +6,7 @@ import {TodoRestInterface} from "../references/interfaces";
 import {todo_edit_text_thunk} from "../actions/todos-actions";
 // import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-// import KeyboardEventHandler from 'react-keyboard-event-handler';
+// @ts-ignore
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 // Internal dependencies
@@ -66,7 +66,6 @@ type Props = PropsFromRedux & {
 const TodoText = (props: Props) => {
 	// const classes = useStyles();
 	
-	const [trackingMouse, setTrackingMouse] = React.useState(false);
 	const [textFieldValid, setTextFieldValid] = React.useState(true);
 	const [textFieldValue, setTextFieldValue] = React.useState(props.todo.data.text);
 	const [pristine, setPristine] = React.useState(true);
@@ -95,23 +94,6 @@ const TodoText = (props: Props) => {
 		return props.todo.data.owner.name !== props.userName
 			? {disabled: 'disabled'}
 			: {};
-	}
-	
-	const handleOnMouseEnter = (): any => {
-		// console.log('TodoText/handleOnMouseEnter')
-		// console.log('textFieldValid = ' + textFieldValid + ', textFieldValue = ' + textFieldValue + ', pristine: ' + pristine + ', trackingMouse: ' + trackingMouse)
-	}
-	
-	const handleOnMouseOut = (): any => {
-		console.log('TodoText/handleMouseOut')
-		console.log('textFieldValid = ' + textFieldValid + ', textFieldValue = ' + textFieldValue + ', pristine: ' + pristine + ', trackingMouse: ' + trackingMouse)
-		if (trackingMouse && textFieldValid && !pristine) {
-			console.log('TodoText/handleMouseOut ... thunking')
-			props.todo_edit_text_thunk(props.todo, textFieldValue);
-		} else {
-			setTextFieldValue(props.todo.data.text)
-		}
-		setTrackingMouse(false);
 	}
 	
 	const helperTextToShow = (): string => {

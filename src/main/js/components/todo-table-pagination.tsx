@@ -8,6 +8,8 @@ import TablePagination from '@material-ui/core/TablePagination';
 // Internal dependencies
 import {set_rest_page_size_action_thunk} from "../actions/rest_actions";
 import TodoTablePaginationActions from "./todo-table-pagination-actions";
+import {IHalPage} from "../references/interfaces";
+import {set_hal_page} from "../actions/hal-page-actions";
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -27,14 +29,15 @@ const mapStateToProps = (state: RootState) => {
 	return {
 		count: state.hal_page_reducer.totalElements,
 		rowsPerPage: state.hal_page_reducer.size,
-		page: state.hal_page_reducer.number,
+		page: state.hal_page_reducer.number
 	};
 }
 
 // Set to null if not used
 // const mapDispatchToProps = null
 const mapDispatchToProps = {
-	set_rest_page_size_action_thunk: (pageSize: number) => set_rest_page_size_action_thunk(pageSize)
+	set_rest_page_size_action_thunk: (pageSize: number) => set_rest_page_size_action_thunk(pageSize),
+	set_hal_page: (halPage: IHalPage) => set_hal_page(halPage)
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -55,7 +58,8 @@ const TodoTablePagination = (props: Props) => {
 	// console.log('TodoTablePagination/props.rowsPerPage: ' + props.rowsPerPage);
 	
 	const [page, setPage] = React.useState(props.page);
-	// console.log('TodoTablePagination/page: ' + page);
+	// TODO: why is that page is initialized to zero instead of props.page?
+	// console.log('TodoTablePagination/page: ' + props.page);
 	
 	const [rowsPerPage, setRowsPerPage] = React.useState(3); //TODO find out why props.rowsPerPage does not work
 	// console.log('TodoTablePagination/rowsPerPage: ' + rowsPerPage);
@@ -63,6 +67,9 @@ const TodoTablePagination = (props: Props) => {
 	
 	const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
 		setPage(newPage);
+		const iHalPage: IHalPage = {number: page}
+		// console.log('TodoTablePagination/handleChangePage/newPage: ' + newPage);
+		props.set_hal_page(iHalPage);
 	};
 	
 	const handleChangeRowsPerPage = (
@@ -78,8 +85,8 @@ const TodoTablePagination = (props: Props) => {
 			rowsPerPageOptions={[1, 2, 3, 5, 8, 13, 21, { label: 'All', value: -1 }]}
 			colSpan={5}
 			count={props.count}
-			rowsPerPage={rowsPerPage}
-			page={page}
+			rowsPerPage={props.rowsPerPage}
+			page={props.page}
 			SelectProps={{
 				inputProps: { 'aria-label': 'rows per page' },
 				native: true,

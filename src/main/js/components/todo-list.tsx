@@ -26,6 +26,7 @@ import { todo_toggle_isCompleted_thunk,
 import TodoText from "./todo-text";
 import TodoTablePriorityFilter from './todo-table-priority-filter';
 import { PRIORITIES } from "../references/references";
+import TodoAddItem from "./todo-add-item";
 
 /*
  * *****************************************************************************
@@ -125,6 +126,15 @@ const TodoList = (props: Props) => {
 					<TableHead>
 						<TableRow>
 							<TableCell colSpan={5} align={'center'}><h1>Todo Table</h1></TableCell>
+						</TableRow>
+					</TableHead>
+				</Table>
+			</TableContainer>
+			<TableContainer component={Paper}>
+				<Table className={classes.table} size="small" aria-label="a dense table" stickyHeader>
+					<TableHead>
+						<TableRow>
+							<TableCell colSpan={5} align={'center'}><TodoAddItem></TodoAddItem></TableCell>
 						</TableRow>
 					</TableHead>
 				</Table>
