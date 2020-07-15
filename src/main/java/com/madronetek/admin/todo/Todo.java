@@ -22,10 +22,10 @@ public class Todo {
 
     public Todo() {}
 
-    public Todo(String text, Priorities priority, Owner owner) {
+    public Todo(boolean isCompleted, String text, Priorities priority, Owner owner) {
         this.text = text;
         this.priority = priority;
-        this.isCompleted = false;
+        this.isCompleted = isCompleted;
         this.owner = owner;
     }
 
