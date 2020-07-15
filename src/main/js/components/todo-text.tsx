@@ -117,6 +117,13 @@ const TodoText = (props: Props) => {
 		if (key === 'Esc') {
 			setTextFieldValue(props.todo.data.text)
 		}
+		helperTextToShow()
+	}
+	const handleOnMouseOut = (event: any): any => {
+		event.preventDefault();
+		setPristine(true);
+		setTextFieldValid(true);
+		setTextFieldValue(props.todo.data.text)
 	}
 	
 	return (
@@ -127,6 +134,7 @@ const TodoText = (props: Props) => {
 				id="standard-basic"
 				value={textFieldValue}
 				onChange={handleChange}
+				onMouseOut={handleOnMouseOut}
 				error={!textFieldValid}
 				helperText={helperTextToShow()}
 				fullWidth
