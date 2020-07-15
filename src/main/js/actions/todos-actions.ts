@@ -68,19 +68,21 @@ export const todo_add_thunk = (newTodo: {}, pageSize: number) =>
 								// handle success
 								console.log('todo_add_thunk');
 								console.log(todoCollection);
+								// Update the HAL _links
+								dispatch(set_rest_links_action(todoCollection.data._links));
+								// Update the HAL object
+								dispatch(set_hal_page(todoCollection.data.page));
+								// Use the HAL _links to retrieve the last page
 								const navUri = todoCollection.data._links['last']['href'];
 								client.get(navUri)
 									.then(function (todoCollection: any) {
 										// handle success
-										console.log('todo_add_thunk');
+										console.log('todo_add_thunk/last page');
 										console.log(todoCollection);
-										
-										dispatch(set_rest_links_action(todoCollection.data._links));
-										
-										const navUri = todoCollection.data._links['last']['href'];
-										client.get(navUri)
+										// Read the last page's records
 										const todoPromises = todoCollection.data._embedded.todos.map ((todo: any) =>
-											client({ method: 'GET', url: todo._links.self.href }))
+											client({ method: 'GET', url: todo._links.self.href })
+										)
 										Promise.all(todoPromises)
 											.then(function (collection) {
 												const todos = collection.map((todo: any) => todo)
@@ -189,18 +191,18 @@ export const todo_navigate_to_page_thunk = (navUri: string, pageNumber: number) 
 		client.get(navUri)
 			.then(function (todoCollection: any) {
 				// handle success
-				// console.log('todo_navigate_to_page_thunk');
-				// console.log(todoCollection);
+				console.log('todo_navigate_to_page_thunk');
+				console.log(todoCollection);
 				
 				dispatch(set_rest_links_action(todoCollection.data._links));
+				dispatch(set_hal_page(todoCollection.data.page))
 				const todoPromises = todoCollection.data._embedded.todos.map ((todo: any) =>
-					client({ method: 'GET', url: todo._links.self.href }))
+					client({ method: 'GET', url: todo._links.self.href })
+				)
 				Promise.all(todoPromises)
 					.then(function (collection) {
 						const todos = collection.map((todo: any) => todo)
 						dispatch(todos_read(todos));
-						const iHalPage: IHalPage = {number: pageNumber}
-						dispatch(set_hal_page(iHalPage))
 					});
 			})
 			.catch(function (error: any) {

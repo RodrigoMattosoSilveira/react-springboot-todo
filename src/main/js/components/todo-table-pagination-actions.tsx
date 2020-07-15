@@ -93,7 +93,7 @@ const TodoTablePaginationActions = (props: Props) => {
 	const handleNav = (paginationType: string, newPage: number) => {
 		const url = props.links[paginationType]['href'];
 		setPage(newPage);
-		// console.log('TodoTablePaginationActions/newPage: ' + newPage);
+		 console.log('TodoTablePaginationActions/newPage: ' + newPage);
 		props.todo_navigate_to_page_thunk(url, newPage);
 	}
 	

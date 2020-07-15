@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function computeVisible (visibilityFilter: string, isCompleted: boolean ): string {
-	// console.log('TodoList/computeVisible visibilityFilter: ' + visibilityFilter)
+	 console.log('TodoList/computeVisible visibilityFilter: ' + visibilityFilter)
 	let className = 'show-todo-item';
 	if ((visibilityFilter === 'open' && isCompleted) || (visibilityFilter === 'done' && !isCompleted)) {
 		className = 'hide-todo-item';
@@ -161,7 +161,7 @@ const TodoList = (props: Props) => {
 									props.todoList.map((todo: TodoRestInterface) => {
 										if (showThisRow(todo)) {
 											return (
-												<TableRow className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
+												<TableRow key={todo.data.text} className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
 													<TableCell component="th" scope="row" align={'center'}><TodoState todo={todo}/></TableCell>
 													<TableCell className={classes.todoTextFont}><TodoText todo={todo}/> </TableCell>
 													<TableCell className={classes.todoPriority} ><TodoPriority todo={todo}/></TableCell>

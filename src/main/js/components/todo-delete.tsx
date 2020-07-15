@@ -54,12 +54,13 @@ const TodoDelete = (props: Props) => {
 	const notAnOwner = () => {
 		// https://stackoverflow.com/questions/29103096/dynamic-attribute-in-reactjs
 		return props.todo.data.owner.name !== props.userName
-			? {disabled: 'disabled'}
+			? {disabled: true}
 			: {};
 	}
 	
 	return (
 		<Tooltip title="delete">
+			<span>
 			<IconButton
 				aria-label="delete"
 				onClick={() => props.todo_delete_thunk(props.todo)}
@@ -67,6 +68,8 @@ const TodoDelete = (props: Props) => {
 			>
 				<DeleteIcon fontSize="small" />
 			</IconButton>
+			
+			</span>
 		</Tooltip>
 	)
 }

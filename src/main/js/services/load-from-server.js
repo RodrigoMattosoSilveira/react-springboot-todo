@@ -35,14 +35,15 @@ export const loadFromServer = (pageSize, root, dispatch) => {
             // this.response = response.entity;
             // this.links = todoCollection.entity._links;
             dispatch(set_rest_attributes_action(Object.keys(response.data.$schema)));
-            // console.log('loadFromServer/links');
-            // console.log(todoCollection.data._links);
+             console.log('loadFromServer/links');
+             console.log(todoCollection.data._links);
             dispatch(set_rest_links_action(todoCollection.data._links));
 
             // save the page object
 
             const todoPromises = todoCollection.data._embedded.todos.map (todo =>
-                client({ method: 'GET', url: todo._links.self.href }))
+                client({ method: 'GET', url: todo._links.self.href })
+            )
             Promise.all(todoPromises)
                 .then(function (collection) {
                     const todos = collection.map(todo => todo)

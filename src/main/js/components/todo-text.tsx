@@ -83,16 +83,16 @@ const TodoText = (props: Props) => {
 			// At leat one of these characters must be non blank
 			valid = /.*\S.*/.test(event.target.value);
 		}
-		// console.log("value: " + event.target.value);
-		// console.log("value length: " + event.target.value.length);
-		// console.log("valid: " + valid);
+		 console.log("value: " + event.target.value);
+		 console.log("value length: " + event.target.value.length);
+		 console.log("valid: " + valid);
 		setTextFieldValid(valid);
 	}
 	
 	const notAnOwner = () => {
 		// https://stackoverflow.com/questions/29103096/dynamic-attribute-in-reactjs
 		return props.todo.data.owner.name !== props.userName
-			? {disabled: 'disabled'}
+			? {disabled: true}
 			: {};
 	}
 	

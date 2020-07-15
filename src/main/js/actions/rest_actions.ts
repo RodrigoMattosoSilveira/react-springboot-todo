@@ -11,7 +11,7 @@ export const set_rest_attributes_action = (attributes: any): RestAttributesActio
 
 export const set_rest_page_size_action_thunk = (pageSize: number) =>
 	(dispatch: any, getState: any) => {// thunk, also receives `axios` dep.
-		console.log('todo-actions/set_rest_page_size_action_thunk: ' + pageSize)
+		 console.log('todo-actions/set_rest_page_size_action_thunk: ' + pageSize)
 		dispatch(set_rest_page_size_action(pageSize));
 		let root = getState().rest_root_reducer;
 		// @ts-ignore

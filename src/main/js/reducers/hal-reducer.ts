@@ -12,8 +12,8 @@ const defaultHalPage: IHalPage = {
 export const hal_page_reducer = (state = defaultHalPage, action: IHalPageAction): IHalPage => {
 	switch (action.type) {
 		case HAL_ACTIONS.SET_HAL_PAGE:
-			// console.log('hal-reducer/hal_page_reducer/halPage: ' + JSON.stringify(action))
-			// console.log({...state, ...action.halPage})
+			 console.log('hal-reducer/hal_page_reducer/halPage: ' + JSON.stringify(action))
+			 console.log({...state, ...action.halPage})
 			return {...state, ...action.halPage};
 		default:
 			return state;
