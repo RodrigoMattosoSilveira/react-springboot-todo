@@ -2,6 +2,7 @@
 import * as React from 'react'
 import {connect, ConnectedProps} from 'react-redux';
 import { makeStyles, Theme, createStyles, withStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import AssignmentSharpIcon from '@material-ui/icons/Assignment';
 
@@ -9,6 +10,8 @@ import AssignmentSharpIcon from '@material-ui/icons/Assignment';
 import {RootState} from "../reducers/rootReducer";
 import {TodoRestInterface} from "../references/interfaces";
 import { todo_delete_thunk } from "../actions/todos-actions";
+import { consoleMessage } from "../services/console-log"
+import { CONSOLE_LOG_MESSAGE_TYPE} from "../references/references";
 
 
 /*
@@ -52,8 +55,8 @@ type Props = PropsFromRedux & {}
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		badge: {
-			right: -3,
-			top: 13,
+			right: 0,
+			top: 0,
 			border: `2px solid ${theme.palette.background.paper}`,
 			padding: '0 4px',
 		},
@@ -72,8 +75,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const StyledBadge = withStyles((theme: Theme) =>
 	createStyles({
 		badge: {
-			right: -3,
-			top: 13,
+			right: -4,
+			top: 20,
 			border: `2px solid ${theme.palette.background.paper}`,
 			padding: '0 4px',
 		},
@@ -82,11 +85,18 @@ const StyledBadge = withStyles((theme: Theme) =>
 
 const WebSocketInfoBadge = (props: Props) => {
 	const classes = useStyles();
+	const showInfoLogMessages = true
+	
+	const handleClick = () => {
+		consoleMessage('Handling WebSocketInfoBadge/handleClick', CONSOLE_LOG_MESSAGE_TYPE.INFO, showInfoLogMessages)
+	}
 	
 	return (
-		<StyledBadge badgeContent={4} color="error" className={classes.styleRight}>
-			<AssignmentSharpIcon />
-		</StyledBadge>
+		<IconButton aria-label="delete" onClick={handleClick} className={classes.styleRight}>
+			<Badge badgeContent={4} color="error" >
+					<AssignmentSharpIcon />
+			</Badge>
+		</IconButton>
 	)
 }
 export default connector(WebSocketInfoBadge)
