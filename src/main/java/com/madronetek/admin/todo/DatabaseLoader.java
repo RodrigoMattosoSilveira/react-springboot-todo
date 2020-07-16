@@ -40,19 +40,19 @@ public class DatabaseLoader implements CommandLineRunner {
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken("donald", "does not matter",
                         AuthorityUtils.createAuthorityList("ROLE_MANAGER")));
-        this.todos.save(new Todo("Learn Springboot", Priorities.LOW, donald));
-        this.todos.save(new Todo("Learn Akka", Priorities.HIGH, donald));
-        this.todos.save(new Todo("Swim 50 laps in 30 minutes", Priorities.LOW, donald));
-        this.todos.save(new Todo("Exercise on the TotalGym 3 times a week", Priorities.LOW, donald));
-        this.todos.save(new Todo("Pedal on the recumbent 3 times a week", Priorities.HIGH, donald));
+        this.todos.save(new Todo(false, "Learn Springboot", Priorities.LOW, donald));
+        this.todos.save(new Todo(false, "Learn Akka", Priorities.HIGH, donald));
+        this.todos.save(new Todo(false, "Swim 50 laps in 30 minutes", Priorities.LOW, donald));
+        this.todos.save(new Todo(false, "Exercise on the TotalGym 3 times a week", Priorities.LOW, donald));
+        this.todos.save(new Todo(false, "Pedal on the recumbent 3 times a week", Priorities.HIGH, donald));
 
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken("nancy", "does not matter",
                         AuthorityUtils.createAuthorityList("ROLE_MANAGER")));
-        this.todos.save(new Todo("Cook fish twice as week", Priorities.LOW, nancy));
-        this.todos.save(new Todo("Measure blood pressure daily", Priorities.LOW, nancy));
-        this.todos.save(new Todo("Measure peek flow daily", Priorities.LOW, nancy));
-        this.todos.save(new Todo("Measure oxygen level daily", Priorities.LOW, nancy));
+        this.todos.save(new Todo(false, "Cook fish twice as week", Priorities.LOW, nancy));
+        this.todos.save(new Todo(false, "Measure blood pressure daily", Priorities.LOW, nancy));
+        this.todos.save(new Todo(false, "Measure peek flow daily", Priorities.LOW, nancy));
+        this.todos.save(new Todo(false, "Measure oxygen level daily", Priorities.LOW, nancy));
 
         SecurityContextHolder.clearContext();
     }

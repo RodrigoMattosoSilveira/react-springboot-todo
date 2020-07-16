@@ -14,7 +14,7 @@ import { PAGE_SIZE_DEFAULT } from './references/references'
 const Root = () => {
 	let currentUser: string = document.getElementById('ownername').innerHTML;
 	let pageSize = store.getState().rest_page_size_reducer ? PAGE_SIZE_DEFAULT : store.getState().rest_page_size_reducer;
-	// console.log("App: Loading as " + currentUser);
+	 console.log("App: Loading as " + currentUser);
 	React.useEffect(() => {
 		store.dispatch(set_user_name_action(currentUser))
 		store.dispatch(REST_PARAMS.set_rest_page_size_action(pageSize));

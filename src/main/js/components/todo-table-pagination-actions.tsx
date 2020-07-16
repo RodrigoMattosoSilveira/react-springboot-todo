@@ -8,12 +8,14 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import {PAGINATION_TYPE} from "../references/references";
-import {todo_navigate_to_page_thunk} from "../actions/todos-actions";
 
 
 // Internal dependencies
 // import { set_rest_page_size_action_thunk } from "../actions/rest_actions";
+import {PAGINATION_TYPE} from "../references/references";
+import {todo_navigate_to_page_thunk} from "../actions/todos-actions";
+import { IHalPage } from "../references/interfaces";
+import { set_hal_page } from "../actions/hal-page-actions"
 
 /*
  * *****************************************************************************
@@ -25,14 +27,16 @@ import {todo_navigate_to_page_thunk} from "../actions/todos-actions";
 // const mapStateToProps: any = null
 const mapStateToProps = (state: RootState) => {
 	return {
-		links: state.rest_links_reducer
+		links: state.rest_links_reducer,
+		halPage: state.hal_page_reducer
 	};
 }
 
 // Set to null if not used
 // const mapDispatchToProps: any = null
 const mapDispatchToProps = {
-	todo_navigate_to_page_thunk: (navUri: string) => todo_navigate_to_page_thunk(navUri)
+	todo_navigate_to_page_thunk: (navUri: string, pageNumber: number) => todo_navigate_to_page_thunk(navUri, pageNumber),
+	set_hal_page: (halPage: IHalPage) => set_hal_page(halPage)
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -45,7 +49,6 @@ type Props = PropsFromRedux & {}
 // type Props = PropsFromRedux & {
 // 	onChangePage: (event: React.MouseEvent<HTMLButtonElement>, newPage: string) => void;
 // }
-
 
 /*
  * *****************************************************************************
@@ -64,27 +67,34 @@ const useStyles1 = makeStyles((theme: Theme) =>
 const TodoTablePaginationActions = (props: Props) => {
 	const classes = useStyles1();
 	const theme = useTheme();
+	const [page, setPage] = React.useState(props.halPage.number);
 	
 	const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		handleNav(PAGINATION_TYPE.FIRST)
+		const newPage = 0;
+		handleNav(PAGINATION_TYPE.FIRST, newPage)
 	};
 	
 	const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		handleNav(PAGINATION_TYPE.PREVIOUS)
+		const newPage = page - 1;
+		handleNav(PAGINATION_TYPE.PREVIOUS, newPage)
 	};
 	
 	const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		handleNav(PAGINATION_TYPE.NEXT)
+		const newPage = page + 1;
+		handleNav(PAGINATION_TYPE.NEXT, newPage)
 	};
 	
 	const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		handleNav(PAGINATION_TYPE.LAST)
+		const newPage = props.halPage.totalPages - 1;
+		handleNav(PAGINATION_TYPE.LAST, newPage)
 	};
 	
 	
-	const handleNav = (paginationType: string) => {
+	const handleNav = (paginationType: string, newPage: number) => {
 		const url = props.links[paginationType]['href'];
-		props.todo_navigate_to_page_thunk(url);
+		setPage(newPage);
+		 console.log('TodoTablePaginationActions/newPage: ' + newPage);
+		props.todo_navigate_to_page_thunk(url, newPage);
 	}
 	
 	return (

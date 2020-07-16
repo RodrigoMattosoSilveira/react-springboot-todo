@@ -20,16 +20,11 @@ export const client_setup_get = () => {
     return axios_get;
 }
 
-export const client_update_configx = (path: string,  method: string, updateTodo: any, etag: string) => {
+export const client_add_config = () => {
 	return axios.create({
-		method: method,
-		url: path,
-		data: updateTodo,
 		validateStatus: null,
-		headers: {
-			'Content-Type': 'application/json',
-			'If-Match': etag
-		},
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json'},
 		timeout: 10000
 	})
 }

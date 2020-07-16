@@ -26,6 +26,7 @@ import { todo_toggle_isCompleted_thunk,
 import TodoText from "./todo-text";
 import TodoTablePriorityFilter from './todo-table-priority-filter';
 import { PRIORITIES } from "../references/references";
+import TodoAddItem from "./todo-add-item";
 
 /*
  * *****************************************************************************
@@ -70,12 +71,6 @@ type Props = PropsFromRedux & {}
  */
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		root: {
-			display: 'flex',
-		},
-		formControl: {
-			margin: theme.spacing(3),
-		},
 		table: {
 			/* minWidth: 650, */
 			tableLayout: "auto",
@@ -90,14 +85,11 @@ const useStyles = makeStyles((theme: Theme) =>
 		todoPriority: {
 			width: "32px"
 		},
-		todoPriorityFont: {
-			fontSize: "1rem"
-		},
 	})
 );
 
 function computeVisible (visibilityFilter: string, isCompleted: boolean ): string {
-	// console.log('TodoList/computeVisible visibilityFilter: ' + visibilityFilter)
+	 console.log('TodoList/computeVisible visibilityFilter: ' + visibilityFilter)
 	let className = 'show-todo-item';
 	if ((visibilityFilter === 'open' && isCompleted) || (visibilityFilter === 'done' && !isCompleted)) {
 		className = 'hide-todo-item';
@@ -130,22 +122,35 @@ const TodoList = (props: Props) => {
 		<div>
 			<Divider />
 			<TableContainer component={Paper}>
-				<Table className={classes.table} size="small" aria-label="a dense table">
+				<Table className={classes.table} size="small" aria-label="a dense table" stickyHeader>
 					<TableHead>
 						<TableRow>
 							<TableCell colSpan={5} align={'center'}><h1>Todo Table</h1></TableCell>
 						</TableRow>
 					</TableHead>
+				</Table>
+			</TableContainer>
+			<TableContainer component={Paper}>
+				<Table className={classes.table} size="small" aria-label="a dense table" stickyHeader>
 					<TableHead>
 						<TableRow>
-							<TableCell>
+							<TableCell colSpan={5} align={'center'}><TodoAddItem></TodoAddItem></TableCell>
+						</TableRow>
+					</TableHead>
+				</Table>
+			</TableContainer>
+			<TableContainer component={Paper}>
+				<Table style={{ width: 'auto', tableLayout: 'auto' }} size="small" aria-label="a dense table" stickyHeader>
+					<TableHead>
+						<TableRow>
+							<TableCell align={'center'} component="th" scope="row" style={{ width: '5%' }}>
 								<TodoTableStateFilter title='State'></TodoTableStateFilter>
 							</TableCell>
-							<TableCell>Text</TableCell>
+							<TableCell>TEXT</TableCell>
 							<TableCell>
 								<TodoTablePriorityFilter title='Priority'></TodoTablePriorityFilter>
 							</TableCell>
-							<TableCell>Delete</TableCell>
+							<TableCell>DELETE</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -156,8 +161,8 @@ const TodoList = (props: Props) => {
 									props.todoList.map((todo: TodoRestInterface) => {
 										if (showThisRow(todo)) {
 											return (
-												<TableRow className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
-													<TableCell component="th" scope="row" ><TodoState todo={todo}/></TableCell>
+												<TableRow key={todo.data.text} className={computeVisible(props.visibilityFilter, todo.data.isCompleted)}>
+													<TableCell component="th" scope="row" align={'center'}><TodoState todo={todo}/></TableCell>
 													<TableCell className={classes.todoTextFont}><TodoText todo={todo}/> </TableCell>
 													<TableCell className={classes.todoPriority} ><TodoPriority todo={todo}/></TableCell>
 													<TableCell align="right" className={"todo-delete-me"}><TodoDelete todo={todo}/></TableCell>

@@ -6,7 +6,7 @@ import {TodoRestInterface} from "../references/interfaces";
 import {todo_edit_text_thunk} from "../actions/todos-actions";
 // import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-// import KeyboardEventHandler from 'react-keyboard-event-handler';
+// @ts-ignore
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 // Internal dependencies
@@ -66,7 +66,6 @@ type Props = PropsFromRedux & {
 const TodoText = (props: Props) => {
 	// const classes = useStyles();
 	
-	const [trackingMouse, setTrackingMouse] = React.useState(false);
 	const [textFieldValid, setTextFieldValid] = React.useState(true);
 	const [textFieldValue, setTextFieldValue] = React.useState(props.todo.data.text);
 	const [pristine, setPristine] = React.useState(true);
@@ -84,34 +83,17 @@ const TodoText = (props: Props) => {
 			// At leat one of these characters must be non blank
 			valid = /.*\S.*/.test(event.target.value);
 		}
-		// console.log("value: " + event.target.value);
-		// console.log("value length: " + event.target.value.length);
-		// console.log("valid: " + valid);
+		 console.log("value: " + event.target.value);
+		 console.log("value length: " + event.target.value.length);
+		 console.log("valid: " + valid);
 		setTextFieldValid(valid);
 	}
 	
 	const notAnOwner = () => {
 		// https://stackoverflow.com/questions/29103096/dynamic-attribute-in-reactjs
 		return props.todo.data.owner.name !== props.userName
-			? {disabled: 'disabled'}
+			? {disabled: true}
 			: {};
-	}
-	
-	const handleOnMouseEnter = (): any => {
-		// console.log('TodoText/handleOnMouseEnter')
-		// console.log('textFieldValid = ' + textFieldValid + ', textFieldValue = ' + textFieldValue + ', pristine: ' + pristine + ', trackingMouse: ' + trackingMouse)
-	}
-	
-	const handleOnMouseOut = (): any => {
-		console.log('TodoText/handleMouseOut')
-		console.log('textFieldValid = ' + textFieldValid + ', textFieldValue = ' + textFieldValue + ', pristine: ' + pristine + ', trackingMouse: ' + trackingMouse)
-		if (trackingMouse && textFieldValid && !pristine) {
-			console.log('TodoText/handleMouseOut ... thunking')
-			props.todo_edit_text_thunk(props.todo, textFieldValue);
-		} else {
-			setTextFieldValue(props.todo.data.text)
-		}
-		setTrackingMouse(false);
 	}
 	
 	const helperTextToShow = (): string => {
@@ -135,6 +117,13 @@ const TodoText = (props: Props) => {
 		if (key === 'Esc') {
 			setTextFieldValue(props.todo.data.text)
 		}
+		helperTextToShow()
+	}
+	const handleOnMouseOut = (event: any): any => {
+		event.preventDefault();
+		setPristine(true);
+		setTextFieldValid(true);
+		setTextFieldValue(props.todo.data.text)
 	}
 	
 	return (
@@ -145,6 +134,7 @@ const TodoText = (props: Props) => {
 				id="standard-basic"
 				value={textFieldValue}
 				onChange={handleChange}
+				onMouseOut={handleOnMouseOut}
 				error={!textFieldValid}
 				helperText={helperTextToShow()}
 				fullWidth
