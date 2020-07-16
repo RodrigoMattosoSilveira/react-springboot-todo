@@ -8,6 +8,8 @@ import {set_hal_page} from "../actions/hal-page-actions";
 const follow = require('./follow'); // function to hop multiple links by "rel"
 
 export const loadFromServer = (pageSize, root, dispatch) => {
+    console.log('loadFromServer/pageSize: ' + pageSize);
+    console.log('loadFromServer/root: ' + root);
     const client = client_setup_get();
     follow(client, root,[
         {rel: 'todos', params: {size: pageSize}}]

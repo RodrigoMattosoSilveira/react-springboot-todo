@@ -21,6 +21,7 @@ import { loadFromServer }  from '../services/load-from-server';
 import { set_rest_links_action } from "./rest_actions";
 import { URL } from '../references/references'
 import {set_hal_page} from "./hal-page-actions";
+import {RootState} from "../reducers/rootReducer";
 
 
 export const todo_toggle_isCompleted_thunk = (todo: TodoRestInterface) =>
@@ -28,20 +29,78 @@ export const todo_toggle_isCompleted_thunk = (todo: TodoRestInterface) =>
 		let updateTodo = {
 			isCompleted: todo.data.isCompleted === false ? TODO_COMPLETED.TRUE : TODO_COMPLETED.FALSE
 		}
-		todo_update(dispatch, todo, updateTodo)
+		todo_update(dispatch, getState, todo, updateTodo)
 	}
 	
 export const todo_edit_text_thunk = (todo: TodoRestInterface, text: string) =>
 	(dispatch: any, getState: any, axios: any) => {
 		let updateTodo = { text: text}
-		todo_update(dispatch, todo, updateTodo)
+		todo_update(dispatch, getState, todo, updateTodo)
 	}
 
 export const todo_edit_priority_thunk = (todo: TodoRestInterface, priority: string) =>
 	(dispatch: any, getState: any, axios: any) => {
 		let updateTodo = { priority: priority}
-		todo_update(dispatch, todo, updateTodo)
+		todo_update(dispatch, getState, todo, updateTodo)
 	}
+
+const todo_update = (dispatch: any, getState: any, todo: TodoRestInterface, updateTodo: {}) => {
+	let url = todo.data._links.self.href;
+	let etag = todo.headers['etag'];
+	let client = client_update_config(etag);
+	client.patch(url, updateTodo)
+		.then(function (response: any) {
+			switch (response.status) {
+				case 400:
+					alert(url + '\n\nBAD Request: like malformed request syntax, invalid request message parameters, or deceptive request routing etc.');
+					break
+				case 403:
+					alert(url + '\n\nACCESS DENIED: You are not authorized to update this resource');
+					break;
+				case 412:
+					alert(url + "\n\nDENIED: Your resource's copy is stale.");
+					break;
+				default:
+					// dispatch(todo_load_from_server());
+					const store: RootState = getState();
+					const navUri = store.rest_links_reducer['self']['href'];
+					const client = client_setup_get();
+						client.get(navUri)
+						.then(function (todoCollection: any) {
+							// handle success
+							console.log('todo_update_thunk');
+							console.log(todoCollection);
+							// Update the HAL _links
+							const todoPromises = todoCollection.data._embedded.todos.map ((todo: any) =>
+								client({ method: 'GET', url: todo._links.self.href })
+							)
+							Promise.all(todoPromises)
+								.then(function (collection) {
+									const todos = collection.map((todo: any) => todo)
+									dispatch(todos_read(todos));
+								})
+								.catch(function (error: any) {
+									// handle error
+									console.log('todo_update_thunk');
+									console.log(error);
+								})
+						})
+						.catch(function (error: any) {
+							// handle error
+							console.log('todo_add_thunk');
+							console.log(error);
+						})
+					// read the last page
+					// 		"_links"."last"."href"
+					break;
+			}
+		})
+		.catch(function (error: any) {
+			// handle error
+			console.log('todo_update_thunk');
+			console.log(error);
+		})
+}
 
 export const todo_add_thunk = (newTodo: {}, pageSize: number) =>
 	(dispatch: any, getState: any, axios: any) => {
@@ -111,34 +170,6 @@ export const todo_add_thunk = (newTodo: {}, pageSize: number) =>
 				console.log(error);
 			})
 	}
-
-const todo_update = (dispatch: any, todo: TodoRestInterface, updateTodo: {}) => {
-	let url = todo.data._links.self.href;
-	let etag = todo.headers['etag'];
-	let client = client_update_config(etag);
-	client.patch(url, updateTodo)
-		.then(function (response: any) {
-			switch (response.status) {
-				case 400:
-					alert(url + '\n\nBAD Request: like malformed request syntax, invalid request message parameters, or deceptive request routing etc.');
-					break
-				case 403:
-					alert(url + '\n\nACCESS DENIED: You are not authorized to update this resource');
-					break;
-				case 412:
-					alert(url + "\n\nDENIED: Your resource's copy is stale.");
-					break;
-				default:
-					dispatch(todo_load_from_server());
-					break
-			}
-		})
-		.catch(function (error: any) {
-			// handle error
-			console.log('todo_update_thunk');
-			console.log(error);
-		})
-}
 
 
 export const todo_delete_thunk = (todo: TodoRestInterface) =>
