@@ -68,3 +68,9 @@ export const PRIORITIES = {
 	MEDIUM: 'MEDIUM',
 	HIGH: 'HIGH'
 }
+
+export const CONSOLE_LOG_MESSAGE_TYPE = {
+	INFO: 'info',
+	WARN: 'warn',
+	ERROR: 'error'
+}
