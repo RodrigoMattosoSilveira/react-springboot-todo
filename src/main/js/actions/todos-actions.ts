@@ -125,12 +125,6 @@ export const todo_add_thunk = (newTodo: {}, pageSize: number) =>
 						client.get(navUri)
 							.then(function (todoCollection: any) {
 								// handle success
-								console.log('todo_add_thunk');
-								console.log(todoCollection);
-								// Update the HAL _links
-								dispatch(set_rest_links_action(todoCollection.data._links));
-								// Update the HAL object
-								dispatch(set_hal_page(todoCollection.data.page));
 								// Use the HAL _links to retrieve the last page
 								const navUri = todoCollection.data._links['last']['href'];
 								client.get(navUri)
@@ -138,6 +132,10 @@ export const todo_add_thunk = (newTodo: {}, pageSize: number) =>
 										// handle success
 										console.log('todo_add_thunk/last page');
 										console.log(todoCollection);
+										// Update the HAL _links
+										dispatch(set_rest_links_action(todoCollection.data._links));
+										// Update the HAL object
+										dispatch(set_hal_page(todoCollection.data.page));
 										// Read the last page's records
 										const todoPromises = todoCollection.data._embedded.todos.map ((todo: any) =>
 											client({ method: 'GET', url: todo._links.self.href })
