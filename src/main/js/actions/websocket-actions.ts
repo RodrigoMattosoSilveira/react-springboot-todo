@@ -14,7 +14,6 @@ export const websocket_remove_messages = (): IWebSocketMessage => ({
 
 export const  websocket_new_todo_message_thunk = (message: any) =>
 	(dispatch: any, getState: any, axios: any) => {
-	console.log
 		dispatch(websocket_add_message_action(message));
 	}
 	

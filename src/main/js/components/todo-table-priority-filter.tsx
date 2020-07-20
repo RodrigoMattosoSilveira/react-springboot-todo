@@ -13,6 +13,8 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 // Internal dependencies
 import {IPrioritiesFilter} from "../references/interfaces";
+import { consoleMessage } from "../services/console-log";
+import {CONSOLE_LOG_MESSAGE_TYPE} from "../references/references";
 
 // Styles configuration
 const useStyles = makeStyles((theme: Theme) =>
@@ -76,6 +78,7 @@ type Props = PropsFromRedux & {
 
 const TodoTablePriorityFilter = (props: Props) => {
 	const classes = useStyles();
+	const showInfoMessages = false;
 	
 	// Checkbox control
 	const [state, setState] = React.useState({
@@ -106,10 +109,21 @@ const TodoTablePriorityFilter = (props: Props) => {
 	
 	const open = Boolean(anchorEl);
 	const id = open ? 'simple-popover' : undefined;
-	 console.log('TodoTablePriorityFilter, open: ' + open);
-	 console.log('TodoTablePriorityFilter, ID: ' + id);
-	 console.log('TodoTablePriorityFilter, state');
-	 console.log(state);
+	consoleMessage(
+		'TodoTablePriorityFilter, open: ' + open,
+		CONSOLE_LOG_MESSAGE_TYPE.INFO,
+		showInfoMessages
+	);
+	consoleMessage(
+		'TodoTablePriorityFilter, ID: ' + id,
+		CONSOLE_LOG_MESSAGE_TYPE.INFO,
+		showInfoMessages
+	);
+	consoleMessage(
+		'TodoTablePriorityFilter, state: ' + JSON.stringify(state),
+		CONSOLE_LOG_MESSAGE_TYPE.INFO,
+		showInfoMessages
+	);
 	
 	return (
 		<div className={classes.root} >

@@ -12,6 +12,7 @@ import {TodoRestInterface} from "../references/interfaces";
 import { todo_delete_thunk } from "../actions/todos-actions";
 import { consoleMessage } from "../services/console-log"
 import { CONSOLE_LOG_MESSAGE_TYPE} from "../references/references";
+import { websocket_remove_messages } from '../actions/websocket-actions';
 
 
 /*
@@ -29,10 +30,10 @@ function mapStateToProps (state: RootState) {
 }
 
 // Set to null if not used
-const mapDispatchToProps: any = null
-// const mapDispatchToProps = {
-// 	todo_delete_thunk: (todo: TodoRestInterface) => todo_delete_thunk(todo)
-// }
+// const mapDispatchToProps: any = null
+const mapDispatchToProps = {
+	websocket_remove_messages: () => websocket_remove_messages
+}
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
 
@@ -89,6 +90,7 @@ const WebSocketInfoBadge = (props: Props) => {
 	
 	const handleClick = () => {
 		consoleMessage('Handling WebSocketInfoBadge/handleClick', CONSOLE_LOG_MESSAGE_TYPE.INFO, showInfoLogMessages)
+		props.websocket_remove_messages();
 	}
 	
 	return (
