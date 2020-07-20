@@ -1,6 +1,5 @@
 import {ITodoItemStateFilter, ITodoItemStateFilterAction} from "../references/interfaces";
 import {TODO_ITEM_STATE_FILTER_ACTIONS} from "../references/references";
-import { consoleMessage } from "../services/console-log";
 import {CONSOLE_LOG_MESSAGE_TYPE} from "../references/references";
 
 const defaultTodoItemState: ITodoItemStateFilter = {
@@ -9,11 +8,7 @@ const defaultTodoItemState: ITodoItemStateFilter = {
 };
 
 export const todo_item_state_reducer = (state = defaultTodoItemState, action: ITodoItemStateFilterAction): ITodoItemStateFilter => {
-	consoleMessage(
-		'todo_item_state_reducer: ' + JSON.stringify(action),
-		CONSOLE_LOG_MESSAGE_TYPE.INFO,
-		false
-	);
+	console.log('todo_item_state_reducer: ' + JSON.stringify(action))
 	switch (action.type) {
 		case TODO_ITEM_STATE_FILTER_ACTIONS.SET_STATE:
 			return {... state, ... action.filterType};

@@ -9,7 +9,7 @@ export const websocket_add_message_action = (message: IWebSocketMessage): IWebSo
 
 export const websocket_remove_messages = (): IWebSocketMessage => ({
 	type: WEBSOCKET_ACTIONS.REMOVE_MESSAGES,
-	message: null
+	message: ''
 });
 
 export const  websocket_new_todo_message_thunk = (message: any) =>

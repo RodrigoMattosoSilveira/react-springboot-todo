@@ -13,8 +13,6 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 // Internal dependencies
 import {IPrioritiesFilter} from "../references/interfaces";
-import { consoleMessage } from "../services/console-log";
-import {CONSOLE_LOG_MESSAGE_TYPE} from "../references/references";
 
 // Styles configuration
 const useStyles = makeStyles((theme: Theme) =>
@@ -109,21 +107,9 @@ const TodoTablePriorityFilter = (props: Props) => {
 	
 	const open = Boolean(anchorEl);
 	const id = open ? 'simple-popover' : undefined;
-	consoleMessage(
-		'TodoTablePriorityFilter, open: ' + open,
-		CONSOLE_LOG_MESSAGE_TYPE.INFO,
-		showInfoMessages
-	);
-	consoleMessage(
-		'TodoTablePriorityFilter, ID: ' + id,
-		CONSOLE_LOG_MESSAGE_TYPE.INFO,
-		showInfoMessages
-	);
-	consoleMessage(
-		'TodoTablePriorityFilter, state: ' + JSON.stringify(state),
-		CONSOLE_LOG_MESSAGE_TYPE.INFO,
-		showInfoMessages
-	);
+	console.log('TodoTablePriorityFilter, open: ' + open)
+	console.log('TodoTablePriorityFilter, ID: ' + id)
+	console.log('TodoTablePriorityFilter, state: ' + JSON.stringify(state))
 	
 	return (
 		<div className={classes.root} >

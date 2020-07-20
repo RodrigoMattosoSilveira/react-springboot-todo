@@ -13,8 +13,6 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 // Internal dependencies
 import {ITodoItemStateFilter} from "../references/interfaces";
-import {consoleMessage} from "../services/console-log";
-import {CONSOLE_LOG_MESSAGE_TYPE} from "../references/references";
 
 // Styles configuration
 const useStyles = makeStyles((theme: Theme) =>
@@ -107,11 +105,7 @@ const TodoTableStateFilter = (props: Props) => {
 	
 	const open = Boolean(anchorEl);
 	const id = open ? 'simple-popover' : undefined;
-	consoleMessage(
-		'TodoTableStateFilter, open: ' + open + ', ID: ' + id + ', state: ' + JSON.stringify(state),
-		CONSOLE_LOG_MESSAGE_TYPE.INFO,
-		false
-	);
+	console.log('TodoTableStateFilter, open: ' + open + ', ID: ' + id + ', state: ' + JSON.stringify(state));
 	
 	return (
 		<div className={classes.root} >

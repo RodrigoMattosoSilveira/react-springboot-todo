@@ -8,10 +8,6 @@ import AssignmentSharpIcon from '@material-ui/icons/Assignment';
 
 // Internal dependencies
 import {RootState} from "../reducers/rootReducer";
-import {TodoRestInterface} from "../references/interfaces";
-import { todo_delete_thunk } from "../actions/todos-actions";
-import { consoleMessage } from "../services/console-log"
-import { CONSOLE_LOG_MESSAGE_TYPE} from "../references/references";
 import { websocket_remove_messages } from '../actions/websocket-actions';
 
 
@@ -32,7 +28,7 @@ function mapStateToProps (state: RootState) {
 // Set to null if not used
 // const mapDispatchToProps: any = null
 const mapDispatchToProps = {
-	websocket_remove_messages: () => websocket_remove_messages
+	websocket_remove_messages: () => websocket_remove_messages()
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -89,7 +85,7 @@ const WebSocketInfoBadge = (props: Props) => {
 	const showInfoLogMessages = true
 	
 	const handleClick = () => {
-		consoleMessage('Handling WebSocketInfoBadge/handleClick', CONSOLE_LOG_MESSAGE_TYPE.INFO, showInfoLogMessages)
+		console.log('Handling WebSocketInfoBadge/handleClick');
 		props.websocket_remove_messages();
 	}
 	
