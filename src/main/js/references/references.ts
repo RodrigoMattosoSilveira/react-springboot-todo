@@ -74,3 +74,8 @@ export const CONSOLE_LOG_MESSAGE_TYPE = {
 	WARN: 'warn',
 	ERROR: 'error'
 }
+
+export const WEBSOCKET_ACTIONS = {
+	ADD_MESSAGE: 'ADD_MESSAGE',
+	REMOVE_MESSAGES: 'REMOVE_MESSAGES'
+}

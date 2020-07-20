@@ -138,3 +138,20 @@ export interface IPrioritiesFilterAction {
 	filterType: IPrioritiesFilter
 }
 
+export interface IWebSocketMessage {
+	type: string,
+	message: {}
+}
+export interface  IWebsocketStore {
+	count: number,
+	messages: IWebSocketMessage[]
+}
+export interface  IWebsocketAction {
+	type: string,
+	message?: IWebSocketMessage
+}
+
+export interface IWebsocketCallback {
+	route: string,
+	callback: () => void
+}

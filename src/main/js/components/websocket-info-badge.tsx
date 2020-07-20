@@ -21,12 +21,12 @@ import { CONSOLE_LOG_MESSAGE_TYPE} from "../references/references";
  */
 
 // Set to null if not used
-const mapStateToProps: any = null
-// function mapStateToProps (state: RootState) {
-// 	return {
-// 		userName: state.authenticated_user_reducer,
-// 	};
-// }
+// const mapStateToProps: any = null
+function mapStateToProps (state: RootState) {
+	return {
+		websocketMessageCount: state.webSocketReducer.count,
+	};
+}
 
 // Set to null if not used
 const mapDispatchToProps: any = null
@@ -93,7 +93,7 @@ const WebSocketInfoBadge = (props: Props) => {
 	
 	return (
 		<IconButton aria-label="delete" onClick={handleClick} className={classes.styleRight}>
-			<Badge badgeContent={4} color="error" >
+			<Badge badgeContent={props.websocketMessageCount} color="error" >
 					<AssignmentSharpIcon />
 			</Badge>
 		</IconButton>
