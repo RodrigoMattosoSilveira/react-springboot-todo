@@ -52,7 +52,8 @@ export const PAGINATION_TYPE = {
 	FIRST: 'first',
 	PREVIOUS: 'prev',
 	NEXT: 'next',
-	LAST: 'last'
+	LAST: 'last',
+	SELF: 'self'
 }
 
 export const TODO_ITEM_STATE_FILTER_ACTIONS = {
@@ -67,4 +68,15 @@ export const PRIORITIES = {
 	LOW: 'LOW',
 	MEDIUM: 'MEDIUM',
 	HIGH: 'HIGH'
+}
+
+export const CONSOLE_LOG_MESSAGE_TYPE = {
+	INFO: 'info',
+	WARN: 'warn',
+	ERROR: 'error'
+}
+
+export const WEBSOCKET_ACTIONS = {
+	ADD_MESSAGE: 'ADD_MESSAGE',
+	REMOVE_MESSAGES: 'REMOVE_MESSAGES'
 }

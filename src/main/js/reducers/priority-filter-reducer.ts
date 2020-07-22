@@ -1,7 +1,5 @@
 import {IPrioritiesFilter, IPrioritiesFilterAction} from "../references/interfaces";
-import {PRIORITIES_ACTIONS} from "../references/references";
-
-
+import {CONSOLE_LOG_MESSAGE_TYPE, PRIORITIES_ACTIONS} from "../references/references";
 const defaultPriorities: IPrioritiesFilter = {
 	low: true,
 	medium: true,
@@ -9,8 +7,7 @@ const defaultPriorities: IPrioritiesFilter = {
 };
 
 export const RPriorityFilter = (state = defaultPriorities, action: IPrioritiesFilterAction): IPrioritiesFilter => {
-	 console.log('todo_item_state_reducer')
-	 console.log(action)
+	// console.log('todo_item_state_reducer: ' + JSON.stringify(action));
 	switch (action.type) {
 		case PRIORITIES_ACTIONS.SET_STATE:
 			return {... state, ... action.filterType};

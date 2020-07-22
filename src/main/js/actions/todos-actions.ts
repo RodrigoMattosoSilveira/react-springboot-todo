@@ -254,3 +254,7 @@ export const APriorityFilter = ( newState:  IPrioritiesFilter): IPrioritiesFilte
 	type: PRIORITIES_ACTIONS.SET_STATE,
 	filterType: newState
 })
+
+export const refreshCurrentPage_thunk = () =>
+	(dispatch: any, getState: any, axios: any) => {
+	}

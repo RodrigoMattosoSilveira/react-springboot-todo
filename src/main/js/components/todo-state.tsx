@@ -48,9 +48,11 @@ type Props = PropsFromRedux & {
 
 const TodoState = (props: Props) => {
 	// const classes = useStyles();
-	const [checked, setChecked] = React.useState(props.todo.data.isCompleted);
+	
+	// this does not work! I had to use the prop itself
+	// const [checked, setChecked] = React.useState(props.todo.data.isCompleted);
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setChecked(event.target.checked);
+		// setChecked(event.target.checked);
 		props.todo_toggle_isCompleted_thunk(props.todo)
 	};
 	
@@ -64,7 +66,7 @@ const TodoState = (props: Props) => {
 	return (
 		<Checkbox
 			{...notAnOwner() as string}
-			checked={checked}
+			checked={props.todo.data.isCompleted}
 			onChange={handleChange}
 			inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
 		/>

@@ -9,6 +9,7 @@ import { rest_root_reducer } from './rest-reducer';
 import { hal_page_reducer } from "./hal-reducer";
 import { todo_item_state_reducer } from './todo-item-state-filter-reducer'
 import { RPriorityFilter } from './priority-filter-reducer'
+import { webSocketReducer } from './websocket-reducer'
 
 export const rootReducer = combineReducers({
 	todo_reducer,
@@ -20,7 +21,8 @@ export const rootReducer = combineReducers({
 	rest_root_reducer,
 	hal_page_reducer,
 	todo_item_state_reducer,
-	RPriorityFilter
+	RPriorityFilter,
+	webSocketReducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>

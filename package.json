@@ -1,6 +1,6 @@
 {
   "name": "spring-data-rest-and-reactjs",
-  "version": "0.0.4",
+  "version": "0.0.5-alpha.1",
   "description": "Demo of ReactJS + Spring Data REST",
   "repository": {
     "type": "git",
@@ -22,7 +22,6 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "@stomp/stompjs": "^5.4.4",
     "axios": "^0.19.2",
     "es6-promise": "^4.2.8",
     "material-table": "^1.57.2",
@@ -37,7 +36,8 @@
     "redux-thunk": "^2.3.0",
     "rest": "^1.3.1",
     "shortid": "^2.2.15",
-    "sockjs-client": "^1.0.3",
+    "sockjs-client": "1.0.3",
+    "stompjs": "2.3.3",
     "typeface-roboto": "^0.0.75",
     "when": "^3.7.8"
   },

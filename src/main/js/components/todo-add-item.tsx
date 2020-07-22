@@ -86,10 +86,10 @@ const TodoAddItem = (props: Props) => {
 	const handleClose = () => {
 		setAnchorEl(null);
 		if (!pristine && textFieldValid) {
-			console.log("Added Todo Item");
-			console.log("isCompleted: " + isCompletedChecked);
-			console.log("text: " + textFieldValue);
-			console.log("priority: " + priorityValue);
+			// console.log("Added Todo Item");
+			// console.log("isCompleted: " + isCompletedChecked);
+			// console.log("text: " + textFieldValue);
+			// console.log("priority: " + priorityValue);
 			props.todo_add_thunk({
 				isCompleted: isCompletedChecked ? TODO_COMPLETED.TRUE : TODO_COMPLETED.FALSE,
 				text: textFieldValue,
@@ -107,9 +107,9 @@ const TodoAddItem = (props: Props) => {
 	
 	const open = Boolean(anchorEl);
 	const id = open ? 'simple-popover' : undefined;
-	 console.log('TodoTablePriorityFilter, open: ' + open);
-	 console.log('TodoTablePriorityFilter, ID: ' + id);
-	 console.log('TodoTablePriorityFilter, state');
+	 // console.log('TodoTablePriorityFilter, open: ' + open);
+	 // console.log('TodoTablePriorityFilter, ID: ' + id);
+	 // console.log('TodoTablePriorityFilter, state');
 	
 	// isCompleted
 	const [isCompletedChecked, setIsCompletedChecked] = React.useState(false);

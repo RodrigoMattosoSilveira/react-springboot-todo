@@ -1,7 +1,7 @@
 // External dependencies
 import * as React from 'react'
 import {connect, ConnectedProps} from 'react-redux';
-import { makeStyles, createStyles, Theme} from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme, withStyles} from '@material-ui/core/styles';
 import Table from "@material-ui/core/Table";
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from "@material-ui/core/TableBody";
@@ -11,6 +11,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
+import Badge from '@material-ui/core/Badge';
+import AssignmentSharpIcon from '@material-ui/icons/Assignment';
 
 // Internal dependencies
 import { RootState } from '../reducers/rootReducer'
@@ -27,6 +29,7 @@ import TodoText from "./todo-text";
 import TodoTablePriorityFilter from './todo-table-priority-filter';
 import { PRIORITIES } from "../references/references";
 import TodoAddItem from "./todo-add-item";
+import WebSocketInfoBadge from "./websocket-info-badge"
 
 /*
  * *****************************************************************************
@@ -71,6 +74,12 @@ type Props = PropsFromRedux & {}
  */
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
+		badge: {
+			right: -3,
+			top: 13,
+			border: `2px solid ${theme.palette.background.paper}`,
+			padding: '0 4px',
+		},
 		table: {
 			/* minWidth: 650, */
 			tableLayout: "auto",
@@ -85,11 +94,32 @@ const useStyles = makeStyles((theme: Theme) =>
 		todoPriority: {
 			width: "32px"
 		},
+		styleLeft: {
+			textAlign: "center",
+			float: "left",
+		},
+		styleRight: {
+			textAlign: "center",
+			float: "right",
+			paddingTop: "15px"
+		},
 	})
 );
 
+const StyledBadge = withStyles((theme: Theme) =>
+	createStyles({
+		badge: {
+			right: -3,
+			top: 13,
+			border: `2px solid ${theme.palette.background.paper}`,
+			padding: '0 4px',
+		},
+	}),
+)(Badge);
+
+
 function computeVisible (visibilityFilter: string, isCompleted: boolean ): string {
-	 console.log('TodoList/computeVisible visibilityFilter: ' + visibilityFilter)
+	 // console.log('TodoList/computeVisible visibilityFilter: ' + visibilityFilter)
 	let className = 'show-todo-item';
 	if ((visibilityFilter === 'open' && isCompleted) || (visibilityFilter === 'done' && !isCompleted)) {
 		className = 'hide-todo-item';
@@ -125,7 +155,10 @@ const TodoList = (props: Props) => {
 				<Table className={classes.table} size="small" aria-label="a dense table" stickyHeader>
 					<TableHead>
 						<TableRow>
-							<TableCell colSpan={5} align={'center'}><h1>Todo Table</h1></TableCell>
+							<TableCell colSpan={5} align={'center'}>
+									<h1 className={classes.styleLeft}>Todo Table</h1>
+									<WebSocketInfoBadge></WebSocketInfoBadge>
+							</TableCell>
 						</TableRow>
 					</TableHead>
 				</Table>

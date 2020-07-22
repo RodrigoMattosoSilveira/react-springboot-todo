@@ -9,6 +9,17 @@ import Typography from '@material-ui/core/Typography';
 // Internal Dependencies
 import TodoList from "./todo-list";
 import { RootState } from '../reducers/rootReducer'
+import stompClient from '../services/websocket-listener'
+import {
+	websocket_delete_todo_message_thunk,
+	websocket_new_todo_message_thunk,
+	websocket_update_todo_message_thunk
+} from "../actions/websocket-actions";
+
+import {store} from "../services/store";
+import {set_user_name_action} from "../actions/authenticated_user_actions";
+import * as REST_PARAMS from "../actions/rest_actions";
+import {todo_load_from_server} from "../actions/todos-actions";
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
@@ -40,7 +51,12 @@ const mapStateToProps = (state: RootState) => {
 }
 
 // Set to null if not used
-const mapDispatchToProps: any = null;
+// const mapDispatchToProps = null
+const mapDispatchToProps = {
+	websocket_new_todo_message_thunk: (message: any) => websocket_new_todo_message_thunk(message),
+	websocket_update_todo_message_thunk: (message: any) => websocket_update_todo_message_thunk(message),
+	websocket_delete_todo_message_thunk: (message: any) => websocket_delete_todo_message_thunk(message),
+}
 
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -55,10 +71,24 @@ type Props = PropsFromRedux & {}
 // }
 
 const TodoApp = (props: Props) => {
-	 console.log('TodoApp: Loading the app')
-	 console.log("TodoApp: User name: " + props.userName);
+	 // console.log('TodoApp: Loading the app')
+	 // console.log("TodoApp: User name: " + props.userName);
 	
 	const classes = useStyles();
+	const [registered, setRegistered] = React.useState(false);
+	
+	
+	React.useEffect(() => {
+		if (!registered) {
+			setRegistered(true);
+			stompClient.register([
+				{route: '/topic/newTodo', callback: props.websocket_new_todo_message_thunk},
+				{route: '/topic/updateTodo', callback: props.websocket_update_todo_message_thunk},
+				{route: '/topic/deleteTodo', callback: props.websocket_delete_todo_message_thunk}
+			]);
+		}
+	});
+	
 	return (
 		<div className="todo-list-app">
 			{/* <h1 className="todo-header">todo</h1>*/}
