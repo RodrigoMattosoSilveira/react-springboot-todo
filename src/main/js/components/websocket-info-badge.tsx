@@ -8,7 +8,9 @@ import AssignmentSharpIcon from '@material-ui/icons/Assignment';
 
 // Internal dependencies
 import {RootState} from "../reducers/rootReducer";
-import { websocket_remove_messages } from '../actions/websocket-actions';
+import { websocket_remove_messages_thunk } from '../actions/websocket-actions';
+import {PAGINATION_TYPE} from "../references/references";
+import {todo_navigate_to_page_thunk} from "../actions/todos-actions";
 
 
 /*
@@ -22,13 +24,15 @@ import { websocket_remove_messages } from '../actions/websocket-actions';
 function mapStateToProps (state: RootState) {
 	return {
 		websocketMessageCount: state.webSocketReducer.count,
+		links: state.rest_links_reducer,
+		halPage: state.hal_page_reducer
 	};
 }
 
 // Set to null if not used
 // const mapDispatchToProps: any = null
 const mapDispatchToProps = {
-	websocket_remove_messages: () => websocket_remove_messages()
+	websocket_remove_messages_thunk: (navUri: string, pageNumber: number) => websocket_remove_messages_thunk(navUri, pageNumber)
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -85,8 +89,10 @@ const WebSocketInfoBadge = (props: Props) => {
 	const showInfoLogMessages = true
 	
 	const handleClick = () => {
-		console.log('Handling WebSocketInfoBadge/handleClick');
-		props.websocket_remove_messages();
+		const url = props.links[PAGINATION_TYPE.SELF]['href'];
+		const page = props.halPage.number;
+		console.log('Handling WebSocketInfoBadge/handleClick: ' + url + ', page: ' + page);
+		props.websocket_remove_messages_thunk(url, page);
 	}
 	
 	return (

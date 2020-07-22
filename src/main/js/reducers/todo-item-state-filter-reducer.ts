@@ -8,7 +8,7 @@ const defaultTodoItemState: ITodoItemStateFilter = {
 };
 
 export const todo_item_state_reducer = (state = defaultTodoItemState, action: ITodoItemStateFilterAction): ITodoItemStateFilter => {
-	console.log('todo_item_state_reducer: ' + JSON.stringify(action))
+	// console.log('todo_item_state_reducer: ' + JSON.stringify(action))
 	switch (action.type) {
 		case TODO_ITEM_STATE_FILTER_ACTIONS.SET_STATE:
 			return {... state, ... action.filterType};

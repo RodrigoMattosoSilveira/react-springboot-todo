@@ -7,7 +7,7 @@ const defaultPriorities: IPrioritiesFilter = {
 };
 
 export const RPriorityFilter = (state = defaultPriorities, action: IPrioritiesFilterAction): IPrioritiesFilter => {
-	console.log('todo_item_state_reducer: ' + JSON.stringify(action));
+	// console.log('todo_item_state_reducer: ' + JSON.stringify(action));
 	switch (action.type) {
 		case PRIORITIES_ACTIONS.SET_STATE:
 			return {... state, ... action.filterType};

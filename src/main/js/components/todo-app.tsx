@@ -71,8 +71,8 @@ type Props = PropsFromRedux & {}
 // }
 
 const TodoApp = (props: Props) => {
-	 console.log('TodoApp: Loading the app')
-	 console.log("TodoApp: User name: " + props.userName);
+	 // console.log('TodoApp: Loading the app')
+	 // console.log("TodoApp: User name: " + props.userName);
 	
 	const classes = useStyles();
 	const [registered, setRegistered] = React.useState(false);

@@ -52,7 +52,8 @@ export const PAGINATION_TYPE = {
 	FIRST: 'first',
 	PREVIOUS: 'prev',
 	NEXT: 'next',
-	LAST: 'last'
+	LAST: 'last',
+	SELF: 'self'
 }
 
 export const TODO_ITEM_STATE_FILTER_ACTIONS = {

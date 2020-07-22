@@ -8,7 +8,7 @@ export const todo_reducer = (state: TodoRestInterface[] = seedTodoList, action: 
 	const showInfoMessages = false
     switch (action.type) {
 		case TODO_ACTIONS.READ:
-			console.log('todo_reducer/todos: ' + JSON.stringify(action.todos))
+			// console.log('todo_reducer/todos: ' + JSON.stringify(action.todos))
 			return action.todos;
         default:
             return state;

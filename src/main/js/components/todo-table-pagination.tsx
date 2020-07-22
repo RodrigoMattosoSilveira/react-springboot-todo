@@ -54,9 +54,9 @@ type Props = PropsFromRedux & {}
 
 const TodoTablePagination = (props: Props) => {
 	// const classes = useStyles();
-	 console.log('TodoTablePagination/props.count: ' + props.count);
-	 console.log('TodoTablePagination/props.number (page number, 0-based): ' + props.number);
-	 console.log('TodoTablePagination/props.size (rowsPerPage): ' + props.size);
+	//  console.log('TodoTablePagination/props.count: ' + props.count);
+	//  console.log('TodoTablePagination/props.number (page number, 0-based): ' + props.number);
+	//  console.log('TodoTablePagination/props.size (rowsPerPage): ' + props.size);
 	
 	const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
 		const iHalPage: IHalPage = {number: newPage}

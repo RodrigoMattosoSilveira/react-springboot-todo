@@ -105,7 +105,7 @@ const TodoTableStateFilter = (props: Props) => {
 	
 	const open = Boolean(anchorEl);
 	const id = open ? 'simple-popover' : undefined;
-	console.log('TodoTableStateFilter, open: ' + open + ', ID: ' + id + ', state: ' + JSON.stringify(state));
+	// console.log('TodoTableStateFilter, open: ' + open + ', ID: ' + id + ', state: ' + JSON.stringify(state));
 	
 	return (
 		<div className={classes.root} >
