@@ -1,6 +1,6 @@
 {
   "name": "spring-data-rest-and-reactjs",
-  "version": "0.0.5-alpha.1",
+  "version": "0.0.5",
   "description": "Demo of ReactJS + Spring Data REST",
   "repository": {
     "type": "git",
